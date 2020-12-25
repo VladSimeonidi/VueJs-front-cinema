@@ -1,0 +1,8 @@
+export const CURRENT_ITEM = "CURRENT_ITEM";
+export const SET_LIST = "SET_LIST";
+export const GET_LIST = "GET_LIST";
+export const SET_CURRENT_ITEM = "SET_CURRENT_ITEM";
+export const GET_CURRENT_ITEM = "GET_CURRENT_ITEM";
+export const SAVE_CURRENT_ITEM = "SAVE_CURRENT_ITEM";
+export const EDIT_CURRENT_ITEM = "EDIT_CURRENT_ITEM";
+export const DELETE_CURRENT_ITEM = "DELETE_CURRENT_ITEM";

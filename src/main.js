@@ -1,12 +1,22 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router/index.js";
+import store from "./store";
+import VuePlyr from "vue-plyr";
+import "vue-plyr/dist/vue-plyr.css";
+import VueRouter from "vue-router";
+import axios from "axios";
+import VueAxios from "vue-axios";
+import "normalize.css";
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+Vue.use(VueRouter);
+Vue.use(VuePlyr);
+Vue.use(VueAxios, axios);
 
 new Vue({
   router,
   store,
-  render: h => h(App)
-}).$mount('#app')
+  axios,
+  render: (h) => h(App),
+}).$mount("#app");
