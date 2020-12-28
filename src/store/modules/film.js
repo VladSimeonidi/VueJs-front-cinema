@@ -3,6 +3,10 @@ import {
   SET_LIST,
   GET_CURRENT_ITEM,
   SET_CURRENT_ITEM,
+  SET_CURRENT_NAME,
+  GET_CURRENT_NAME,
+  GET_CURRENT_GENRE,
+  SET_CURRENT_GENRE,
   SAVE_CURRENT_ITEM,
   EDIT_CURRENT_ITEM,
   DELETE_CURRENT_ITEM,
@@ -16,6 +20,8 @@ export const state = () => ({
 export const mutations = {
   [SET_LIST]: (state, payload) => (state.list = payload),
   [SET_CURRENT_ITEM]: (state, payload) => (state.currentItem = payload),
+  [SET_CURRENT_NAME]: (state, payload) => (state.currentItem.name = payload),
+  [SET_CURRENT_GENRE]: (state, payload) => (state.currentItem.genre = payload),
 };
 export const actions = {
   [SET_LIST]: async ({ commit }) => {
@@ -78,4 +84,6 @@ export const actions = {
 export const getters = {
   [GET_LIST]: (state) => state.list,
   [GET_CURRENT_ITEM]: (state) => state.currentItem,
+  [GET_CURRENT_NAME]: (state) => state.currentItem.name,
+  [GET_CURRENT_GENRE]: (state) => state.currentItem.genre,
 };

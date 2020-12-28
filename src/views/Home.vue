@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="container">
+      <div><v-select></v-select></div>
       <h1 class="title">Добро пожаловать на хостинг трейлеров</h1>
       <router-link :to="{ name: 'films' }" class="button"
         >Перейти к трейлерам</router-link

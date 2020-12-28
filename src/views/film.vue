@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form class="form">
+    <div class="form">
       <h2>Название</h2>
       <input v-model="film.name" type="text" class="form__inputName" />
       <h2>Жанр</h2>
@@ -23,18 +23,23 @@
           v-if="this.$route.params.id !== 'new'"
           class="back"
           @click="deleteItem(film._id)"
+          disabled
         >
           удалить
         </button>
-        <!-- <button class="back" @click="$router.go(-1)">Назад</button> -->
+        <button class="back" @click="$router.go(-1)">Назад</button>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 <script>
 import {
   GET_CURRENT_ITEM,
   SET_CURRENT_ITEM,
+  // SET_CURRENT_NAME,
+  // GET_CURRENT_NAME,
+  // GET_CURRENT_GENRE,
+  // SET_CURRENT_GENRE,
   SAVE_CURRENT_ITEM,
   EDIT_CURRENT_ITEM,
   DELETE_CURRENT_ITEM,
@@ -50,9 +55,38 @@ export default {
       },
     };
   },
+  // computed: {
+  //   ch: function() {
+  //     console.log("object");
+  //     return 1;
+  //   },
+  //   Name: {
+  //     get: function() {
+  //       console.log("name");
+  //       return this.$store.getters[GET_CURRENT_NAME];
+  //     },
+  //     set: function(value) {
+  //       this.$store.commit(SET_CURRENT_NAME, value);
+  //       console.log("ssss");
+  //     },
+  //   },
+  //   Genre: {
+  //     get: function() {
+  //       let genre = this.$store.getters[GET_CURRENT_GENRE];
+  //       console.log("genre");
+  //       console.log(genre);
+  //       return genre.charAt(0).toUpperCase() + genre.slice(1);
+  //     },
+  //     set: function(value) {
+  //       this.$store.commit(SET_CURRENT_GENRE, value);
+  //     },
+  //   },
+  // },
   methods: {
+    check() {
+      console.log("check");
+    },
     previewFiles(event) {
-      console.log(event.target.files[0].name);
       this.film.link = event.target.files[0].name;
     },
     save() {
@@ -93,6 +127,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.$store);
     if (this.$route.params.id !== "new") {
       this.$store
         .dispatch(SET_CURRENT_ITEM, this.$route.params.id)
