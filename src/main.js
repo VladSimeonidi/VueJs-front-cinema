@@ -8,19 +8,21 @@ import VueRouter from "vue-router";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import "normalize.css";
-import vuetify from './plugins/vuetify';
-import 'roboto-fontface/css/roboto/roboto-fontface.css'
-import '@mdi/font/css/materialdesignicons.css'
+import vuetify from "./plugins/vuetify";
+import "roboto-fontface/css/roboto/roboto-fontface.css";
+import "@mdi/font/css/materialdesignicons.css";
+import Vuelidate from "vuelidate";
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(VuePlyr);
 Vue.use(VueAxios, axios);
+Vue.use(Vuelidate);
 
 new Vue({
   router,
   store,
   axios,
   vuetify,
-  render: (h) => h(App)
+  render: (h) => h(App),
 }).$mount("#app");
