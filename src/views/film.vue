@@ -1,6 +1,20 @@
 <template>
   <div class="container">
-    <div class="form">
+    <v-card light class="form" pa-1>
+      <v-row class="d-flex ma-1">
+        <v-col cols="12">
+          <h3>Категория:</h3>
+          <v-text-field
+            label="Название категории"
+            placeholder="Введите название категории"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+    </v-card>
+    <!-- <div class="form">
+      <v-card>
+        <input type="text" />
+      </v-card>
       <h2>Название</h2>
       <input v-model="film.name" type="text" class="form__inputName" />
       <h2>Жанр</h2>
@@ -29,7 +43,7 @@
         </button>
         <button class="back" @click="$router.go(-1)">Назад</button>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -162,7 +176,7 @@ export default {
   max-width: 700px;
   width: 100%;
   min-height: 500px;
-  background-color: lightblue;
+  background-color: red;
   &__buttons {
     display: flex;
     justify-content: space-between;

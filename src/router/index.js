@@ -15,6 +15,9 @@ const routes = [
     path: "/",
     name: "home",
     component: Home,
+    meta: {
+      layout: "empty",
+    },
   },
   {
     path: "/films",
@@ -25,6 +28,9 @@ const routes = [
     path: "*",
     name: "notfound",
     component: Notfound,
+    meta: {
+      layout: "empty",
+    },
   },
   {
     path: "/editfilm/:id",
