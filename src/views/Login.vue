@@ -1,21 +1,25 @@
 <template>
-  <v-container class="form">
-    <v-card>
+  <v-container fluid>
+    <v-card class="form pa-10">
       <v-toolbar color="blue darken-1" dark>
         <v-toolbar-title>Логин</v-toolbar-title>
       </v-toolbar>
       <v-card-text>
         <v-form>
           <v-text-field
-            v-model="name"
+            id="username"
+            name="username"
+            v-model="username"
             :error-messages="nameErrors"
             :counter="10"
-            label="Имя"
+            label="Логин"
             required
-            @input="$v.name.$touch()"
-            @blur="$v.name.$touch()"
+            @input="$v.username.$touch()"
+            @blur="$v.username.$touch()"
           ></v-text-field>
           <v-text-field
+            id="password"
+            name="password"
             v-model="password"
             :error-messages="passwordErrors"
             label="Пароль"
@@ -24,9 +28,13 @@
             @blur="$v.password.$touch()"
           ></v-text-field>
           <v-card-actions>
-            <v-btn class="mr-4" @click="submit">Сохранить </v-btn>
+            <v-btn @click="submit">Войти</v-btn>
+            <router-link :to="{ name: 'register' }" class="margin-left"
+              >Получить аккаунт?</router-link
+            >
+            <v-spacer></v-spacer>
             <v-btn @click="clear">
-              Очистить
+              Сброс
             </v-btn>
           </v-card-actions>
         </v-form>
@@ -42,22 +50,22 @@ export default {
   mixins: [validationMixin],
 
   validations: {
-    name: { required, maxLength: maxLength(10) },
+    username: { required, maxLength: maxLength(10) },
     password: { required },
   },
 
   data: () => ({
-    name: "",
+    username: "",
     password: "",
   }),
 
   computed: {
     nameErrors() {
       const errors = [];
-      if (!this.$v.name.$dirty) return errors;
-      !this.$v.name.maxLength &&
+      if (!this.$v.username.$dirty) return errors;
+      !this.$v.username.maxLength &&
         errors.push("Name must be at most 10 characters long");
-      !this.$v.name.required && errors.push("Имя необходимо");
+      !this.$v.username.required && errors.push("Имя необходимо");
       return errors;
     },
     passwordErrors() {
@@ -74,10 +82,8 @@ export default {
     },
     clear() {
       this.$v.$reset();
-      this.name = "";
+      this.username = "";
       this.password = "";
-      this.select = null;
-      this.checkbox = false;
     },
   },
 };
@@ -86,5 +92,8 @@ export default {
 <style lang="scss">
 .form {
   max-width: 500px;
+}
+.margin-left {
+  margin-left: 20px;
 }
 </style>

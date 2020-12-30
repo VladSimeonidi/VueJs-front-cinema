@@ -1,77 +1,79 @@
 <template>
-  <v-container class="form">
-    <v-card>
-      <v-toolbar color="blue darken-1" dark>
-        <v-toolbar-title>Регистрация</v-toolbar-title>
-      </v-toolbar>
-      <v-card-text>
-        <v-form>
-          <v-text-field
-            id="username"
-            name="username"
-            v-model="username"
-            :error-messages="usernameErrors"
-            label="Логин"
-            required
-            @input="$v.username.$touch()"
-            @blur="$v.username.$touch()"
-          ></v-text-field>
-          <v-text-field
-            id="name"
-            name="name"
-            v-model="name"
-            :error-messages="nameErrors"
-            label="Ф.И.О."
-            required
-            @input="$v.name.$touch()"
-            @blur="$v.name.$touch()"
-          ></v-text-field>
-          <v-text-field
-            id="email"
-            name="email"
-            v-model="email"
-            :error-messages="emailErrors"
-            label="Электронная почта"
-            required
-            @input="$v.email.$touch()"
-            @blur="$v.email.$touch()"
-          ></v-text-field>
-          <v-text-field
-            id="password"
-            name="password"
-            v-model="password"
-            :error-messages="passwordErrors"
-            label="Пароль"
-            required
-            @input="$v.password.$touch()"
-            @blur="$v.password.$touch()"
-          ></v-text-field>
-          <v-text-field
-            id="confirmpassword"
-            name="confirmpassword"
-            v-model="confirmpassword"
-            :error-messages="confirmPasswordErrors"
-            label="Подтвердите пароль"
-            required
-            @input="$v.confirmpassword.$touch()"
-            @blur="$v.confirmpassword.$touch()"
-          ></v-text-field>
-          <v-card-actions>
-            <v-btn @click="submit" :disabled="this.$v.$invalid"
-              >Регистрация</v-btn
-            >
-            <router-link :to="{ name: 'register' }" class="margin-left"
-              >Получить аккаунт?</router-link
-            >
-            <v-spacer></v-spacer>
-            <v-btn @click="clear">
-              Сброс
-            </v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card-text>
-    </v-card>
-  </v-container>
+  <v-layout>
+    <v-flex class="card">
+      <v-card>
+        <v-toolbar color="blue darken-1" dark>
+          <v-toolbar-title>Регистрация</v-toolbar-title>
+        </v-toolbar>
+        <v-card-text>
+          <v-form>
+            <v-text-field
+              id="username"
+              name="username"
+              v-model="username"
+              :error-messages="usernameErrors"
+              label="Логин"
+              required
+              @input="$v.username.$touch()"
+              @blur="$v.username.$touch()"
+            ></v-text-field>
+            <v-text-field
+              id="name"
+              name="name"
+              v-model="name"
+              :error-messages="nameErrors"
+              label="Ф.И.О."
+              required
+              @input="$v.name.$touch()"
+              @blur="$v.name.$touch()"
+            ></v-text-field>
+            <v-text-field
+              id="email"
+              name="email"
+              v-model="email"
+              :error-messages="emailErrors"
+              label="Электронная почта"
+              required
+              @input="$v.email.$touch()"
+              @blur="$v.email.$touch()"
+            ></v-text-field>
+            <v-text-field
+              id="password"
+              name="password"
+              v-model="password"
+              :error-messages="passwordErrors"
+              label="Пароль"
+              required
+              @input="$v.password.$touch()"
+              @blur="$v.password.$touch()"
+            ></v-text-field>
+            <v-text-field
+              id="confirmpassword"
+              name="confirmpassword"
+              v-model="confirmpassword"
+              :error-messages="confirmPasswordErrors"
+              label="Подтвердите пароль"
+              required
+              @input="$v.confirmpassword.$touch()"
+              @blur="$v.confirmpassword.$touch()"
+            ></v-text-field>
+            <v-card-actions>
+              <v-btn @click="submit" :disabled="this.$v.$invalid"
+                >Регистрация</v-btn
+              >
+              <router-link :to="{ name: 'register' }" class="margin-left"
+                >Получить аккаунт?</router-link
+              >
+              <v-spacer></v-spacer>
+              <v-btn @click="clear">
+                Сброс
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 <script>
 import { validationMixin } from "vuelidate";
@@ -151,8 +153,14 @@ export default {
 </script>
 
 <style lang="scss">
-.form {
-  max-width: 500px;
+.container {
+  background-image: url("../assets/register.jpg");
+  background-size: 100% 100%;
+  height: 100vh;
+  text-align: center;
+}
+.card {
+  max-width: 500px !important;
 }
 .margin-left {
   margin-left: 20px;
