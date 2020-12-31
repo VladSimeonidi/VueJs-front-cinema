@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-layout class="center">
     <v-flex class="card">
       <v-card>
         <v-toolbar color="blue darken-1" dark>
@@ -58,11 +58,9 @@
               @blur="$v.confirmpassword.$touch()"
             ></v-text-field>
             <v-card-actions>
-              <v-btn @click="submit" :disabled="this.$v.$invalid"
-                >Регистрация</v-btn
-              >
-              <router-link :to="{ name: 'register' }" class="margin-left"
-                >Получить аккаунт?</router-link
+              <v-btn @click="registerUser">Регистрация</v-btn>
+              <router-link :to="{ name: 'login' }" class="margin-left"
+                >Есть аккаунт?</router-link
               >
               <v-spacer></v-spacer>
               <v-btn @click="clear">
@@ -77,7 +75,8 @@
 </template>
 <script>
 import { validationMixin } from "vuelidate";
-import { required, email } from "vuelidate/lib/validators";
+import { required, email, sameAs } from "vuelidate/lib/validators";
+import { mapActions } from "vuex";
 
 export default {
   mixins: [validationMixin],
@@ -87,7 +86,7 @@ export default {
     password: { required },
     name: { required },
     email: { required, email },
-    confirmpassword: { required },
+    confirmpassword: { required, sameAs: sameAs("password") },
   },
 
   data: () => ({
@@ -137,8 +136,27 @@ export default {
   },
 
   methods: {
-    submit() {
+    ...mapActions("auth", ["REGISTER"]),
+    registerUser() {
+      console.log(this.$v.$invalid);
       this.$v.$touch();
+      if (this.$v.$invalid) return;
+      let userData = {
+        username: this.username,
+        name: this.name,
+        password: this.password,
+        confirm_password: this.confirmpassword,
+        email: this.email,
+      };
+      this.REGISTER(userData)
+        .then((res) => {
+          if (res.data.success) {
+            this.$router.push("/login");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     clear() {
       this.$v.$reset();
@@ -153,11 +171,12 @@ export default {
 </script>
 
 <style lang="scss">
-.container {
+.center {
   background-image: url("../assets/register.jpg");
   background-size: 100% 100%;
   height: 100vh;
-  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 .card {
   max-width: 500px !important;

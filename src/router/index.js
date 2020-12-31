@@ -7,7 +7,7 @@ import films from "../views/films.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Profile from "../views/Profile.vue";
-
+import store from "../store";
 Vue.use(VueRouter);
 
 const routes = [
@@ -17,12 +17,16 @@ const routes = [
     component: Home,
     meta: {
       layout: "empty",
+      requiresAuth: true,
     },
   },
   {
     path: "/films",
     name: "films",
     component: films,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "*",
@@ -30,12 +34,16 @@ const routes = [
     component: Notfound,
     meta: {
       layout: "empty",
+      requiresAuth: true,
     },
   },
   {
     path: "/editfilm/:id",
     name: "editfilm",
     component: film,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/login",
@@ -43,6 +51,7 @@ const routes = [
     component: Login,
     meta: {
       layout: "empty",
+      requiresGuest: true,
     },
   },
   {
@@ -51,6 +60,7 @@ const routes = [
     component: Register,
     meta: {
       layout: "empty",
+      requiresGuest: true,
     },
   },
   {
@@ -58,7 +68,7 @@ const routes = [
     name: "profile",
     component: Profile,
     meta: {
-      layout: "empty",
+      requiresAuth: true,
     },
   },
 ];
@@ -66,6 +76,26 @@ const routes = [
 const router = new VueRouter({
   mode: "history",
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!store.getters["auth/LOGGED"]) {
+      // Redirect to the Login Page
+      next("/login");
+    } else {
+      next();
+    }
+  } else if (to.matched.some((record) => record.meta.requiresGuest)) {
+    if (store.getters["auth/LOGGED"]) {
+      // Redirect to the Login Page
+      next("/profile");
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

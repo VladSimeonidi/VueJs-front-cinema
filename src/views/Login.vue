@@ -1,50 +1,54 @@
 <template>
-  <v-container fluid>
-    <v-card class="form pa-10">
-      <v-toolbar color="blue darken-1" dark>
-        <v-toolbar-title>Логин</v-toolbar-title>
-      </v-toolbar>
-      <v-card-text>
-        <v-form>
-          <v-text-field
-            id="username"
-            name="username"
-            v-model="username"
-            :error-messages="nameErrors"
-            :counter="10"
-            label="Логин"
-            required
-            @input="$v.username.$touch()"
-            @blur="$v.username.$touch()"
-          ></v-text-field>
-          <v-text-field
-            id="password"
-            name="password"
-            v-model="password"
-            :error-messages="passwordErrors"
-            label="Пароль"
-            required
-            @input="$v.password.$touch()"
-            @blur="$v.password.$touch()"
-          ></v-text-field>
-          <v-card-actions>
-            <v-btn @click="submit">Войти</v-btn>
-            <router-link :to="{ name: 'register' }" class="margin-left"
-              >Получить аккаунт?</router-link
-            >
-            <v-spacer></v-spacer>
-            <v-btn @click="clear">
-              Сброс
-            </v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card-text>
-    </v-card>
-  </v-container>
+  <v-layout class="center">
+    <v-flex class="card">
+      <v-card class="form pa-10">
+        <v-toolbar color="blue darken-1" dark>
+          <v-toolbar-title>Логин</v-toolbar-title>
+        </v-toolbar>
+        <v-card-text>
+          <v-form>
+            <v-text-field
+              id="username"
+              name="username"
+              v-model="username"
+              :error-messages="nameErrors"
+              label="Логин"
+              required
+              @input="$v.username.$touch()"
+              @blur="$v.username.$touch()"
+            ></v-text-field>
+            <v-text-field
+              id="password"
+              name="password"
+              v-model="password"
+              :error-messages="passwordErrors"
+              label="Пароль"
+              required
+              @input="$v.password.$touch()"
+              @blur="$v.password.$touch()"
+            ></v-text-field>
+            <v-card-actions>
+              <v-btn @click="loginUser" :disabled="this.$v.$invalid"
+                >Войти</v-btn
+              >
+              <router-link :to="{ name: 'register' }" class="margin-left"
+                >Получить аккаунт?</router-link
+              >
+              <v-spacer></v-spacer>
+              <v-btn @click="clear">
+                Сброс
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 <script>
 import { validationMixin } from "vuelidate";
 import { required, maxLength } from "vuelidate/lib/validators";
+import { mapActions } from "vuex";
 
 export default {
   mixins: [validationMixin],
@@ -63,8 +67,6 @@ export default {
     nameErrors() {
       const errors = [];
       if (!this.$v.username.$dirty) return errors;
-      !this.$v.username.maxLength &&
-        errors.push("Name must be at most 10 characters long");
       !this.$v.username.required && errors.push("Имя необходимо");
       return errors;
     },
@@ -77,8 +79,23 @@ export default {
   },
 
   methods: {
-    submit() {
+    ...mapActions("auth", ["LOGIN"]),
+    loginUser() {
       this.$v.$touch();
+      console.log(this.username + " " + this.password);
+      const user = {
+        username: this.username,
+        password: this.password,
+      };
+      this.LOGIN(user)
+        .then((res) => {
+          if (res.data.success) {
+            this.$router.push("/");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     clear() {
       this.$v.$reset();
@@ -90,8 +107,15 @@ export default {
 </script>
 
 <style lang="scss">
-.form {
-  max-width: 500px;
+.center {
+  background-image: url("../assets/register.jpg");
+  background-size: 100% 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+.card {
+  max-width: 500px !important;
 }
 .margin-left {
   margin-left: 20px;

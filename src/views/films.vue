@@ -20,7 +20,6 @@
   </div>
 </template>
 <script>
-import { GET_LIST, SET_LIST } from "@/store/mutations-types";
 export default {
   data() {
     return {
@@ -29,8 +28,9 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch(SET_LIST).then(() => {
-      this.list = this.$store.getters[GET_LIST];
+    console.log(this.$store);
+    this.$store.dispatch("film/SET_LIST").then(() => {
+      this.list = this.$store.getters["film/GET_LIST"];
     });
   },
 };

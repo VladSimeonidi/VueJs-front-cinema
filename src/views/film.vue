@@ -47,17 +47,6 @@
   </div>
 </template>
 <script>
-import {
-  GET_CURRENT_ITEM,
-  SET_CURRENT_ITEM,
-  // SET_CURRENT_NAME,
-  // GET_CURRENT_NAME,
-  // GET_CURRENT_GENRE,
-  // SET_CURRENT_GENRE,
-  SAVE_CURRENT_ITEM,
-  EDIT_CURRENT_ITEM,
-  DELETE_CURRENT_ITEM,
-} from "@/store/mutations-types";
 export default {
   data() {
     return {
@@ -106,9 +95,9 @@ export default {
     save() {
       if (this.$route.params.id !== "new") {
         this.$store
-          .dispatch(EDIT_CURRENT_ITEM, this.film)
+          .dispatch("EDIT_CURRENT_ITEM", this.film)
           .then(() => {
-            this.film = this.$store.getters[GET_CURRENT_ITEM];
+            this.film = this.$store.getters["GET_CURRENT_ITEM"];
             this.$router.go(-1);
           })
           .catch((e) => {
@@ -116,9 +105,9 @@ export default {
           });
       } else {
         this.$store
-          .dispatch(SAVE_CURRENT_ITEM, this.film)
+          .dispatch("SAVE_CURRENT_ITEM", this.film)
           .then(() => {
-            this.film = this.$store.getters[GET_CURRENT_ITEM];
+            this.film = this.$store.getters["GET_CURRENT_ITEM"];
             this.$router.go(-1);
           })
           .catch((e) => {
@@ -130,7 +119,7 @@ export default {
       const confirmed = confirm("удалить?");
       if (confirmed) {
         this.$store
-          .dispatch(DELETE_CURRENT_ITEM, id)
+          .dispatch("DELETE_CURRENT_ITEM", id)
           .then(() => {
             this.$router.go(-1);
           })
@@ -144,9 +133,9 @@ export default {
     console.log(this.$store);
     if (this.$route.params.id !== "new") {
       this.$store
-        .dispatch(SET_CURRENT_ITEM, this.$route.params.id)
+        .dispatch("SET_CURRENT_ITEM", this.$route.params.id)
         .then(() => {
-          this.film = this.$store.getters[GET_CURRENT_ITEM];
+          this.film = this.$store.getters["GET_CURRENT_ITEM"];
           console.log(this.film);
         })
         .catch((e) => {

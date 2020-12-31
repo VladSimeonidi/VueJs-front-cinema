@@ -14,6 +14,11 @@ import "@mdi/font/css/materialdesignicons.css";
 import Vuelidate from "vuelidate";
 import "vuetify/dist/vuetify.min.css";
 
+Vue.prototype.$http = axios;
+const token = localStorage.getItem("token");
+if (token) {
+  Vue.prototype.$http.defaults.headers.common["Authorization"] = token;
+}
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(VuePlyr);
