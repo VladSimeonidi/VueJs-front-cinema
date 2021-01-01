@@ -61,11 +61,9 @@ export const actions = {
     return res;
   },
   async GET_PROFILE({ commit }) {
-    console.log("!!!!!!!!!!!!");
     commit("PROFILE_REQUEST");
     let res = await axios.get(config.API.BASE_URL + config.API.PROFILE);
     commit("USER_PROFILE", res.data.user);
-    console.log(res);
     return res;
   },
   async LOGOUT({ commit }) {

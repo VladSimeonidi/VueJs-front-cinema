@@ -9,17 +9,22 @@
             </video>
           </vue-plyr>
         </div>
-        <router-link
-          :to="{ name: 'editfilm', params: { id: film._id } }"
-          class="player__title"
-          >{{ film.name }}</router-link
-        >
-        <div class="player__desc">{{ film.description }}</div>
+        <div class="player__title">
+          {{ film.name }}
+          <v-btn
+            v-if="GETUSER.isAdmin"
+            icon
+            :to="{ name: 'editfilm', params: { id: film._id } }"
+            ><v-icon>mdi-table-edit</v-icon></v-btn
+          >
+        </div>
+        <div class="player__desc">{{ film.teaser }}</div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -27,6 +32,8 @@ export default {
       srcLink: null,
     };
   },
+  computed: mapGetters("auth", ["GETUSER"]),
+
   mounted() {
     console.log(this.$store);
     this.$store.dispatch("film/SET_LIST").then(() => {

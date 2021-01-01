@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card v-if="GETUSER" outlined>
-      <v-card-title>Профиль</v-card-title>
+      <v-card-title>Профиль пользователя</v-card-title>
       <v-card-text>
         <v-text-field
           v-model="GETUSER.name"

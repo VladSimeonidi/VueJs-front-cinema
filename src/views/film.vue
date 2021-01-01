@@ -1,114 +1,99 @@
 <template>
-  <div class="container">
-    <v-card light class="form" pa-1>
-      <v-row class="d-flex ma-1">
-        <v-col cols="12">
-          <h3>Категория:</h3>
-          <v-text-field
-            label="Название категории"
-            placeholder="Введите название категории"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-    </v-card>
-    <!-- <div class="form">
-      <v-card>
-        <input type="text" />
-      </v-card>
-      <h2>Название</h2>
-      <input v-model="film.name" type="text" class="form__inputName" />
-      <h2>Жанр</h2>
-      <input v-model="film.genre" type="text" class="form__inputName" />
-      <h2>Описание</h2>
-      <textarea
-        v-model="film.description"
-        type="text"
-        class="form__description"
-        maxlength="120"
-      ></textarea>
-      <h2>Ссылка</h2>
-      <div>
-        <input v-model="film.link" type="text" class="form__link" readonly />
-        <input type="file" @change="previewFiles" />
-      </div>
-      <div class="form__buttons">
-        <button class="savebutton" @click="save">Сохранить</button>
-        <button
-          v-if="this.$route.params.id !== 'new'"
-          class="back"
+  <div class="filmWrapper">
+    <v-card class="form">
+      <v-card-title
+        >Страница одного фильма<v-spacer></v-spacer>
+        <v-btn
+          v-if="this.$route.params.id !== 'new' && GETUSER.isAdmin"
           @click="deleteItem(film._id)"
-          disabled
         >
           удалить
-        </button>
-        <button class="back" @click="$router.go(-1)">Назад</button>
-      </div>
-    </div> -->
+        </v-btn></v-card-title
+      >
+      <v-card-text>
+        <h3>Название фильма</h3>
+        <v-text-field
+          v-model="film.name"
+          label="Название"
+          placeholder="Введите название"
+        ></v-text-field>
+        <h3>Тизер фильма</h3>
+        <v-text-field
+          maxLength="140"
+          v-model="film.teaser"
+          label="Тизер"
+          placeholder="Введите тизер"
+        ></v-text-field>
+        <h3>Жанр</h3>
+        <v-text-field
+          v-model="film.genre"
+          label="Жанр"
+          placeholder="Введите жанр фильма"
+        ></v-text-field>
+        <h3>Описание</h3>
+        <v-textarea
+          v-model="film.description"
+          label="Описание"
+          placeholder="Введите описание фильма"
+        ></v-textarea>
+        <h3>Ссылка фильма:</h3>
+        <v-file-input
+          :placeholder="film.link"
+          @change="previewFiles"
+        ></v-file-input>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn @click="save">
+          Сохранить
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn @click="$router.go(-1)">
+          Назад
+        </v-btn>
+      </v-card-actions>
+    </v-card>
   </div>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      film: {
-        name: "",
-        description: "",
-        link: "",
-        genre: "",
-      },
+      film: {},
     };
   },
-  // computed: {
-  //   ch: function() {
-  //     console.log("object");
-  //     return 1;
-  //   },
-  //   Name: {
-  //     get: function() {
-  //       console.log("name");
-  //       return this.$store.getters[GET_CURRENT_NAME];
-  //     },
-  //     set: function(value) {
-  //       this.$store.commit(SET_CURRENT_NAME, value);
-  //       console.log("ssss");
-  //     },
-  //   },
-  //   Genre: {
-  //     get: function() {
-  //       let genre = this.$store.getters[GET_CURRENT_GENRE];
-  //       console.log("genre");
-  //       console.log(genre);
-  //       return genre.charAt(0).toUpperCase() + genre.slice(1);
-  //     },
-  //     set: function(value) {
-  //       this.$store.commit(SET_CURRENT_GENRE, value);
-  //     },
-  //   },
-  // },
+  computed: mapGetters("auth", ["GETUSER"]),
   methods: {
-    check() {
-      console.log("check");
-    },
-    previewFiles(event) {
-      this.film.link = event.target.files[0].name;
+    ...mapGetters("film", ["GET_CURRENT_ITEM"]),
+    ...mapActions("film", [
+      "SET_CURRENT_ITEM",
+      "ADD_NEW_ITEM",
+      "SAVE_CURRENT_ITEM",
+      "EDIT_CURRENT_ITEM",
+      "DELETE_CURRENT_ITEM",
+    ]),
+    ...mapActions("auth", ["GET_PROFILE"]),
+    previewFiles(e) {
+      console.log(this.GETUSER);
+      this.film.link = e.name;
     },
     save() {
       if (this.$route.params.id !== "new") {
-        this.$store
-          .dispatch("EDIT_CURRENT_ITEM", this.film)
+        this.EDIT_CURRENT_ITEM(this.film)
           .then(() => {
-            this.film = this.$store.getters["GET_CURRENT_ITEM"];
-            this.$router.go(-1);
+            this.SET_CURRENT_ITEM(this.film._id).then(() => {
+              this.$router.go(-1);
+            });
           })
           .catch((e) => {
             console.log(e);
           });
       } else {
-        this.$store
-          .dispatch("SAVE_CURRENT_ITEM", this.film)
-          .then(() => {
-            this.film = this.$store.getters["GET_CURRENT_ITEM"];
-            this.$router.go(-1);
+        this.SAVE_CURRENT_ITEM(this.film)
+          .then((res) => {
+            this.SET_CURRENT_ITEM(res).then(() => {
+              this.$router.go(-1);
+            });
           })
           .catch((e) => {
             console.log(e);
@@ -118,8 +103,7 @@ export default {
     deleteItem(id) {
       const confirmed = confirm("удалить?");
       if (confirmed) {
-        this.$store
-          .dispatch("DELETE_CURRENT_ITEM", id)
+        this.DELETE_CURRENT_ITEM(id)
           .then(() => {
             this.$router.go(-1);
           })
@@ -129,36 +113,39 @@ export default {
       }
     },
   },
-  mounted() {
-    console.log(this.$store);
+  created() {
+    this.GET_PROFILE();
     if (this.$route.params.id !== "new") {
-      this.$store
-        .dispatch("SET_CURRENT_ITEM", this.$route.params.id)
+      this.SET_CURRENT_ITEM(this.$route.params.id)
         .then(() => {
-          this.film = this.$store.getters["GET_CURRENT_ITEM"];
+          this.film = this.GET_CURRENT_ITEM();
           console.log(this.film);
         })
         .catch((e) => {
           alert(e);
         });
     } else {
-      this.film = {
-        name: "",
-        description: "",
-        link: "",
-        genre: "",
-      };
+      this.ADD_NEW_ITEM()
+        .then(() => {
+          this.film = this.GET_CURRENT_ITEM();
+          console.log(this.film);
+        })
+        .catch((e) => {
+          alert(e);
+        });
     }
   },
 };
 </script>
 
 <style scoped lang="scss">
-.container {
+.filmWrapper {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 65px;
+  background-image: url("../assets/37975-gorod_ogni_nebo_otrajenie.jpg");
+  padding: 20px 0;
 }
 .form {
   text-align: center;

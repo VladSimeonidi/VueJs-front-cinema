@@ -20,6 +20,16 @@ export const mutations = {
   SET_CURRENT_GENRE(state, payload) {
     state.currentItem.genre = payload;
   },
+  ADD_NEW_ITEM(state) {
+    const emptyForm = {
+      description: "",
+      genre: "",
+      link: "",
+      name: "",
+      teaser: "",
+    };
+    state.currentItem = emptyForm;
+  },
 };
 export const actions = {
   async SET_LIST({ commit }) {
@@ -42,15 +52,20 @@ export const actions = {
         console.log(e);
       });
   },
+  async ADD_NEW_ITEM({ commit }) {
+    commit("ADD_NEW_ITEM");
+  },
   async SAVE_CURRENT_ITEM({ commit }, payload) {
-    await axios
+    const res = await axios
       .post(config.API.BASE_URL + config.API.FILM, payload)
-      .then(() => {
+      .then((res) => {
         commit("SET_CURRENT_ITEM", payload);
+        return res;
       })
       .catch((e) => {
         console.log(e);
       });
+    return res.data._id;
   },
   async EDIT_CURRENT_ITEM({ commit }, payload) {
     const ID = payload._id;

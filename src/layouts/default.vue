@@ -8,8 +8,8 @@
       <v-btn title="Фильмы" :to="{ name: 'films' }" icon>
         <v-icon>mdi-movie</v-icon>
       </v-btn>
-
       <v-btn
+        v-if="GETUSER.isAdmin"
         title="Добавить фильм"
         :to="{ name: 'editfilm', params: { id: 'new' } }"
         icon
@@ -28,10 +28,15 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
+  computed: mapGetters("auth", ["GETUSER"]),
+
+  created() {
+    this.GET_PROFILE();
+  },
   methods: {
-    ...mapActions("auth", ["LOGOUT"]),
+    ...mapActions("auth", ["LOGOUT", "GET_PROFILE"]),
     logoutUser() {
       this.LOGOUT();
     },
@@ -39,9 +44,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.fixed {
-  position: fixed;
-}
 .margin_top {
   margin-top: 48px;
 }
