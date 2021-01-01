@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="list" class="container">
+    <div class="container">
       <div v-for="(film, index) in list" :key="index" class="palyer__wrapper">
         <div class="player">
           <vue-plyr>
@@ -21,24 +21,61 @@
         <div class="player__desc">{{ film.teaser }}</div>
       </div>
     </div>
+    <v-card-actions class="centerPag">
+      <v-pagination
+        v-model="currentSelectedPage"
+        :length="paginatonsCounter"
+      ></v-pagination>
+    </v-card-actions>
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      list: null,
-      srcLink: null,
+      list: [],
+      listTotal: null,
+      pageSet: {
+        pageNumber: 1,
+        pageSize: 4,
+      },
+      paginatonsCounter: null,
     };
   },
-  computed: mapGetters("auth", ["GETUSER"]),
-
+  computed: {
+    ...mapGetters("auth", ["GETUSER"]),
+    currentSelectedPage: {
+      get() {
+        return this.pageSet.pageNumber;
+      },
+      set(value) {
+        this.pageSet.pageNumber = value;
+        this.SET_LIST(this.pageSet).then(() => {
+          this.list = this.GET_LIST();
+          this.listTotal = this.GET_LIST_TOTAL();
+          this.paginatonsCounter = Math.ceil(
+            this.listTotal / this.pageSet.pageSize
+          );
+        });
+      },
+    },
+  },
+  methods: {
+    ...mapActions("film", ["SET_LIST"]),
+    ...mapGetters("film", ["GET_LIST", "GET_LIST_TOTAL"]),
+  },
   mounted() {
-    console.log(this.$store);
-    this.$store.dispatch("film/SET_LIST").then(() => {
-      this.list = this.$store.getters["film/GET_LIST"];
+    this.SET_LIST(this.pageSet).then(() => {
+      this.list = this.GET_LIST();
+      this.listTotal = this.GET_LIST_TOTAL();
+      this.paginatonsCounter = Math.ceil(
+        this.listTotal / this.pageSet.pageSize
+      );
+      console.log(this.paginatonsCounter);
     });
+
+    console.log(this.list);
   },
 };
 </script>
@@ -47,7 +84,7 @@ export default {
 .container {
   display: flex;
   justify-content: space-between;
-  padding: 45px 3%;
+  padding: 0 3%;
   flex-wrap: wrap;
   padding-top: 70px;
 }
@@ -67,5 +104,8 @@ export default {
   text-align: center;
   margin-bottom: 10px;
   font-family: "Arial", sans-serif;
+}
+.centerPag {
+  justify-content: center;
 }
 </style>

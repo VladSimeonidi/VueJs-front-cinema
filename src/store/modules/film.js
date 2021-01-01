@@ -6,10 +6,14 @@ export const namespaced = true;
 export const state = () => ({
   currentItem: {},
   list: [],
+  listTotal: null,
 });
 export const mutations = {
   SET_LIST(state, payload) {
     state.list = payload;
+  },
+  SET_LIST_TOTAL(state, payload) {
+    state.listTotal = payload;
   },
   SET_CURRENT_ITEM(state, payload) {
     state.currentItem = payload;
@@ -32,11 +36,22 @@ export const mutations = {
   },
 };
 export const actions = {
-  async SET_LIST({ commit }) {
+  async SET_LIST({ commit }, pageSet) {
+    const pageNumber = pageSet.pageNumber;
+    const pageSize = pageSet.pageSize;
     await axios
-      .get(config.API.BASE_URL + config.API.FILM)
+      .get(
+        config.API.BASE_URL +
+          config.API.FILM_PAGINATION +
+          "?pageNumber=" +
+          pageNumber +
+          "&pageSize=" +
+          pageSize
+      )
       .then((res) => {
-        commit("SET_LIST", res.data);
+        console.log(res.data);
+        commit("SET_LIST", res.data.filmList);
+        commit("SET_LIST_TOTAL", res.data.filmListCount);
       })
       .catch((e) => {
         console.log(e);
@@ -97,6 +112,9 @@ export const actions = {
 export const getters = {
   GET_LIST(state) {
     return state.list;
+  },
+  GET_LIST_TOTAL(state) {
+    return state.listTotal;
   },
   GET_CURRENT_ITEM(state) {
     return state.currentItem;
