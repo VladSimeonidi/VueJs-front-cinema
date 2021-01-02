@@ -7,6 +7,7 @@ import films from "../views/films.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Profile from "../views/Profile.vue";
+import FilmDitails from "../views/FilmDetails.vue";
 import store from "../store";
 Vue.use(VueRouter);
 
@@ -41,6 +42,14 @@ const routes = [
     path: "/editfilm/:id",
     name: "editfilm",
     component: film,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/filmdetails/:id",
+    name: "filmditails",
+    component: FilmDitails,
     meta: {
       requiresAuth: true,
     },

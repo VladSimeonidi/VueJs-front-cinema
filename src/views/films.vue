@@ -2,13 +2,9 @@
   <div>
     <div class="container">
       <div v-for="(film, index) in list" :key="index" class="palyer__wrapper">
-        <div class="player">
-          <vue-plyr>
-            <video controls crossorigin playsinline>
-              <source size="720" :src="film.link" />
-            </video>
-          </vue-plyr>
-        </div>
+        <router-link :to="{ name: 'filmditails', params: { id: film._id } }"
+          ><img class="palyer__img" :src="film.img" alt=""
+        /></router-link>
         <div class="player__title">
           {{ film.name }}
           <v-btn
@@ -16,6 +12,9 @@
             icon
             :to="{ name: 'editfilm', params: { id: film._id } }"
             ><v-icon>mdi-table-edit</v-icon></v-btn
+          >
+          <v-btn icon :to="{ name: 'filmditails', params: { id: film._id } }"
+            ><v-icon>!!!!</v-icon></v-btn
           >
         </div>
         <div class="player__desc">{{ film.teaser }}</div>
@@ -107,5 +106,10 @@ export default {
 }
 .centerPag {
   justify-content: center;
+}
+.palyer__img {
+  width: 100%;
+  max-width: 525px;
+  max-height: 350px;
 }
 </style>

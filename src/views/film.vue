@@ -30,6 +30,12 @@
           label="Жанр"
           placeholder="Введите жанр фильма"
         ></v-text-field>
+        <h3>Год производства</h3>
+        <v-text-field
+          v-model="film.year"
+          label="Год производства"
+          placeholder="Год производства"
+        ></v-text-field>
         <h3>Описание</h3>
         <v-textarea
           v-model="film.description"
@@ -41,6 +47,8 @@
           :placeholder="film.link"
           @change="previewFiles"
         ></v-file-input>
+        <h3>Постер</h3>
+        <v-file-input placeholder="Постер" @change="getPicture"></v-file-input>
       </v-card-text>
       <v-card-actions>
         <v-btn @click="save">
@@ -60,6 +68,7 @@ export default {
   data() {
     return {
       film: {},
+      image: {},
     };
   },
   computed: mapGetters("auth", ["GETUSER"]),
@@ -76,6 +85,10 @@ export default {
     previewFiles(e) {
       console.log(this.GETUSER);
       this.film.link = e.name;
+    },
+    getPicture(e) {
+      this.image = e;
+      console.log(this.image);
     },
     save() {
       if (this.$route.params.id !== "new") {
@@ -145,6 +158,7 @@ export default {
   justify-content: center;
   align-items: center;
   background-image: url("../assets/37975-gorod_ogni_nebo_otrajenie.jpg");
+  background-size: cover;
   padding: 20px 0;
 }
 .form {

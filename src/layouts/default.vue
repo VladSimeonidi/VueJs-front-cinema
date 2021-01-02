@@ -38,6 +38,10 @@ export default {
   methods: {
     ...mapActions("auth", ["LOGOUT", "GET_PROFILE"]),
     logoutUser() {
+      let logout = confirm(
+        "Выйти из учетной записи и перейти на страницу логина?"
+      );
+      if (!logout) return;
       this.LOGOUT();
     },
   },

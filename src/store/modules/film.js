@@ -18,6 +18,9 @@ export const mutations = {
   SET_CURRENT_ITEM(state, payload) {
     state.currentItem = payload;
   },
+  SET_CURRENT_ITEM_AS_DETAILS(state, payload) {
+    state.currentItem = payload;
+  },
   SET_CURRENT_NAME(state, payload) {
     state.currentItem.name = payload;
   },
@@ -31,6 +34,7 @@ export const mutations = {
       link: "",
       name: "",
       teaser: "",
+      year: "",
     };
     state.currentItem = emptyForm;
   },
@@ -60,6 +64,16 @@ export const actions = {
   async SET_CURRENT_ITEM({ commit }, ID) {
     await axios
       .get(config.API.BASE_URL + config.API.FILM + "/" + ID)
+      .then((res) => {
+        commit("SET_CURRENT_ITEM", res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  },
+  async SET_CURRENT_ITEM_AS_DETAILS({ commit }, ID) {
+    await axios
+      .get(config.API.BASE_URL + config.API.FILM_DETAILS + "/" + ID)
       .then((res) => {
         commit("SET_CURRENT_ITEM", res.data);
       })
