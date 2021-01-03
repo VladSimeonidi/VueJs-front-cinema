@@ -18,12 +18,11 @@
       </div>
       <div class="trailer__wrapper">
         <Media
+          v-if="film"
           :kind="'video'"
           :controls="true"
           :src="film.link"
-          :poster="
-            'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217'
-          "
+          :poster="film.poster.file_path"
           :style="{ width: '100%', outline: 'none' }"
         >
         </Media>

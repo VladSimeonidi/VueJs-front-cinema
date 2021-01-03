@@ -2,8 +2,10 @@
   <div>
     <div class="container">
       <div v-for="(film, index) in list" :key="index" class="palyer__wrapper">
-        <router-link :to="{ name: 'filmditails', params: { id: film._id } }"
-          ><img class="palyer__img" :src="film.img" alt=""
+        <router-link
+          :to="{ name: 'filmditails', params: { id: film._id } }"
+          v-if="film.poster"
+          ><img class="palyer__img" :src="film.poster.file_path" alt=""
         /></router-link>
         <div class="player__title">
           {{ film.name }}
@@ -109,7 +111,8 @@ export default {
 }
 .palyer__img {
   width: 100%;
+  height: 100%;
   max-width: 525px;
-  max-height: 350px;
+  max-height: 300px;
 }
 </style>

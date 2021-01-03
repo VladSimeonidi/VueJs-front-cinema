@@ -18,7 +18,6 @@ const routes = [
     component: Home,
     meta: {
       layout: "empty",
-      requiresAuth: true,
     },
   },
   {

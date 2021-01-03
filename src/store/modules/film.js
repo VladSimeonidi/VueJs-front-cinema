@@ -35,6 +35,7 @@ export const mutations = {
       name: "",
       teaser: "",
       year: "",
+      poster: "",
     };
     state.currentItem = emptyForm;
   },
@@ -85,10 +86,19 @@ export const actions = {
     commit("ADD_NEW_ITEM");
   },
   async SAVE_CURRENT_ITEM({ commit }, payload) {
+    console.log(payload[1]);
+    let formData = new FormData();
+
+    formData.append("file", payload[0]);
+    formData.append("film", JSON.stringify(payload[1]));
     const res = await axios
-      .post(config.API.BASE_URL + config.API.FILM, payload)
+      .post(config.API.BASE_URL + config.API.FILM, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
-        commit("SET_CURRENT_ITEM", payload);
+        commit("SET_CURRENT_ITEM", payload[1]);
         return res;
       })
       .catch((e) => {
@@ -97,12 +107,19 @@ export const actions = {
     return res.data._id;
   },
   async EDIT_CURRENT_ITEM({ commit }, payload) {
-    const ID = payload._id;
-    const editData = Object.assign({}, payload);
+    const ID = payload[1]._id;
+    const editData = Object.assign({}, payload[1]);
     delete editData._id;
     delete editData.__v;
+    let formData = new FormData();
+    formData.append("file", payload[0]);
+    formData.append("film", JSON.stringify(editData));
     await axios
-      .put(config.API.BASE_URL + config.API.FILM + "/" + ID, editData)
+      .put(config.API.BASE_URL + config.API.FILM + "/" + ID, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then(() => {
         commit("SET_CURRENT_ITEM", editData);
       })

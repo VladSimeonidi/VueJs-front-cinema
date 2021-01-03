@@ -83,7 +83,6 @@ export default {
     ]),
     ...mapActions("auth", ["GET_PROFILE"]),
     previewFiles(e) {
-      console.log(this.GETUSER);
       this.film.link = e.name;
     },
     getPicture(e) {
@@ -92,7 +91,7 @@ export default {
     },
     save() {
       if (this.$route.params.id !== "new") {
-        this.EDIT_CURRENT_ITEM(this.film)
+        this.EDIT_CURRENT_ITEM([this.image, this.film])
           .then(() => {
             this.SET_CURRENT_ITEM(this.film._id).then(() => {
               this.$router.go(-1);
@@ -102,7 +101,9 @@ export default {
             console.log(e);
           });
       } else {
-        this.SAVE_CURRENT_ITEM(this.film)
+        console.log("!!!!!!!");
+        console.log(this.film);
+        this.SAVE_CURRENT_ITEM([this.image, this.film])
           .then((res) => {
             this.SET_CURRENT_ITEM(res).then(() => {
               this.$router.go(-1);
