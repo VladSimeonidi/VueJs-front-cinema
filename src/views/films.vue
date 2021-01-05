@@ -1,11 +1,25 @@
 <template>
   <div>
-    <div class="container">
+    <v-container
+      ><v-toolbar class="toolbar"
+        ><v-text-field
+          @keydown.enter="search"
+          v-model="searchText"
+          label="Поиск"
+          clearable
+          hide-details
+        ></v-text-field
+        ><v-btn @click="search" icon
+          ><v-icon>mdi-magnify</v-icon></v-btn
+        ></v-toolbar
+      ></v-container
+    >
+    <v-container>
       <div v-for="(film, index) in list" :key="index" class="palyer__wrapper">
         <router-link
           :to="{ name: 'filmditails', params: { id: film._id } }"
           v-if="film.poster"
-          ><img class="palyer__img" :src="film.poster.file_path" alt=""
+          ><img class="palyer__img grow" :src="film.poster.file_path" alt=""
         /></router-link>
         <div class="player__title">
           {{ film.name }}
@@ -15,15 +29,13 @@
             :to="{ name: 'editfilm', params: { id: film._id } }"
             ><v-icon>mdi-table-edit</v-icon></v-btn
           >
-          <v-btn icon :to="{ name: 'filmditails', params: { id: film._id } }"
-            ><v-icon>!!!!</v-icon></v-btn
-          >
         </div>
         <div class="player__desc">{{ film.teaser }}</div>
       </div>
-    </div>
+    </v-container>
     <v-card-actions class="centerPag">
       <v-pagination
+        dark
         v-model="currentSelectedPage"
         :length="paginatonsCounter"
       ></v-pagination>
@@ -42,6 +54,7 @@ export default {
         pageSize: 4,
       },
       paginatonsCounter: null,
+      searchText: "",
     };
   },
   computed: {
@@ -65,6 +78,17 @@ export default {
   methods: {
     ...mapActions("film", ["SET_LIST"]),
     ...mapGetters("film", ["GET_LIST", "GET_LIST_TOTAL"]),
+    search() {
+      this.pageSet.search = this.searchText;
+      this.SET_LIST(this.pageSet).then(() => {
+        this.list = this.GET_LIST();
+        this.listTotal = this.GET_LIST_TOTAL();
+        this.paginatonsCounter = Math.ceil(
+          this.listTotal / this.pageSet.pageSize
+        );
+        console.log(this.paginatonsCounter);
+      });
+    },
   },
   mounted() {
     this.SET_LIST(this.pageSet).then(() => {
@@ -114,5 +138,11 @@ export default {
   height: 100%;
   max-width: 525px;
   max-height: 300px;
+}
+.grow:hover {
+  transform: scale(1.03);
+}
+.toolbar {
+  width: 100%;
 }
 </style>

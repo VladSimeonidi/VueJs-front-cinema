@@ -1,5 +1,6 @@
 import { config } from "@/config/config";
 import axios from "axios";
+import querystring from "querystring";
 
 export const namespaced = true;
 
@@ -42,17 +43,9 @@ export const mutations = {
 };
 export const actions = {
   async SET_LIST({ commit }, pageSet) {
-    const pageNumber = pageSet.pageNumber;
-    const pageSize = pageSet.pageSize;
+    const qs = querystring.stringify(pageSet);
     await axios
-      .get(
-        config.API.BASE_URL +
-          config.API.FILM_PAGINATION +
-          "?pageNumber=" +
-          pageNumber +
-          "&pageSize=" +
-          pageSize
-      )
+      .get(config.API.BASE_URL + config.API.FILM_PAGINATION + "?" + qs)
       .then((res) => {
         console.log(res.data);
         commit("SET_LIST", res.data.filmList);

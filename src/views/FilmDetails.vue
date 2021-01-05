@@ -1,4 +1,4 @@
-<template>
+<template v-if="film.poster.file_path">
   <v-card>
     <v-card-title>{{ film.name }}</v-card-title>
     <v-card-text>
@@ -17,8 +17,7 @@
         </v-card-text>
       </div>
       <div class="trailer__wrapper">
-        <Media
-          v-if="film"
+        <Media 
           :kind="'video'"
           :controls="true"
           :src="film.link"
@@ -43,7 +42,7 @@ export default {
       film: {},
     };
   },
-  mounted() {
+  created() {
     this.SET_CURRENT_ITEM_AS_DETAILS(this.$route.params.id)
       .then(() => {
         this.film = this.GET_CURRENT_ITEM();
