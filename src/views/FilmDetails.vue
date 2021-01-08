@@ -1,33 +1,35 @@
-<template v-if="film.poster.file_path">
-  <v-card>
-    <v-card-title>{{ film.name }}</v-card-title>
-    <v-card-text>
-      {{ film.description }}
-    </v-card-text>
-    <v-card-title>Трейлер</v-card-title>
-    <div class="trailer__container">
-      <div class="trailer__text">
-        <v-card-title>Жанр</v-card-title>
-        <v-card-text>
-          {{ film.genre }}
-        </v-card-text>
-        <v-card-title>Год производства</v-card-title>
-        <v-card-text>
-          {{ film.year }}
-        </v-card-text>
+<template>
+  <v-app>
+    <v-card>
+      <v-card-title>{{ film.name }}</v-card-title>
+      <v-card-text>
+        {{ film.description }}
+      </v-card-text>
+      <v-card-title>Трейлер</v-card-title>
+      <div class="trailer__container">
+        <div class="trailer__text">
+          <v-card-title>Жанр</v-card-title>
+          <v-card-text>
+            {{ film.genre }}
+          </v-card-text>
+          <v-card-title>Год производства</v-card-title>
+          <v-card-text>
+            {{ film.year }}
+          </v-card-text>
+        </div>
+        <div class="trailer__wrapper">
+          <Media
+            :kind="'video'"
+            :controls="true"
+            :src="film.link"
+            :poster="film.poster.file_path"
+            :style="{ width: '100%', outline: 'none' }"
+          >
+          </Media>
+        </div>
       </div>
-      <div class="trailer__wrapper">
-        <Media 
-          :kind="'video'"
-          :controls="true"
-          :src="film.link"
-          :poster="film.poster.file_path"
-          :style="{ width: '100%', outline: 'none' }"
-        >
-        </Media>
-      </div>
-    </div>
-  </v-card>
+    </v-card>
+  </v-app>
 </template>
 
 <script>

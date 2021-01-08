@@ -7,5 +7,8 @@ export const config = {
     LOGIN: "/user/login",
     REGISTER: "/user/register",
     PROFILE: "/user/profile",
+    DIRECTOR: {
+      LIST: "/director",
+    },
   },
 };

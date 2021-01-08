@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <v-container
-      ><v-toolbar class="toolbar"
+  <v-app>
+    <v-container grid-list-lg class="d-flex flex-wrap justify-space-between"
+      ><v-toolbar class="mb-7 mt-7" width="100%"
         ><v-text-field
           @keydown.enter="search"
           v-model="searchText"
@@ -12,35 +12,39 @@
         ><v-btn @click="search" icon
           ><v-icon>mdi-magnify</v-icon></v-btn
         ></v-toolbar
-      ></v-container
-    >
-    <v-container>
-      <div v-for="(film, index) in list" :key="index" class="palyer__wrapper">
-        <router-link
-          :to="{ name: 'filmditails', params: { id: film._id } }"
-          v-if="film.poster"
-          ><img class="palyer__img grow" :src="film.poster.file_path" alt=""
-        /></router-link>
-        <div class="player__title">
-          {{ film.name }}
-          <v-btn
-            v-if="GETUSER.isAdmin"
-            icon
-            :to="{ name: 'editfilm', params: { id: film._id } }"
-            ><v-icon>mdi-table-edit</v-icon></v-btn
-          >
-        </div>
-        <div class="player__desc">{{ film.teaser }}</div>
-      </div>
+      >
+      <v-layout row wrap>
+        <v-flex v-for="(film, index) in list" :key="index" d-flex xs12 sm6>
+          <v-card tile class="text-center grow pt-5" min-height="450px">
+            <router-link
+              :to="{ name: 'filmditails', params: { id: film._id } }"
+              v-if="film.poster"
+              ><img class="palyer__img" :src="film.poster.file_path" alt=""
+            /></router-link>
+            <div class="player__title">
+              {{ film.name }}
+              <v-btn
+                v-if="GETUSER.isAdmin"
+                icon
+                :to="{ name: 'editfilm', params: { id: film._id } }"
+                ><v-icon>mdi-table-edit</v-icon></v-btn
+              >
+            </div>
+            <v-card-subtitle class="subtitle-2">{{
+              film.teaser
+            }}</v-card-subtitle>
+          </v-card>
+        </v-flex>
+      </v-layout>
     </v-container>
-    <v-card-actions class="centerPag">
+    <v-card-actions class="justify-center">
       <v-pagination
         dark
         v-model="currentSelectedPage"
         :length="paginatonsCounter"
       ></v-pagination>
     </v-card-actions>
-  </div>
+  </v-app>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
@@ -106,32 +110,11 @@ export default {
 </script>
 <style scoped lang="css">
 @import url("https://fonts.googleapis.com/css2?family=Russo+One&display=swap");
-.container {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 3%;
-  flex-wrap: wrap;
-  padding-top: 70px;
-}
-.palyer__wrapper {
-  margin: 0 10px 0;
-  flex-basis: 48%;
-}
 .player__title {
-  display: block;
-  text-align: center;
   font-size: 24px;
   line-height: 30px;
   font-weight: bold;
   font-family: "Russo One", sans-serif;
-}
-.player__desc {
-  text-align: center;
-  margin-bottom: 10px;
-  font-family: "Arial", sans-serif;
-}
-.centerPag {
-  justify-content: center;
 }
 .palyer__img {
   width: 100%;
@@ -141,8 +124,5 @@ export default {
 }
 .grow:hover {
   transform: scale(1.03);
-}
-.toolbar {
-  width: 100%;
 }
 </style>

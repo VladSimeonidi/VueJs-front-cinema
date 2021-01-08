@@ -37,6 +37,7 @@ export const mutations = {
       teaser: "",
       year: "",
       poster: "",
+      director: [],
     };
     state.currentItem = emptyForm;
   },
@@ -135,6 +136,8 @@ export const actions = {
 };
 export const getters = {
   GET_LIST(state) {
+    console.log("from Films");
+    console.log(state);
     return state.list;
   },
   GET_LIST_TOTAL(state) {

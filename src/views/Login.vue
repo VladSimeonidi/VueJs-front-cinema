@@ -1,49 +1,51 @@
 <template>
-  <v-layout class="center">
-    <v-flex class="card">
-      <v-card class="form pa-10">
-        <v-toolbar color="blue darken-1" dark>
-          <v-toolbar-title>Логин</v-toolbar-title>
-        </v-toolbar>
-        <v-card-text>
-          <v-form>
-            <v-text-field
-              id="username"
-              name="username"
-              v-model="username"
-              :error-messages="nameErrors"
-              label="Логин"
-              required
-              @input="$v.username.$touch()"
-              @blur="$v.username.$touch()"
-            ></v-text-field>
-            <v-text-field
-              id="password"
-              name="password"
-              v-model="password"
-              :error-messages="passwordErrors"
-              label="Пароль"
-              required
-              @input="$v.password.$touch()"
-              @blur="$v.password.$touch()"
-            ></v-text-field>
-            <v-card-actions>
-              <v-btn @click="loginUser" :disabled="this.$v.$invalid"
-                >Войти</v-btn
-              >
-              <router-link :to="{ name: 'register' }" class="margin-left"
-                >Получить аккаунт?</router-link
-              >
-              <v-spacer></v-spacer>
-              <v-btn @click="clear">
-                Сброс
-              </v-btn>
-            </v-card-actions>
-          </v-form>
-        </v-card-text>
-      </v-card>
-    </v-flex>
-  </v-layout>
+  <v-app>
+    <v-layout class="center">
+      <v-flex class="card">
+        <v-card>
+          <v-toolbar dark>
+            <v-toolbar-title>Логин</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                id="username"
+                name="username"
+                v-model="username"
+                :error-messages="nameErrors"
+                label="Логин"
+                required
+                @input="$v.username.$touch()"
+                @blur="$v.username.$touch()"
+              ></v-text-field>
+              <v-text-field
+                id="password"
+                name="password"
+                v-model="password"
+                :error-messages="passwordErrors"
+                label="Пароль"
+                required
+                @input="$v.password.$touch()"
+                @blur="$v.password.$touch()"
+              ></v-text-field>
+              <v-card-actions>
+                <v-btn @click="loginUser" :disabled="this.$v.$invalid"
+                  >Войти</v-btn
+                >
+                <router-link :to="{ name: 'register' }" class="margin-left"
+                  >Получить аккаунт?</router-link
+                >
+                <v-spacer></v-spacer>
+                <v-btn @click="clear">
+                  Сброс
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-app>
 </template>
 <script>
 import { validationMixin } from "vuelidate";

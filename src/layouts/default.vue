@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-app-bar color="deep-purple accent-4" dense dark app>
+  <v-app>
+    <v-app-bar dense dark app>
       <v-btn title="На главную" :to="{ name: 'home' }" mr-auto icon>
         <v-icon>mdi-home</v-icon>
       </v-btn>
@@ -23,8 +23,9 @@
         <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
+
     <router-view class="margin_top"></router-view>
-  </div>
+  </v-app>
 </template>
 
 <script>
