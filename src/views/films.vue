@@ -28,7 +28,7 @@
             <v-col class="d-flex" cols="12" sm="3">
               <v-select
                 dense
-                @change="check"
+                @change="paginateSelect"
                 :items="genres"
                 item-text="name"
                 chips
@@ -36,46 +36,7 @@
                 label="Выберите жанр"
                 return-object
               ></v-select>
-              <v-dialog v-model="dialog" persistent>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    v-if="GETUSER.isAdmin"
-                    large
-                    icon
-                    v-bind="attrs"
-                    v-on="on"
-                    ><v-icon color="cyan lighten-2"
-                      >mdi-library-plus</v-icon
-                    ></v-btn
-                  >
-                </template>
-                <v-card>
-                  <v-card-title>
-                    <span class="headline">Добавить жанр</span>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col cols="12">
-                          <v-text-field
-                            v-model="textfieldGenre"
-                            label="Название"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="dialog = false">
-                      Закрыть
-                    </v-btn>
-                    <v-btn color="blue darken-1" text @click="saveGenre">
-                      Сохранить
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+              <addGenre @getGenres="onClickChild" />
             </v-col>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -115,11 +76,11 @@
   </v-app>
 </template>
 <script>
+import addGenre from "@/components/AddGenre.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      dialog: false,
       list: [],
       listTotal: null,
       pageSet: {
@@ -129,8 +90,10 @@ export default {
       paginatonsCounter: null,
       searchText: "",
       genres: null,
-      textfieldGenre: null,
     };
+  },
+  components: {
+    addGenre,
   },
   computed: {
     ...mapGetters("auth", ["GETUSER"]),
@@ -151,7 +114,7 @@ export default {
     },
   },
   methods: {
-    check(value) {
+    paginateSelect(value) {
       const ids = value.map((el) => {
         return el._id;
       });
@@ -163,7 +126,6 @@ export default {
     ...mapActions({
       addGenre: "genre/SAVE_NEW_ITEM",
       uploadGenresList: "genre/SET_LIST",
-      saveGenre: "genre/SAVE_NEW_ITEM",
       loadFilmsList: "film/SET_LIST",
     }),
     ...mapGetters("film", ["GET_LIST", "GET_LIST_TOTAL"]),
@@ -179,15 +141,8 @@ export default {
       this.pageSet.search = this.searchText;
       this.paginate(this.pageSet);
     },
-    saveGenre() {
-      const genreData = {
-        name: this.textfieldGenre,
-      };
-      this.addGenre(genreData).then(() => {
-        this.uploadGenresList();
-        this.textfieldGenre = null;
-        this.dialog = false;
-      });
+    onClickChild() {
+      this.genres = this.getAllGenres();
     },
   },
   mounted() {

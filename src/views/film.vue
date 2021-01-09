@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app v-if="film">
     <v-container
       fluid
       class="d-flex justify-center align-center pa-10 filmWrapper"
@@ -29,15 +29,26 @@
             placeholder="Введите тизер"
           ></v-text-field>
           <h3>Жанр</h3>
-          <v-text-field
-            v-model="film.genre"
-            label="Жанр"
-            placeholder="Введите жанр фильма"
-          ></v-text-field>
+          <v-row no-gutters>
+            <v-col class="d-flex" cols="12" sm="12">
+              <v-select
+                v-if="genres"
+                dense
+                :items="genres"
+                @change="chooseGenres"
+                item-text="name"
+                chips
+                multiple
+                label="Выберите жанр"
+                return-object
+              ></v-select>
+              <addGenre @getGenres="onClickChild" />
+            </v-col>
+          </v-row>
           <!-- РЕЖИСЕР -->
           <h3>Режиссер</h3>
           <v-row align="center">
-            <v-col class="d-flex" cols="12" sm="10">
+            <v-col class="d-flex" cols="12" sm="12">
               <v-select
                 v-model="film.director"
                 @change="addDirector"
@@ -48,12 +59,11 @@
                 label="Выберите режиссера"
                 return-object
               ></v-select>
-            </v-col>
-            <v-col class="d-flex" cols="12" sm="2">
+
               <v-dialog v-model="dialog" persistent max-width="600px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn large icon v-bind="attrs" v-on="on"
-                    ><v-icon color="blue" large>mdi-library-plus</v-icon></v-btn
+                    ><v-icon color="blue">mdi-library-plus</v-icon></v-btn
                   >
                 </template>
                 <v-card>
@@ -81,7 +91,7 @@
                     <v-btn color="blue darken-1" text @click="dialog = false">
                       Закрыть
                     </v-btn>
-                    <v-btn color="blue darken-1" text @click="saveNewDirector">
+                    <v-btn color="blue darken-1" text @click="saveDirector">
                       Сохранить
                     </v-btn>
                   </v-card-actions>
@@ -129,15 +139,13 @@
   </v-app>
 </template>
 <script>
-import { VFileInput } from "vuetify";
+import addGenre from "@/components/AddGenre.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
-  components: {
-    VFileInput,
-  },
   data() {
     return {
-      film: {},
+      film: null,
+      genres: null,
       image: {},
       newDirector: {
         name: "",
@@ -149,32 +157,45 @@ export default {
       dialog: false,
     };
   },
+  components: {
+    addGenre,
+  },
   computed: mapGetters("auth", ["GETUSER"]),
   methods: {
+    ...mapActions({
+      addGenre: "genre/SAVE_NEW_ITEM",
+      uploadGenresList: "genre/SET_LIST",
+      setListOfDirectors: "director/SET_LIST",
+      saveNewDirector: "director/SAVE_NEW_DIRECTOR",
+      setCurrentFilm: "film/SET_CURRENT_ITEM",
+      addNewFilm: "film/ADD_NEW_ITEM",
+      saveFilm: "film/SAVE_CURRENT_ITEM",
+      editFilm: "film/EDIT_CURRENT_ITEM",
+      deleteFilm: "film/DELETE_CURRENT_ITEM",
+      getProfile: "auth/GET_PROFILE",
+    }),
+    ...mapGetters({
+      getAllGenres: "genre/GET_LIST",
+      getAllDirectors: "director/GET_LIST",
+      getCurrentFilm: "film/GET_CURRENT_ITEM",
+    }),
+    onClickChild(value) {
+      console.log("LKLKLKL");
+      console.log(value);
+      this.genres = value;
+    },
+    chooseGenres(value) {
+      const genresIds = value.map((el) => {
+        return el._id;
+      });
+      this.film.genre = genresIds;
+    },
     check() {
       console.log(this.film);
     },
     addDirector(value) {
       this.film.director = value;
-      // console.log(value);
-      // let ids = value.map((e) => {
-      //   return e._id;
-      // });
-      // console.log("IDSSSS");
-      // console.log(ids);
-      // this.directorsIds = ids;
     },
-    ...mapActions("director", ["SET_LIST", "SAVE_NEW_DIRECTOR"]),
-    ...mapGetters("director", ["GET_LIST"]),
-    ...mapGetters("film", ["GET_CURRENT_ITEM"]),
-    ...mapActions("film", [
-      "SET_CURRENT_ITEM",
-      "ADD_NEW_ITEM",
-      "SAVE_CURRENT_ITEM",
-      "EDIT_CURRENT_ITEM",
-      "DELETE_CURRENT_ITEM",
-    ]),
-    ...mapActions("auth", ["GET_PROFILE"]),
     previewFiles(e) {
       this.film.link = e.name;
     },
@@ -185,12 +206,12 @@ export default {
       this.newDirectorImage = e;
     },
     uploadDirectors() {
-      this.SET_LIST().then(() => {
-        this.directors = this.GET_LIST();
+      this.setListOfDirectors().then(() => {
+        this.directors = this.getAllDirectors();
       });
     },
-    saveNewDirector() {
-      this.SAVE_NEW_DIRECTOR([this.newDirectorImage, this.newDirector]).then(
+    saveDirector() {
+      this.saveNewDirector([this.newDirectorImage, this.newDirector]).then(
         () => {
           this.uploadDirectors();
           this.dialog = false;
@@ -204,9 +225,9 @@ export default {
     },
     save() {
       if (this.$route.params.id !== "new") {
-        this.EDIT_CURRENT_ITEM([this.image, this.film])
+        this.editFilm([this.image, this.film])
           .then(() => {
-            this.SET_CURRENT_ITEM(this.film._id).then(() => {
+            this.setCurrentFilm(this.film._id).then(() => {
               this.$router.go(-1);
             });
           })
@@ -214,9 +235,9 @@ export default {
             console.log(e);
           });
       } else {
-        this.SAVE_CURRENT_ITEM([this.image, this.film])
+        this.saveFilm([this.image, this.film])
           .then((res) => {
-            this.SET_CURRENT_ITEM(res).then(() => {
+            this.setCurrentFilm(res).then(() => {
               this.$router.go(-1);
             });
           })
@@ -228,7 +249,7 @@ export default {
     deleteItem(id) {
       const confirmed = confirm("удалить?");
       if (confirmed) {
-        this.DELETE_CURRENT_ITEM(id)
+        this.deleteFilm(id)
           .then(() => {
             this.$router.go(-1);
           })
@@ -239,11 +260,14 @@ export default {
     },
   },
   created() {
-    this.GET_PROFILE();
+    this.uploadGenresList().then(() => {
+      this.genres = this.getAllGenres();
+    });
+    this.getProfile();
     if (this.$route.params.id !== "new") {
-      this.SET_CURRENT_ITEM(this.$route.params.id)
+      this.setCurrentFilm(this.$route.params.id)
         .then(() => {
-          this.film = this.GET_CURRENT_ITEM();
+          this.film = this.getCurrentFilm();
           // if (!this.film.director) {
           //   this.film.director = [];
           // }
@@ -254,9 +278,9 @@ export default {
           alert(e);
         });
     } else {
-      this.ADD_NEW_ITEM()
+      this.addNewFilm()
         .then(() => {
-          this.film = this.GET_CURRENT_ITEM();
+          this.film = this.getCurrentFilm();
         })
         .catch((e) => {
           alert(e);

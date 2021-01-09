@@ -9,8 +9,12 @@
       <div class="trailer__container">
         <div class="trailer__text">
           <v-card-title>Жанр</v-card-title>
-          <v-card-text>
-            {{ film.genre }}
+          <v-card-text
+            dense
+            v-for="(genre, genreIndex) in film.genre"
+            :key="genreIndex"
+          >
+            {{ genre.name }}
           </v-card-text>
           <v-card-title>Год производства</v-card-title>
           <v-card-text>
