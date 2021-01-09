@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" persistent>
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-if="GETUSER.isAdmin" large icon v-bind="attrs" v-on="on"
-        ><v-icon color="cyan lighten-2">mdi-library-plus</v-icon></v-btn
+        ><v-icon color="blue">mdi-library-plus</v-icon></v-btn
       >
     </template>
     <v-card>

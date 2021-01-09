@@ -80,10 +80,18 @@ export const actions = {
     commit("ADD_NEW_ITEM");
   },
   async SAVE_CURRENT_ITEM({ commit }, payload) {
-    console.log(payload[1]);
     let formData = new FormData();
+    console.log(payload);
+    if (payload[0][0]) {
+      console.log("11111");
+      formData.append("file", payload[0][0], "image");
+      formData.append("imageMetaData", payload[0][0].name);
+    }
+    if (payload[0][1]) {
+      formData.append("file", payload[0][1], "movie");
+      formData.append("movieMetaData", payload[0][1].name);
+    }
 
-    formData.append("file", payload[0]);
     formData.append("film", JSON.stringify(payload[1]));
     const res = await axios
       .post(config.API.BASE_URL + config.API.FILM, formData, {

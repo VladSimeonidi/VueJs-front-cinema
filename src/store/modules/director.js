@@ -17,14 +17,16 @@ export const mutations = {
 };
 export const actions = {
   async SET_LIST({ commit }) {
-    await axios
+    let res = await axios
       .get(config.API.BASE_URL + config.API.DIRECTOR.LIST)
       .then((res) => {
         commit("SET_LIST", res.data);
+        return res.data;
       })
       .catch((e) => {
         console.log(e);
       });
+    return res;
   },
   async SAVE_NEW_DIRECTOR({ commit }, payload) {
     let formData = new FormData();

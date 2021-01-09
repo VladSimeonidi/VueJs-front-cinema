@@ -52,7 +52,7 @@
             <div class="player__title">
               {{ film.name }}
               <v-btn
-                color="cyan lighten-2"
+                color="blue"
                 v-if="GETUSER.isAdmin"
                 icon
                 :to="{ name: 'editfilm', params: { id: film._id } }"

@@ -33,6 +33,7 @@
             <v-col class="d-flex" cols="12" sm="12">
               <v-select
                 v-if="genres"
+                v-model="film.genre"
                 dense
                 :items="genres"
                 @change="chooseGenres"
@@ -42,7 +43,7 @@
                 label="Выберите жанр"
                 return-object
               ></v-select>
-              <addGenre @getGenres="onClickChild" />
+              <addGenre @getGenres="onClickGenreComponent" />
             </v-col>
           </v-row>
           <!-- РЕЖИСЕР -->
@@ -51,7 +52,7 @@
             <v-col class="d-flex" cols="12" sm="12">
               <v-select
                 v-model="film.director"
-                @change="addDirector"
+                @change="addDirectorsToFilm"
                 :items="directors"
                 item-text="name"
                 chips
@@ -59,44 +60,7 @@
                 label="Выберите режиссера"
                 return-object
               ></v-select>
-
-              <v-dialog v-model="dialog" persistent max-width="600px">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn large icon v-bind="attrs" v-on="on"
-                    ><v-icon color="blue">mdi-library-plus</v-icon></v-btn
-                  >
-                </template>
-                <v-card>
-                  <v-card-title>
-                    <span class="headline">Режиссер</span>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col cols="12">
-                          <v-text-field
-                            v-model="newDirector.name"
-                            label="Имя"
-                          ></v-text-field>
-                          <v-file-input
-                            @change="getDirectorPicture"
-                            label="файл"
-                          ></v-file-input>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="dialog = false">
-                      Закрыть
-                    </v-btn>
-                    <v-btn color="blue darken-1" text @click="saveDirector">
-                      Сохранить
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+              <addDirector @getDirectors="onClickDirectorComponent" />
             </v-col>
           </v-row>
           <h3>Год производства</h3>
@@ -114,11 +78,11 @@
           <h3>Ссылка фильма:</h3>
           <v-file-input
             :placeholder="film.link"
-            @change="previewFiles"
+            @change="getFilmLink"
           ></v-file-input>
           <h3>Постер</h3>
           <v-file-input
-            placeholder="Постер"
+            :placeholder="film.poster.file_name"
             @change="getPicture"
           ></v-file-input>
         </v-card-text>
@@ -140,25 +104,21 @@
 </template>
 <script>
 import addGenre from "@/components/AddGenre.vue";
+import addDirector from "@/components/AddDirector.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
       film: null,
       genres: null,
-      image: {},
-      newDirector: {
-        name: "",
-        image: "",
-        films: [],
-      },
+      image: null,
+      filmFile: null,
       directors: [],
-      newDirectorImage: {},
-      dialog: false,
     };
   },
   components: {
     addGenre,
+    addDirector,
   },
   computed: mapGetters("auth", ["GETUSER"]),
   methods: {
@@ -166,7 +126,6 @@ export default {
       addGenre: "genre/SAVE_NEW_ITEM",
       uploadGenresList: "genre/SET_LIST",
       setListOfDirectors: "director/SET_LIST",
-      saveNewDirector: "director/SAVE_NEW_DIRECTOR",
       setCurrentFilm: "film/SET_CURRENT_ITEM",
       addNewFilm: "film/ADD_NEW_ITEM",
       saveFilm: "film/SAVE_CURRENT_ITEM",
@@ -179,53 +138,34 @@ export default {
       getAllDirectors: "director/GET_LIST",
       getCurrentFilm: "film/GET_CURRENT_ITEM",
     }),
-    onClickChild(value) {
-      console.log("LKLKLKL");
-      console.log(value);
+    onClickGenreComponent(value) {
       this.genres = value;
     },
+    onClickDirectorComponent(value) {
+      console.log(value);
+      this.directors = value;
+    },
     chooseGenres(value) {
-      const genresIds = value.map((el) => {
-        return el._id;
-      });
-      this.film.genre = genresIds;
+      this.film.genre = value;
     },
     check() {
       console.log(this.film);
     },
-    addDirector(value) {
+    addDirectorsToFilm(value) {
       this.film.director = value;
     },
-    previewFiles(e) {
-      this.film.link = e.name;
+    getFilmLink(e) {
+      this.filmFile = e;
+      console.log(this.filmFile);
     },
     getPicture(e) {
       this.image = e;
+      console.log(this.image);
     },
-    getDirectorPicture(e) {
-      this.newDirectorImage = e;
-    },
-    uploadDirectors() {
-      this.setListOfDirectors().then(() => {
-        this.directors = this.getAllDirectors();
-      });
-    },
-    saveDirector() {
-      this.saveNewDirector([this.newDirectorImage, this.newDirector]).then(
-        () => {
-          this.uploadDirectors();
-          this.dialog = false;
-          this.newDirector = {
-            name: "",
-            image: "",
-            films: [],
-          };
-        }
-      );
-    },
+
     save() {
       if (this.$route.params.id !== "new") {
-        this.editFilm([this.image, this.film])
+        this.editFilm([[this.image, this.filmFile], this.film])
           .then(() => {
             this.setCurrentFilm(this.film._id).then(() => {
               this.$router.go(-1);
@@ -235,7 +175,7 @@ export default {
             console.log(e);
           });
       } else {
-        this.saveFilm([this.image, this.film])
+        this.saveFilm([[this.image, this.filmFile], this.film])
           .then((res) => {
             this.setCurrentFilm(res).then(() => {
               this.$router.go(-1);
@@ -268,9 +208,9 @@ export default {
       this.setCurrentFilm(this.$route.params.id)
         .then(() => {
           this.film = this.getCurrentFilm();
-          // if (!this.film.director) {
-          //   this.film.director = [];
-          // }
+          if (!this.film.director) {
+            this.film.director = [];
+          }
           console.log("!!!!!!!!!!!!!!!!!");
           console.log(this.film);
         })
@@ -286,7 +226,9 @@ export default {
           alert(e);
         });
     }
-    this.uploadDirectors();
+    this.setListOfDirectors().then((value) => {
+      this.directors = value;
+    });
   },
 };
 </script>
