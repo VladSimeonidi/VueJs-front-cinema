@@ -10,5 +10,8 @@ export const config = {
     DIRECTOR: {
       LIST: "/director",
     },
+    GENRE: {
+      LIST: "/genre",
+    },
   },
 };

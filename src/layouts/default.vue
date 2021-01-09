@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app v-if="user">
     <v-app-bar dense dark app>
       <v-btn title="На главную" :to="{ name: 'home' }" mr-auto icon>
         <v-icon>mdi-home</v-icon>
@@ -9,7 +9,8 @@
         <v-icon>mdi-movie</v-icon>
       </v-btn>
       <v-btn
-        v-if="GETUSER.isAdmin"
+        color="cyan lighten-2"
+        v-if="user.isAdmin"
         title="Добавить фильм"
         :to="{ name: 'editfilm', params: { id: 'new' } }"
         icon
@@ -31,12 +32,20 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
-  computed: mapGetters("auth", ["GETUSER"]),
-
+  data() {
+    return {
+      user: null,
+    };
+  },
   created() {
-    this.GET_PROFILE();
+    this.GET_PROFILE().then(() => {
+      this.user = this.GETUSER();
+      console.log("11111");
+      console.log(this.GETUSER());
+    });
   },
   methods: {
+    ...mapGetters("auth", ["GETUSER"]),
     ...mapActions("auth", ["LOGOUT", "GET_PROFILE"]),
     logoutUser() {
       let logout = confirm(

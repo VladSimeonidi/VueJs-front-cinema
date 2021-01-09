@@ -2,8 +2,8 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router/index.js";
 import store from "./store";
-// import VuePlyr from "vue-plyr";
-// import "vue-plyr/dist/vue-plyr.css";
+import VuePlyr from "vue-plyr";
+import "vue-plyr/dist/vue-plyr.css";
 import VueRouter from "vue-router";
 import axios from "axios";
 import VueAxios from "vue-axios";
@@ -22,7 +22,7 @@ Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(Vuelidate);
-
+Vue.use(VuePlyr);
 new Vue({
   router,
   store,

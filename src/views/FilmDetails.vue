@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app v-if="film">
     <v-card>
       <v-card-title>{{ film.name }}</v-card-title>
       <v-card-text>
@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      film: {},
+      film: null,
     };
   },
   created() {
