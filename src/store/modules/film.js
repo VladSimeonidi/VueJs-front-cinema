@@ -46,7 +46,7 @@ export const actions = {
   async SET_LIST({ commit }, pageSet) {
     const qs = querystring.stringify(pageSet);
     await axios
-      .get(config.API.BASE_URL + config.API.FILM_PAGINATION + "?" + qs)
+      .get(config.API.BASE_URL + config.API.FILM.PAGINATION + "?" + qs)
       .then((res) => {
         console.log(res.data);
         commit("SET_LIST", res.data.filmList);
@@ -58,7 +58,7 @@ export const actions = {
   },
   async SET_CURRENT_ITEM({ commit }, ID) {
     await axios
-      .get(config.API.BASE_URL + config.API.FILM + "/" + ID)
+      .get(config.API.BASE_URL + config.API.FILM.LIST + "/" + ID)
       .then((res) => {
         commit("SET_CURRENT_ITEM", res.data);
       })
@@ -68,7 +68,7 @@ export const actions = {
   },
   async SET_CURRENT_ITEM_AS_DETAILS({ commit }, ID) {
     await axios
-      .get(config.API.BASE_URL + config.API.FILM_DETAILS + "/" + ID)
+      .get(config.API.BASE_URL + config.API.FILM.DETAILS + "/" + ID)
       .then((res) => {
         commit("SET_CURRENT_ITEM", res.data);
       })
@@ -94,7 +94,7 @@ export const actions = {
 
     formData.append("film", JSON.stringify(payload[1]));
     const res = await axios
-      .post(config.API.BASE_URL + config.API.FILM, formData, {
+      .post(config.API.BASE_URL + config.API.FILM.LIST, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -112,12 +112,18 @@ export const actions = {
     const ID = payload[1]._id;
     const editData = Object.assign({}, payload[1]);
     delete editData._id;
-    delete editData.__v;
     let formData = new FormData();
-    formData.append("file", payload[0]);
+    if (payload[0][0]) {
+      formData.append("file", payload[0][0], "image");
+      formData.append("imageMetaData", payload[0][0].name);
+    }
+    if (payload[0][1]) {
+      formData.append("file", payload[0][1], "movie");
+      formData.append("movieMetaData", payload[0][1].name);
+    }
     formData.append("film", JSON.stringify(editData));
     await axios
-      .put(config.API.BASE_URL + config.API.FILM + "/" + ID, formData, {
+      .put(config.API.BASE_URL + config.API.FILM.LIST + "/" + ID, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -133,7 +139,7 @@ export const actions = {
     console.log("ID");
     console.log(ID);
     await axios
-      .delete(config.API.BASE_URL + config.API.FILM + "/" + ID)
+      .delete(config.API.BASE_URL + config.API.FILM.LIST + "/" + ID)
       .then(() => {
         commit("SET_CURRENT_ITEM", {});
       })

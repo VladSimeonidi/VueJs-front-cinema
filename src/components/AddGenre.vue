@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent>
+  <v-dialog v-model="dialog" persistent max-width="600px">
     <template v-slot:activator="{ on, attrs }">
       <v-btn v-if="GETUSER.isAdmin" large icon v-bind="attrs" v-on="on"
         ><v-icon color="blue">mdi-library-plus</v-icon></v-btn

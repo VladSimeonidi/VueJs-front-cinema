@@ -172,6 +172,6 @@ export default {
 }
 #films {
   background-image: url("../assets/winterbg.jpg");
-  background-size: contain;
+  background-size: cover;
 }
 </style>

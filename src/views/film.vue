@@ -8,6 +8,7 @@
         <v-card-title class="text-center"
           >Страница одного фильма<v-spacer></v-spacer>
           <v-btn
+            color="red"
             v-if="this.$route.params.id !== 'new' && GETUSER.isAdmin"
             @click="deleteItem(film._id)"
           >
@@ -77,11 +78,13 @@
           ></v-textarea>
           <h3>Ссылка фильма:</h3>
           <v-file-input
+            accept="video/mp4,video/x-m4v,video/*"
             :placeholder="film.link"
             @change="getFilmLink"
           ></v-file-input>
           <h3>Постер</h3>
           <v-file-input
+            accept="image/*"
             :placeholder="film.poster.file_name"
             @change="getPicture"
           ></v-file-input>
@@ -94,9 +97,9 @@
           <v-btn @click="$router.go(-1)">
             Назад
           </v-btn>
-          <v-btn @click="check">
+          <!-- <v-btn @click="check">
             check
-          </v-btn>
+          </v-btn> -->
         </v-card-actions>
       </v-card>
     </v-container>

@@ -38,7 +38,10 @@ export const mutations = {
 export const actions = {
   async LOGIN({ commit }, user) {
     commit("AUTH_REQUEST");
-    let res = await axios.post(config.API.BASE_URL + config.API.LOGIN, user);
+    let res = await axios.post(
+      config.API.BASE_URL + config.API.USER.LOGIN,
+      user
+    );
     if (res.data.success) {
       const token = res.data.token;
       const user = res.data.user;
@@ -52,7 +55,7 @@ export const actions = {
   async REGISTER({ commit }, userData) {
     commit("REGISTER_REQUEST");
     let res = await axios.post(
-      config.API.BASE_URL + config.API.REGISTER,
+      config.API.BASE_URL + config.API.USER.REGISTER,
       userData
     );
     if (res.data.success !== undefined) {
@@ -62,7 +65,7 @@ export const actions = {
   },
   async GET_PROFILE({ commit }) {
     commit("PROFILE_REQUEST");
-    let res = await axios.get(config.API.BASE_URL + config.API.PROFILE);
+    let res = await axios.get(config.API.BASE_URL + config.API.USER.PROFILE);
     commit("USER_PROFILE", res.data.user);
     return res;
   },

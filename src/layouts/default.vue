@@ -10,7 +10,7 @@
       </v-btn>
       <v-btn
         color="cyan lighten-2"
-        v-if="user.isAdmin"
+        v-if="user.isAdmin && $route.name != 'editfilm'"
         title="Добавить фильм"
         :to="{ name: 'editfilm', params: { id: 'new' } }"
         icon
@@ -38,6 +38,7 @@ export default {
     };
   },
   created() {
+    console.log(this.$route);
     this.GET_PROFILE().then(() => {
       this.user = this.GETUSER();
       console.log("11111");
