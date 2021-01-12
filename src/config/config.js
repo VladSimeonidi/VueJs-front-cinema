@@ -8,6 +8,7 @@ export const config = {
     },
     USER: {
       LOGIN: "/user/login",
+      LOGIN_ADMIN: "/user/adminlogin",
       REGISTER: "/user/register",
       PROFILE: "/user/profile",
     },

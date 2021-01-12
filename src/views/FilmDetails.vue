@@ -1,39 +1,42 @@
 <template>
-  <v-app v-if="film">
-    <v-card>
-      <v-card-title>{{ film.name }}</v-card-title>
-      <v-card-text>
-        {{ film.description }}
-      </v-card-text>
-      <v-card-title>Трейлер</v-card-title>
-      <div class="trailer__container">
-        <div class="trailer__text">
-          <v-card-title>Жанр</v-card-title>
-          <v-card-text
-            dense
-            v-for="(genre, genreIndex) in film.genre"
-            :key="genreIndex"
+  <v-card v-if="film">
+    <v-card-title>{{ film.name }}</v-card-title>
+    <v-card-text>
+      {{ film.description }}
+    </v-card-text>
+    <v-layout wrap class="trailer__container">
+      <v-flex md5 class="trailer__text">
+        <v-card-title>Жанр</v-card-title>
+        <v-card-text dense>
+          <span v-for="(genre, genreIndex) in film.genre" :key="genreIndex"
+            >{{ genre.name }}; &nbsp; &nbsp;</span
           >
-            {{ genre.name }}
-          </v-card-text>
-          <v-card-title>Год производства</v-card-title>
-          <v-card-text>
-            {{ film.year }}
-          </v-card-text>
-        </div>
-        <div class="trailer__wrapper">
-          <Media
-            :kind="'video'"
-            :controls="true"
-            :src="film.link"
-            :poster="film.poster.file_path"
-            :style="{ width: '100%', outline: 'none' }"
+        </v-card-text>
+        <v-card-title v-if="film.genre.length < 2">Режиссер</v-card-title>
+        <v-card-title v-else>Режиссеры</v-card-title>
+        <v-card-text dense>
+          <span
+            v-for="(director, directorIndex) in film.director"
+            :key="directorIndex"
+            >{{ director.name }}; &nbsp; &nbsp;</span
           >
-          </Media>
-        </div>
-      </div>
-    </v-card>
-  </v-app>
+        </v-card-text>
+        <v-card-title>Год производства</v-card-title>
+        <v-card-text> {{ film.year }} </v-card-text>
+      </v-flex>
+      <v-flex md7 class="trailer__wrapper pa-3 pt-0">
+        <v-card-title class="justify-center whiteColor">Трейлер</v-card-title>
+        <Media
+          :kind="'video'"
+          :controls="true"
+          :src="film.link"
+          :poster="film.poster.file_path"
+          :style="{ width: '100%', outline: 'none' }"
+        >
+        </Media>
+      </v-flex>
+    </v-layout>
+  </v-card>
 </template>
 
 <script>
@@ -49,6 +52,7 @@ export default {
     };
   },
   created() {
+    console.log(this.film);
     this.SET_CURRENT_ITEM_AS_DETAILS(this.$route.params.id)
       .then(() => {
         this.film = this.GET_CURRENT_ITEM();
@@ -75,15 +79,11 @@ export default {
     rgba(54, 53, 53, 1) 65%,
     rgba(41, 41, 41, 1) 79%
   );
-  display: flex;
-  justify-content: space-between;
 }
 .trailer__text {
-  width: 35%;
-  color: white;
+  color: #fff;
 }
-.trailer__wrapper {
-  width: 65%;
-  padding: 20px;
+.whiteColor {
+  color: #fff;
 }
 </style>

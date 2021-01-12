@@ -1,9 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import film from "../views/film.vue";
+import Film from "../views/Film.vue";
 import Notfound from "../views/Notfound.vue";
-import films from "../views/films.vue";
+import Films from "../views/Films.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Profile from "../views/Profile.vue";
@@ -24,7 +24,7 @@ const routes = [
   {
     path: "/films",
     name: "films",
-    component: films,
+    component: Films,
     meta: {
       requiresAuth: true,
     },
@@ -41,7 +41,7 @@ const routes = [
   {
     path: "/editfilm/:id",
     name: "editfilm",
-    component: film,
+    component: Film,
     meta: {
       requiresAuth: true,
     },

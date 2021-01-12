@@ -19,6 +19,7 @@
           <h3>Название фильма</h3>
           <v-text-field
             v-model="film.name"
+            :error-messages="nameErrors"
             label="Название"
             placeholder="Введите название"
           ></v-text-field>
@@ -108,6 +109,8 @@
 <script>
 import addGenre from "@/components/AddGenre.vue";
 import addDirector from "@/components/AddDirector.vue";
+import { validationMixin } from "vuelidate";
+import { required, numeric } from "vuelidate/lib/validators";
 import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
@@ -119,11 +122,31 @@ export default {
       directors: [],
     };
   },
+  mixins: [validationMixin],
+  validations: {
+    film: {
+      name: { required },
+      link: { required },
+      year: { required, numeric },
+      genre: { required },
+      teaser: { required },
+      poster: { required },
+      director: { required },
+    },
+  },
   components: {
     addGenre,
     addDirector,
   },
-  computed: mapGetters("auth", ["GETUSER"]),
+  computed: {
+    ...mapGetters("auth", ["GETUSER"]),
+    nameErrors() {
+      const errors = [];
+      if (!this.$v.film.name.$dirty) return errors;
+      !this.$v.film.name.required && errors.push("Ф.И.О. необходимы");
+      return errors;
+    },
+  },
   methods: {
     ...mapActions({
       addGenre: "genre/SAVE_NEW_ITEM",
@@ -203,6 +226,8 @@ export default {
     },
   },
   created() {
+    console.log("@@@@@@@@@@@@@@@@@");
+    console.log(this.$v);
     this.uploadGenresList().then(() => {
       this.genres = this.getAllGenres();
     });
@@ -214,8 +239,6 @@ export default {
           if (!this.film.director) {
             this.film.director = [];
           }
-          console.log("!!!!!!!!!!!!!!!!!");
-          console.log(this.film);
         })
         .catch((e) => {
           alert(e);
@@ -229,9 +252,13 @@ export default {
           alert(e);
         });
     }
-    this.setListOfDirectors().then((value) => {
-      this.directors = value;
-    });
+    this.setListOfDirectors()
+      .then((value) => {
+        this.directors = value;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   },
 };
 </script>
@@ -239,7 +266,10 @@ export default {
 <style scoped lang="scss">
 .filmWrapper {
   background-image: url("../assets/37975-gorod_ogni_nebo_otrajenie.jpg");
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgb(0, 48, 130);
 }
 .form {
   text-align: center;

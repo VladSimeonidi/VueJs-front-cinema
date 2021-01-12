@@ -52,6 +52,22 @@ export const actions = {
     }
     return res;
   },
+  async LOGIN_ADMIN({ commit }, user) {
+    commit("AUTH_REQUEST");
+    let res = await axios.post(
+      config.API.BASE_URL + config.API.USER.LOGIN_ADMIN,
+      user
+    );
+    if (res.data.success) {
+      const token = res.data.token;
+      const user = res.data.user;
+      localStorage.setItem("token", token);
+      // Set the axios defaults
+      axios.defaults.headers.common["Authorization"] = token;
+      commit("AUTH_SUCCESS", token, user);
+    }
+    return res;
+  },
   async REGISTER({ commit }, userData) {
     commit("REGISTER_REQUEST");
     let res = await axios.post(
@@ -67,13 +83,14 @@ export const actions = {
     commit("PROFILE_REQUEST");
     let res = await axios.get(config.API.BASE_URL + config.API.USER.PROFILE);
     commit("USER_PROFILE", res.data.user);
-    return res;
+    return res.data.user;
   },
   async LOGOUT({ commit }) {
     await localStorage.removeItem("token");
     commit("LOGOUT");
     delete axios.defaults.headers.common["Authorization"];
-    router.push("/login");
+    await router.go();
+    // router.push("/login");
     return;
   },
 };
@@ -86,6 +103,9 @@ export const getters = {
     }
   },
   GETUSER(state) {
+    // console.log("FROM GETTER USER");
+    // console.log(state.user);
+    // console.log("FROM GETTER USER");
     return state.user;
   },
   STATUS(state) {

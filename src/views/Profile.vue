@@ -1,22 +1,18 @@
 <template>
-  <v-layout class="justify-center align-center">
+  <v-layout v-if="user" class="justify-center align-center">
     <v-card min-width="700px" outlined>
       <v-card-title>Профиль пользователя</v-card-title>
       <v-card-text>
-        <v-text-field
-          v-model="GETUSER.name"
-          readonly
-          label="Ф.И.О"
-        ></v-text-field>
+        <v-text-field v-model="user.name" readonly label="Ф.И.О"></v-text-field>
 
         <v-text-field
-          v-model="GETUSER.username"
+          v-model="user.username"
           readonly
           label="Логин"
         ></v-text-field>
 
         <v-text-field
-          v-model="GETUSER.email"
+          v-model="user.email"
           readonly
           label="Электронная почта"
         ></v-text-field>
@@ -29,14 +25,23 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 export default {
-  computed: mapGetters("auth", ["GETUSER"]),
+  data() {
+    return {
+      user: null,
+      admin: null,
+    };
+  },
   methods: {
     ...mapActions("auth", ["GET_PROFILE"]),
   },
   created() {
-    this.GET_PROFILE();
+    console.log("jjh");
+    this.GET_PROFILE().then((res) => {
+      this.user = res.user;
+      this.admin = res.admin;
+    });
   },
 };
 </script>

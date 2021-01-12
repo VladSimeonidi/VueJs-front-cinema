@@ -169,6 +169,10 @@ export default {
       this.email = "";
     },
   },
+  created() {
+    console.log("reggy");
+    console.log(this.$v);
+  },
 };
 </script>
 

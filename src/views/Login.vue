@@ -41,6 +41,10 @@
                 </v-btn>
               </v-card-actions>
             </v-form>
+            <v-checkbox
+              v-model="checkbox"
+              label="Вы администратор?"
+            ></v-checkbox>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -53,17 +57,18 @@ import { required, maxLength } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 
 export default {
+  data: () => ({
+    username: "",
+    password: "",
+    checkbox: false,
+  }),
+
   mixins: [validationMixin],
 
   validations: {
     username: { required, maxLength: maxLength(10) },
     password: { required },
   },
-
-  data: () => ({
-    username: "",
-    password: "",
-  }),
 
   computed: {
     nameErrors() {
@@ -81,7 +86,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("auth", ["LOGIN"]),
+    ...mapActions({ LOGIN: "auth/LOGIN", LOGIN_ADMIN: "auth/LOGIN_ADMIN" }),
     loginUser() {
       this.$v.$touch();
       console.log(this.username + " " + this.password);
@@ -89,15 +94,27 @@ export default {
         username: this.username,
         password: this.password,
       };
-      this.LOGIN(user)
-        .then((res) => {
-          if (res.data.success) {
-            this.$router.push("/");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (this.checkbox) {
+        this.LOGIN_ADMIN(user)
+          .then((res) => {
+            if (res.data.success) {
+              this.$router.push("/");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        this.LOGIN(user)
+          .then((res) => {
+            if (res.data.success) {
+              this.$router.push("/");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
     clear() {
       this.$v.$reset();

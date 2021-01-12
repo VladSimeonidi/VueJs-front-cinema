@@ -1,7 +1,7 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="600px">
+  <v-dialog v-if="admin" v-model="dialog" persistent max-width="600px">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn v-if="GETUSER.isAdmin" large icon v-bind="attrs" v-on="on"
+      <v-btn v-if="admin" large icon v-bind="attrs" v-on="on"
         ><v-icon color="blue">mdi-library-plus</v-icon></v-btn
       >
     </template>
@@ -39,35 +39,47 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      admin: null,
+      alert: false,
       dialog: false,
       textfieldGenre: null,
     };
-  },
-  computed: {
-    ...mapGetters("auth", ["GETUSER"]),
   },
   methods: {
     ...mapActions({
       addGenre: "genre/SAVE_NEW_ITEM",
       uploadGenresList: "genre/SET_LIST",
+      getProfile: "auth/GET_PROFILE",
     }),
     ...mapGetters({ getAllGenres: "genre/GET_LIST" }),
     async saveGenre() {
       const genreData = {
         name: this.textfieldGenre,
       };
-      await this.addGenre(genreData).then(() => {
-        this.uploadGenresList().then(() => {
-          this.$emit("getGenres", this.getAllGenres());
+      await this.addGenre(genreData)
+        .then(() => {
+          this.uploadGenresList().then(() => {
+            this.$emit("getGenres", this.getAllGenres());
+          });
+          this.textfieldGenre = null;
+          this.dialog = false;
+        })
+        .catch(() => {
+          this.alert = true;
         });
-        this.textfieldGenre = null;
-        this.dialog = false;
-      });
     },
     close() {
       this.textfieldGenre = null;
       this.dialog = false;
     },
+  },
+  created() {
+    this.getProfile().then((res) => {
+      console.log(res);
+      this.admin = res.admin;
+    });
+    console.log("[[[[object]]]]");
+    console.log(this.admin);
   },
 };
 </script>
