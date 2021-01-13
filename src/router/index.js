@@ -60,7 +60,6 @@ const routes = [
     component: Login,
     meta: {
       layout: "empty",
-      requiresGuest: true,
     },
   },
   {
@@ -69,7 +68,6 @@ const routes = [
     component: Register,
     meta: {
       layout: "empty",
-      requiresGuest: true,
     },
   },
   {
@@ -92,13 +90,6 @@ router.beforeEach((to, from, next) => {
     if (!store.getters["auth/LOGGED"]) {
       // Redirect to the Login Page
       next("/login");
-    } else {
-      next();
-    }
-  } else if (to.matched.some((record) => record.meta.requiresGuest)) {
-    if (store.getters["auth/LOGGED"]) {
-      // Redirect to the Login Page
-      next("/profile");
     } else {
       next();
     }

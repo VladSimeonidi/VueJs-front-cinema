@@ -2,6 +2,9 @@
   <v-app>
     <v-layout class="center">
       <v-flex class="card">
+        <v-alert type="error" dark v-if="getError">
+          {{ getError }}
+        </v-alert>
         <v-card>
           <v-toolbar dark>
             <v-toolbar-title>Логин</v-toolbar-title>
@@ -43,7 +46,7 @@
             </v-form>
             <v-checkbox
               v-model="checkbox"
-              label="Вы администратор?"
+              label="Войти как администратор?"
             ></v-checkbox>
           </v-card-text>
         </v-card>
@@ -54,13 +57,14 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, maxLength } from "vuelidate/lib/validators";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data: () => ({
     username: "",
     password: "",
     checkbox: false,
+    error: null,
   }),
 
   mixins: [validationMixin],
@@ -71,6 +75,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters({ getError: "auth/ERROR" }),
     nameErrors() {
       const errors = [];
       if (!this.$v.username.$dirty) return errors;
@@ -101,18 +106,20 @@ export default {
               this.$router.push("/");
             }
           })
-          .catch((err) => {
-            console.log(err);
+          .catch((e) => {
+            console.log(e);
           });
       } else {
         this.LOGIN(user)
           .then((res) => {
-            if (res.data.success) {
-              this.$router.push("/");
+            if (res) {
+              if (res.data.success) {
+                this.$router.push("/");
+              }
             }
           })
-          .catch((err) => {
-            console.log(err);
+          .catch((e) => {
+            console.log(e);
           });
       }
     },

@@ -24,7 +24,8 @@
     "vue-router": "^3.4.9",
     "vuelidate": "^0.7.6",
     "vuetify": "^2.2.11",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "vuex-extensions": "^1.1.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

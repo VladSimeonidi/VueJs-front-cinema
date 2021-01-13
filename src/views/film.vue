@@ -125,13 +125,28 @@ export default {
   mixins: [validationMixin],
   validations: {
     film: {
-      name: { required },
-      link: { required },
-      year: { required, numeric },
-      genre: { required },
-      teaser: { required },
-      poster: { required },
-      director: { required },
+      name: {
+        required,
+      },
+      link: {
+        required,
+      },
+      year: {
+        required,
+        numeric,
+      },
+      genre: {
+        required,
+      },
+      teaser: {
+        required,
+      },
+      poster: {
+        required,
+      },
+      director: {
+        required,
+      },
     },
   },
   components: {
@@ -142,6 +157,7 @@ export default {
     ...mapGetters("auth", ["GETUSER"]),
     nameErrors() {
       const errors = [];
+      console.log(this.film);
       if (!this.$v.film.name.$dirty) return errors;
       !this.$v.film.name.required && errors.push("Ф.И.О. необходимы");
       return errors;

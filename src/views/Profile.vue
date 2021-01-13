@@ -37,7 +37,6 @@ export default {
     ...mapActions("auth", ["GET_PROFILE"]),
   },
   created() {
-    console.log("jjh");
     this.GET_PROFILE().then((res) => {
       this.user = res.user;
       this.admin = res.admin;
