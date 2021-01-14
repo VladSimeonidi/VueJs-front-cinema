@@ -32,9 +32,7 @@
                 @blur="$v.password.$touch()"
               ></v-text-field>
               <v-card-actions>
-                <v-btn @click="loginUser" :disabled="this.$v.$invalid"
-                  >Войти</v-btn
-                >
+                <v-btn @click="loginUser">Войти</v-btn>
                 <router-link :to="{ name: 'register' }" class="margin-left"
                   >Получить аккаунт?</router-link
                 >
@@ -94,6 +92,7 @@ export default {
     ...mapActions({ LOGIN: "auth/LOGIN", LOGIN_ADMIN: "auth/LOGIN_ADMIN" }),
     loginUser() {
       this.$v.$touch();
+      if (this.$v.$invalid) return;
       console.log(this.username + " " + this.password);
       const user = {
         username: this.username,

@@ -23,6 +23,9 @@
       <v-btn title="Logout" @click="logoutUser" icon>
         <v-icon>mdi-logout</v-icon>
       </v-btn>
+      <!-- <v-btn title="Администратор" icon>
+        <v-icon>mdi-monitor-multiple</v-icon>
+      </v-btn> -->
     </v-app-bar>
     <v-alert
       v-model="alert"

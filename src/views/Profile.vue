@@ -1,7 +1,11 @@
 <template>
   <v-layout v-if="user" class="justify-center align-center">
+    <addDirector />
     <v-card min-width="700px" outlined>
-      <v-card-title>Профиль пользователя</v-card-title>
+      <v-card-title v-if="admin"
+        >Профиль пользователя (Администратор)</v-card-title
+      >
+      <v-card-title else>Профиль пользователя</v-card-title>
       <v-card-text>
         <v-text-field v-model="user.name" readonly label="Ф.И.О"></v-text-field>
 
@@ -25,6 +29,7 @@
 </template>
 
 <script>
+import addDirector from "@/components/AppProfileBar.vue";
 import { mapActions } from "vuex";
 export default {
   data() {
@@ -32,6 +37,9 @@ export default {
       user: null,
       admin: null,
     };
+  },
+  components: {
+    addDirector,
   },
   methods: {
     ...mapActions("auth", ["GET_PROFILE"]),
@@ -44,5 +52,3 @@ export default {
   },
 };
 </script>
-
-<style></style>
