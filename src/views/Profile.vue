@@ -1,11 +1,11 @@
 <template>
   <v-layout v-if="user" class="justify-center align-center">
     <addDirector />
-    <v-card min-width="700px" outlined>
+    <v-card width="100%" max-width="700px" outlined>
       <v-card-title v-if="admin"
         >Профиль пользователя (Администратор)</v-card-title
       >
-      <v-card-title else>Профиль пользователя</v-card-title>
+      <v-card-title v-else>Профиль пользователя</v-card-title>
       <v-card-text>
         <v-text-field v-model="user.name" readonly label="Ф.И.О"></v-text-field>
 

@@ -8,6 +8,7 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Profile from "../views/Profile.vue";
 import FilmDitails from "../views/FilmDetails.vue";
+import UserProfile from "../views/User";
 import store from "../store";
 Vue.use(VueRouter);
 
@@ -74,6 +75,14 @@ const routes = [
     path: "/profile",
     name: "profile",
     component: Profile,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/userprofile/:id",
+    name: "userprofile",
+    component: UserProfile,
     meta: {
       requiresAuth: true,
     },

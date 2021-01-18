@@ -5,12 +5,16 @@ export const config = {
       LIST: "/films",
       PAGINATION: "/films/page",
       DETAILS: "/films/details",
+      AUTOCOMPLETE: "/films/filmsautocomplete",
     },
     USER: {
       LOGIN: "/user/login",
       LOGIN_ADMIN: "/user/adminlogin",
       REGISTER: "/user/register",
       PROFILE: "/user/profile",
+      PROFILE_AUTOCOMPLETE_LIST: "/user/autocompleteprofile",
+      USERPROFILE: "/user/userprofile",
+      EDITPROFILE: "/user/editprofile",
     },
     DIRECTOR: {
       LIST: "/director",

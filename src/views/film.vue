@@ -4,7 +4,7 @@
       fluid
       class="d-flex justify-center align-center pa-10 filmWrapper"
     >
-      <v-card class="form">
+      <v-card max-width="800px" width="100%" class="text-center">
         <v-card-title class="text-center"
           >Страница одного фильма<v-spacer></v-spacer>
           <v-btn
@@ -22,6 +22,7 @@
             :error-messages="nameErrors"
             label="Название"
             placeholder="Введите название"
+            required
           ></v-text-field>
           <h3>Тизер фильма</h3>
           <v-text-field
@@ -98,9 +99,9 @@
           <v-btn @click="$router.go(-1)">
             Назад
           </v-btn>
-          <!-- <v-btn @click="check">
+          <v-btn @click="check">
             check
-          </v-btn> -->
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-container>
@@ -184,7 +185,6 @@ export default {
       this.genres = value;
     },
     onClickDirectorComponent(value) {
-      console.log(value);
       this.directors = value;
     },
     chooseGenres(value) {
@@ -192,17 +192,17 @@ export default {
     },
     check() {
       console.log(this.film);
+      console.log("!!!");
+      console.log(this.$v);
     },
     addDirectorsToFilm(value) {
       this.film.director = value;
     },
     getFilmLink(e) {
       this.filmFile = e;
-      console.log(this.filmFile);
     },
     getPicture(e) {
       this.image = e;
-      console.log(this.image);
     },
 
     save() {
@@ -242,8 +242,6 @@ export default {
     },
   },
   created() {
-    console.log("@@@@@@@@@@@@@@@@@");
-    console.log(this.$v);
     this.uploadGenresList().then(() => {
       this.genres = this.getAllGenres();
     });
@@ -286,28 +284,5 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   background-color: rgb(0, 48, 130);
-}
-.form {
-  text-align: center;
-  max-width: 700px;
-  width: 100%;
-  min-height: 500px;
-  background-color: red;
-  &__buttons {
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 20px;
-  }
-  &__description {
-    width: 80%;
-    resize: vertical;
-  }
-  &__inputName,
-  &__description {
-    width: 80%;
-    outline: none;
-  }
 }
 </style>

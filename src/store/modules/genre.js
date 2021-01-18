@@ -26,7 +26,6 @@ export const actions = {
       });
   },
   async SAVE_NEW_ITEM({ commit }, payload) {
-    console.log("WORKS FROM GENRE ACT");
     await axios
       .post(config.API.BASE_URL + config.API.GENRE.LIST, payload)
       .then((res) => {

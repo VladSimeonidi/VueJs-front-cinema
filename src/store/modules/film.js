@@ -56,6 +56,25 @@ export const actions = {
         console.log(e);
       });
   },
+  async SET_AUTOCOMPLETE_LIST({ commit }, query) {
+    let res = await axios
+      .get(
+        config.API.BASE_URL +
+          config.API.FILM.AUTOCOMPLETE +
+          "?" +
+          "search=" +
+          query
+      )
+      .then((res) => {
+        console.log(res.data);
+        commit("SET_LIST", res.data);
+        return res.data;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    return res;
+  },
   async SET_CURRENT_ITEM({ commit }, ID) {
     await axios
       .get(config.API.BASE_URL + config.API.FILM.LIST + "/" + ID)
@@ -150,8 +169,6 @@ export const actions = {
 };
 export const getters = {
   GET_LIST(state) {
-    console.log("from Films");
-    console.log(state);
     return state.list;
   },
   GET_LIST_TOTAL(state) {

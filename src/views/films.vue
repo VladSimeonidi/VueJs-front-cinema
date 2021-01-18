@@ -1,5 +1,12 @@
 <template>
   <div id="films">
+    <v-carousel cycle hide-delimiters show-arrows-on-hover height="300">
+      <v-carousel-item
+        v-for="(item, i) in items"
+        :key="i"
+        :src="item.src"
+      ></v-carousel-item>
+    </v-carousel>
     <v-container grid-list-lg class="d-flex flex-wrap justify-space-between">
       <v-toolbar class="mb-3 mt-7" width="100%"
         ><v-text-field
@@ -28,6 +35,7 @@
             <v-row no-gutters>
               <v-col class="d-flex" cols="3" sm="3">
                 <v-select
+                  clearable
                   @change="paginateGenres"
                   :items="genres"
                   item-text="name"
@@ -35,14 +43,17 @@
                   small-chips
                   multiple
                   label="Выберите жанр"
+                  color="black"
+                  prepend-icon="mdi-filmstrip"
                   return-object
                 ></v-select>
-                <addGenre @getGenres="onClickChild" />
               </v-col>
               <v-col class="d-flex ml-2" cols="3" sm="3">
                 <v-select
                   clearable
+                  prepend-icon="mdi-account"
                   @change="paginateDirectors"
+                  color="black"
                   :items="directors"
                   small-chips
                   item-text="name"
@@ -62,9 +73,13 @@
           :key="index"
           class="align-start"
           xs12
-          sm6
+          sm4
         >
-          <v-card tile class="text-center grow pt-5" min-height="450px">
+          <v-card
+            shaped
+            class="text-center grow pt-5 hoverEffect"
+            min-height="420px"
+          >
             <router-link
               :to="{ name: 'filmditails', params: { id: film._id } }"
               v-if="film.poster"
@@ -97,35 +112,82 @@
     </v-container>
     <v-card-actions class="mb-5 justify-center">
       <v-pagination
-        dark
+        color="orange"
+        circle
+        light
         total-visible="10"
         v-model="currentSelectedPage"
         :length="paginatonsCounter"
       ></v-pagination>
     </v-card-actions>
+    <v-footer dark padless>
+      <v-card class="flex" flat tile>
+        <v-card-title class="orange">
+          <strong class="subheading"
+            >Подписывайтесь на нас в социальных сетях!</strong
+          >
+
+          <v-spacer></v-spacer>
+
+          <v-btn
+            target="_blank"
+            v-for="icon in icons"
+            :key="icon"
+            :href="icon.link"
+            class="mx-4"
+            dark
+            icon
+          >
+            <v-icon size="24px">
+              {{ icon.icon }}
+            </v-icon>
+          </v-btn>
+        </v-card-title>
+
+        <v-card-text class="py-2 white--text text-center">
+          {{ new Date().getFullYear() }} — <strong>My Site</strong>
+        </v-card-text>
+      </v-card>
+    </v-footer>
   </div>
 </template>
 <script>
-import addGenre from "@/components/AddGenre.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
+      icons: [
+        { icon: "mdi-facebook", link: "https://www.facebook.com/" },
+        { icon: "mdi-twitter", link: "https://twitter.com/" },
+        { icon: "mdi-linkedin", link: "https://www.linkedin.com/" },
+        { icon: "mdi-instagram", link: "https://www.instagram.com/" },
+      ],
+      items: [
+        {
+          src: "http://test.com:81/pictures/untouchable.jpg",
+        },
+        {
+          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
+        },
+        {
+          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
+        },
+        {
+          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
+        },
+      ],
       admin: null,
       directors: [],
       list: [],
       listTotal: null,
       pageSet: {
         pageNumber: 1,
-        pageSize: 4,
+        pageSize: 6,
       },
       paginatonsCounter: null,
       searchText: "",
       genres: null,
     };
-  },
-  components: {
-    addGenre,
   },
   computed: {
     currentSelectedPage: {
@@ -150,7 +212,7 @@ export default {
         return el._id;
       });
       this.pageSet.pageNumber = 1;
-      this.pageSet.pageSize = 4;
+      this.pageSet.pageSize = 6;
       return idsArray;
     },
     paginateGenres(value) {
@@ -164,7 +226,6 @@ export default {
       this.paginate(this.pageSet);
     },
     ...mapActions({
-      addGenre: "genre/SAVE_NEW_ITEM",
       uploadGenresList: "genre/SET_LIST",
       loadFilmsList: "film/SET_LIST",
       setListOfDirectors: "director/SET_LIST",
@@ -185,9 +246,6 @@ export default {
     search() {
       this.pageSet.search = this.searchText;
       this.paginate(this.pageSet);
-    },
-    onClickChild() {
-      this.genres = this.getAllGenres();
     },
   },
   mounted() {
@@ -220,15 +278,15 @@ export default {
 .palyer__img {
   width: 100%;
   height: 100%;
-  max-width: 525px;
-  max-height: 300px;
+  max-width: 340px;
+  max-height: 200px;
+  border-radius: 15px 0 15px 0;
 }
 .grow:hover {
   transform: scale(1.03);
 }
 #films {
-  background-image: url("../assets/winterbg.jpg");
-  background-size: cover;
+  background-color: #039be5;
 }
 .vElseContainer {
   min-height: 200px;
