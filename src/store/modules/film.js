@@ -1,6 +1,7 @@
 import { config } from "@/config/config";
 import axios from "axios";
 import querystring from "querystring";
+import router from "../../router/index";
 
 export const namespaced = true;
 
@@ -8,6 +9,9 @@ export const state = () => ({
   currentItem: {},
   list: [],
   listTotal: null,
+  OneFilmFile: null,
+  OneFilmPosterImage: null,
+  Loading: false,
 });
 export const mutations = {
   SET_LIST(state, payload) {
@@ -25,18 +29,49 @@ export const mutations = {
   SET_CURRENT_NAME(state, payload) {
     state.currentItem.name = payload;
   },
+  SET_CURRENT_TEASER(state, payload) {
+    state.currentItem.teaser = payload;
+  },
   SET_CURRENT_GENRE(state, payload) {
     state.currentItem.genre = payload;
   },
+  SET_CURRENT_DIRECTOR(state, payload) {
+    state.currentItem.director = payload;
+  },
+  SET_CURRENT_YEAR(state, payload) {
+    state.currentItem.year = payload;
+  },
+  SET_CURRENT_DESCRIPTION(state, payload) {
+    state.currentItem.description = payload;
+  },
+  SET_CURRENT_LINK(state, payload) {
+    state.currentItem.link = payload;
+  },
+  SET_CURRENT_POSTER(state, payload) {
+    state.currentItem.poster.file_name = payload;
+  },
+  SET_FILM_FILE(state, payload) {
+    state.OneFilmFile = payload;
+  },
+  SET_POSTER_FILE(state, payload) {
+    state.OneFilmPosterImage = payload;
+  },
+  SET_LOADING(state, payload) {
+    state.Loading = payload;
+  },
   ADD_NEW_ITEM(state) {
+    state.OneFilmFile = null;
+    state.OneFilmPosterImage = null;
     const emptyForm = {
       description: "",
-      genre: "",
+      genre: [],
       link: "",
       name: "",
       teaser: "",
       year: "",
-      poster: "",
+      poster: {
+        file_name: "",
+      },
       director: [],
     };
     state.currentItem = emptyForm;
@@ -48,7 +83,6 @@ export const actions = {
     await axios
       .get(config.API.BASE_URL + config.API.FILM.PAGINATION + "?" + qs)
       .then((res) => {
-        console.log(res.data);
         commit("SET_LIST", res.data.filmList);
         commit("SET_LIST_TOTAL", res.data.filmListCount);
       })
@@ -98,73 +132,81 @@ export const actions = {
   async ADD_NEW_ITEM({ commit }) {
     commit("ADD_NEW_ITEM");
   },
-  async SAVE_CURRENT_ITEM({ commit }, payload) {
+  async SAVE_CURRENT_ITEM({ state, commit }) {
+    commit("SET_LOADING", true);
     let formData = new FormData();
-    console.log(payload);
-    if (payload[0][0]) {
-      console.log("11111");
-      formData.append("file", payload[0][0], "image");
-      formData.append("imageMetaData", payload[0][0].name);
+    if (state.OneFilmPosterImage) {
+      formData.append("file", state.OneFilmPosterImage, "image");
+      formData.append("imageMetaData", state.OneFilmPosterImage.name);
     }
-    if (payload[0][1]) {
-      formData.append("file", payload[0][1], "movie");
-      formData.append("movieMetaData", payload[0][1].name);
+    if (state.OneFilmFile) {
+      formData.append("file", state.OneFilmFile, "movie");
+      formData.append("movieMetaData", state.OneFilmFile.name);
     }
-
-    formData.append("film", JSON.stringify(payload[1]));
-    const res = await axios
+    let dataToSave = state.currentItem;
+    formData.append("film", JSON.stringify(dataToSave));
+    await axios
       .post(config.API.BASE_URL + config.API.FILM.LIST, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
-        commit("SET_CURRENT_ITEM", payload[1]);
-        return res;
+        commit("SET_CURRENT_ITEM", res.data);
+        commit("SET_LOADING", false);
+        router.push({ name: "filmditails", params: { id: res.data._id } });
       })
       .catch((e) => {
+        commit("SET_LOADING", false);
         console.log(e);
       });
-    return res.data._id;
   },
-  async EDIT_CURRENT_ITEM({ commit }, payload) {
-    const ID = payload[1]._id;
-    const editData = Object.assign({}, payload[1]);
+  async EDIT_CURRENT_ITEM({ state, commit }) {
+    commit("SET_LOADING", true);
+    const ID = state.currentItem._id;
+    const editData = Object.assign({}, state.currentItem);
     delete editData._id;
     let formData = new FormData();
-    if (payload[0][0]) {
-      formData.append("file", payload[0][0], "image");
-      formData.append("imageMetaData", payload[0][0].name);
+    if (state.OneFilmPosterImage) {
+      formData.append("file", state.OneFilmPosterImage, "image");
+      formData.append("imageMetaData", state.OneFilmPosterImage.name);
     }
-    if (payload[0][1]) {
-      formData.append("file", payload[0][1], "movie");
-      formData.append("movieMetaData", payload[0][1].name);
+    if (state.OneFilmFile) {
+      formData.append("file", state.OneFilmFile, "movie");
+      formData.append("movieMetaData", state.OneFilmFile.name);
     }
     formData.append("film", JSON.stringify(editData));
-    await axios
-      .put(config.API.BASE_URL + config.API.FILM.LIST + "/" + ID, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then(() => {
-        commit("SET_CURRENT_ITEM", editData);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    try {
+      await axios
+        .put(config.API.BASE_URL + config.API.FILM.LIST + "/" + ID, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          commit("SET_CURRENT_ITEM", res.data);
+          commit("SET_LOADING", false);
+          router.push({ name: "filmditails", params: { id: ID } });
+          return res;
+        });
+    } catch (error) {
+      commit("SET_LOADING", false);
+      return error;
+    }
   },
   async DELETE_CURRENT_ITEM({ commit }, ID) {
     console.log("ID");
     console.log(ID);
-    await axios
-      .delete(config.API.BASE_URL + config.API.FILM.LIST + "/" + ID)
-      .then(() => {
-        commit("SET_CURRENT_ITEM", {});
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    try {
+      await axios
+        .delete(config.API.BASE_URL + config.API.FILM.LIST + "/" + ID)
+        .then(() => {
+          commit("SET_CURRENT_ITEM", {});
+          router.push({ name: "films" });
+        });
+    } catch (error) {
+      return error;
+    }
   },
 };
 export const getters = {
@@ -180,7 +222,28 @@ export const getters = {
   GET_CURRENT_NAME(state) {
     return state.currentItem.name;
   },
+  GET_CURRENT_TEASER(state) {
+    return state.currentItem.teaser;
+  },
   GET_CURRENT_GENRE(state) {
     return state.currentItem.genre;
+  },
+  GET_CURRENT_DIRECTOR(state) {
+    return state.currentItem.director;
+  },
+  GET_CURRENT_YEAR(state) {
+    return state.currentItem.year;
+  },
+  GET_CURRENT_DESCRIPTION(state) {
+    return state.currentItem.description;
+  },
+  GET_CURRENT_LINK(state) {
+    return state.currentItem.link;
+  },
+  GET_CURRENT_POSTER(state) {
+    return state.currentItem.poster.file_name;
+  },
+  GET_LOADING(state) {
+    return state.Loading;
   },
 };

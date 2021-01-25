@@ -12,6 +12,7 @@ import vuetify from "./plugins/vuetify";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
 import Vuelidate from "vuelidate";
+import Notifications from "vue-notification";
 
 Vue.prototype.$http = axios;
 const token = localStorage.getItem("token");
@@ -23,6 +24,7 @@ Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(Vuelidate);
 Vue.use(VuePlyr);
+Vue.use(Notifications);
 new Vue({
   router,
   store,

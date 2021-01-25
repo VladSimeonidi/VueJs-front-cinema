@@ -75,11 +75,8 @@ export default {
   },
   created() {
     this.getProfile().then((res) => {
-      console.log(res);
       this.admin = res.admin;
     });
-    console.log("[[[[object]]]]");
-    console.log(this.admin);
   },
 };
 </script>

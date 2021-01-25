@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <vue-extend-layouts />
+    <notifications width="400" group="filmError" />
   </div>
 </template>
 
@@ -10,3 +11,8 @@ export default {
   components: { VueExtendLayouts },
 };
 </script>
+<style lang="scss">
+.vue-notification {
+  font-size: 18px !important;
+}
+</style>

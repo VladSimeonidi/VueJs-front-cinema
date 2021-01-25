@@ -9,7 +9,7 @@
         <v-card-title>Жанр</v-card-title>
         <v-card-text dense>
           <span v-for="(genre, genreIndex) in film.genre" :key="genreIndex"
-            >{{ genre.name }}; &nbsp; &nbsp;</span
+            >{{ genre.name }} &nbsp; &nbsp;</span
           >
         </v-card-text>
         <v-card-title v-if="film.genre.length < 2">Режиссер</v-card-title>
@@ -18,7 +18,7 @@
           <span
             v-for="(director, directorIndex) in film.director"
             :key="directorIndex"
-            >{{ director.name }}; &nbsp; &nbsp;</span
+            >{{ director.name }} &nbsp; &nbsp;</span
           >
         </v-card-text>
         <v-card-title>Год производства</v-card-title>
@@ -36,15 +36,18 @@
         </Media>
       </v-flex>
     </v-layout>
+    <Footer />
   </v-card>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import Footer from "@/components/AppFooter.vue";
 import Media from "@dongido/vue-viaudio";
 export default {
   components: {
     Media,
+    Footer,
   },
   data() {
     return {
@@ -71,14 +74,7 @@ export default {
 
 <style scoped lang="scss">
 .trailer__container {
-  background: rgb(0, 0, 0);
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(23, 23, 23, 1) 33%,
-    rgba(54, 53, 53, 1) 65%,
-    rgba(41, 41, 41, 1) 79%
-  );
+  background-color: #039be5;
 }
 .trailer__text {
   color: #fff;

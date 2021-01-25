@@ -1,6 +1,6 @@
 <template>
   <div id="films">
-    <v-carousel cycle hide-delimiters show-arrows-on-hover height="300">
+    <v-carousel cycle hide-delimiters show-arrows-on-hover height="100vh">
       <v-carousel-item
         v-for="(item, i) in items"
         :key="i"
@@ -20,7 +20,7 @@
           ><v-icon>mdi-magnify</v-icon></v-btn
         ></v-toolbar
       >
-      <v-expansion-panels class="mb-7" focusable>
+      <v-expansion-panels focusable @change="resetSearchValues" class="mb-7">
         <v-expansion-panel>
           <v-expansion-panel-header>
             <template>
@@ -41,6 +41,7 @@
                   item-text="name"
                   chips
                   small-chips
+                  v-model="genreSelectValue"
                   multiple
                   label="Выберите жанр"
                   color="black"
@@ -53,6 +54,7 @@
                   clearable
                   prepend-icon="mdi-account"
                   @change="paginateDirectors"
+                  v-model="directorSelectValue"
                   color="black"
                   :items="directors"
                   small-chips
@@ -63,6 +65,18 @@
                   return-object
                 ></v-select
               ></v-col>
+              <v-col class="d-flex ml-2 align-center" cols="4" sm="3">
+                <v-range-slider
+                  hide-details
+                  dense
+                  label="Выберите год"
+                  v-model="range"
+                  max="2021"
+                  min="1950"
+                  thumb-label="always"
+                  @change="rangeValue"
+                ></v-range-slider>
+              </v-col>
             </v-row>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -120,51 +134,21 @@
         :length="paginatonsCounter"
       ></v-pagination>
     </v-card-actions>
-    <v-footer dark padless>
-      <v-card class="flex" flat tile>
-        <v-card-title class="orange">
-          <strong class="subheading"
-            >Подписывайтесь на нас в социальных сетях!</strong
-          >
-
-          <v-spacer></v-spacer>
-
-          <v-btn
-            target="_blank"
-            v-for="icon in icons"
-            :key="icon"
-            :href="icon.link"
-            class="mx-4"
-            dark
-            icon
-          >
-            <v-icon size="24px">
-              {{ icon.icon }}
-            </v-icon>
-          </v-btn>
-        </v-card-title>
-
-        <v-card-text class="py-2 white--text text-center">
-          {{ new Date().getFullYear() }} — <strong>My Site</strong>
-        </v-card-text>
-      </v-card>
-    </v-footer>
+    <Footer />
   </div>
 </template>
 <script>
+import Footer from "@/components/AppFooter.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      icons: [
-        { icon: "mdi-facebook", link: "https://www.facebook.com/" },
-        { icon: "mdi-twitter", link: "https://twitter.com/" },
-        { icon: "mdi-linkedin", link: "https://www.linkedin.com/" },
-        { icon: "mdi-instagram", link: "https://www.instagram.com/" },
-      ],
+      genreSelectValue: [],
+      directorSelectValue: [],
+      range: [1950, 2021],
       items: [
         {
-          src: "http://test.com:81/pictures/untouchable.jpg",
+          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
         },
         {
           src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
@@ -182,13 +166,14 @@ export default {
       listTotal: null,
       pageSet: {
         pageNumber: 1,
-        pageSize: 6,
+        pageSize: 9,
       },
       paginatonsCounter: null,
       searchText: "",
       genres: null,
     };
   },
+  components: { Footer },
   computed: {
     currentSelectedPage: {
       get() {
@@ -207,12 +192,26 @@ export default {
     },
   },
   methods: {
+    resetSearchValues() {
+      this.genreSelectValue = [];
+      this.directorSelectValue = [];
+      this.range = [1935, 2021];
+      this.pageSet = {
+        pageNumber: 1,
+        pageSize: 9,
+      };
+      this.paginate(this.pageSet);
+    },
+    rangeValue(value) {
+      this.pageSet.range = value;
+      this.paginate(this.pageSet);
+    },
     selectSearch(value) {
       const idsArray = value.map((el) => {
         return el._id;
       });
       this.pageSet.pageNumber = 1;
-      this.pageSet.pageSize = 6;
+      this.pageSet.pageSize = 9;
       return idsArray;
     },
     paginateGenres(value) {

@@ -69,6 +69,7 @@ export default {
           this.setListOfDirectors().then((value) => {
             this.$emit("getDirectors", value);
           });
+          this.newDirectorImage = null;
           this.dialog = false;
           this.newDirector = {
             name: "",
