@@ -60,7 +60,7 @@ const routes = [
     name: "login",
     component: Login,
     meta: {
-      layout: "empty",
+      layout: "authlayout",
     },
   },
   {

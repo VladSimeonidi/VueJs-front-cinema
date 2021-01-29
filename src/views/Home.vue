@@ -1,17 +1,26 @@
 <template>
-  <div class="wrapper">
-    <div class="container">
-      <h1 class="title">Добро пожаловать на хостинг трейлеров</h1>
-      <router-link :to="{ name: 'films' }" class="button"
-        >Перейти к трейлерам</router-link
-      >
-    </div>
+  <div>
+    <video-background
+      src="http://test.com:81/videos/nobody.mp4"
+      style="height: 100vh;"
+    >
+      <div class="container">
+        <h1 class="title">Добро пожаловать на хостинг трейлеров</h1>
+        <router-link :to="{ name: 'films' }" class="button"
+          >Перейти к трейлерам</router-link
+        >
+      </div>
+    </video-background>
   </div>
 </template>
 
 <script>
+import VideoBackground from "vue-responsive-video-background-player";
 export default {
   name: "Home",
+  components: {
+    "video-background": VideoBackground,
+  },
 };
 </script>
 
@@ -33,6 +42,7 @@ body {
 .container {
   max-width: 1000px;
   text-align: center;
+  height: 100%;
 }
 .title {
   font-family: "Marck Script";
