@@ -285,7 +285,7 @@ export default {
   transform: scale(1.03);
 }
 #films {
-  background-color: #039be5;
+  background-color: #b2ff59;
 }
 .vElseContainer {
   min-height: 200px;

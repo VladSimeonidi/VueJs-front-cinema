@@ -2,7 +2,7 @@
   <div>
     <v-footer dark padless>
       <v-card class="flex" flat tile>
-        <v-card-title class="amber darken-4">
+        <v-card-title class="purple darken-4">
           <strong class="subheading"
             >Подписывайтесь на нас в социальных сетях!</strong
           >

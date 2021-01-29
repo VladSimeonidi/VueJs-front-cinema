@@ -4,15 +4,17 @@
     <v-card-text>
       {{ film.description }}
     </v-card-text>
-    <v-layout wrap class="trailer__container">
-      <v-flex md5 class="trailer__text">
-        <v-card-title>Жанр</v-card-title>
-        <v-card-text dense>
+    <v-layout wrap class="trailer__container trailer__text">
+      <v-flex md4>
+        <v-card-title class="justify-center">Жанр</v-card-title>
+        <v-card-text class="text-center" dense>
           <span v-for="(genre, genreIndex) in film.genre" :key="genreIndex"
             >{{ genre.name }} &nbsp; &nbsp;</span
           >
         </v-card-text>
-        <v-card-title v-if="film.genre.length < 2">Режиссер</v-card-title>
+      </v-flex>
+      <v-flex md4 class="trailer__wrapper pa-3 pt-0">
+        <v-card-title v-if="film.director.length < 2">Режиссер</v-card-title>
         <v-card-title v-else>Режиссеры</v-card-title>
         <v-card-text dense>
           <span
@@ -21,21 +23,23 @@
             >{{ director.name }} &nbsp; &nbsp;</span
           >
         </v-card-text>
+      </v-flex>
+      <v-flex md4 class="trailer__wrapper pa-3 pt-0">
         <v-card-title>Год производства</v-card-title>
         <v-card-text> {{ film.year }} </v-card-text>
       </v-flex>
-      <v-flex md7 class="trailer__wrapper pa-3 pt-0">
-        <v-card-title class="justify-center whiteColor">Трейлер</v-card-title>
-        <Media
-          :kind="'video'"
-          :controls="true"
-          :src="film.link"
-          :poster="film.poster.file_path"
-          :style="{ width: '100%', outline: 'none' }"
-        >
-        </Media>
-      </v-flex>
     </v-layout>
+    <v-card-title>Трейлер</v-card-title>
+    <v-card-text class="text-center">
+      <Media
+        :kind="'video'"
+        :controls="true"
+        :src="film.link"
+        :poster="film.poster.file_path"
+        :style="{ width: '70%', outline: 'none' }"
+      >
+      </Media>
+    </v-card-text>
     <Footer />
   </v-card>
 </template>
@@ -74,7 +78,7 @@ export default {
 
 <style scoped lang="scss">
 .trailer__container {
-  background-color: #039be5;
+  background-color: #b0bec5;
 }
 .trailer__text {
   color: #fff;
