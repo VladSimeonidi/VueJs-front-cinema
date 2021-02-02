@@ -68,7 +68,7 @@ const routes = [
     name: "register",
     component: Register,
     meta: {
-      layout: "empty",
+      layout: "authlayout",
     },
   },
   {
@@ -97,7 +97,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!store.getters["auth/LOGGED"]) {
-      // Redirect to the Login Page
+      // Перенаправление на Login Page
       next("/login");
     } else {
       next();

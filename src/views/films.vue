@@ -1,12 +1,5 @@
 <template>
   <div id="films">
-    <v-carousel cycle hide-delimiters show-arrows-on-hover height="100vh">
-      <v-carousel-item
-        v-for="(item, i) in items"
-        :key="i"
-        :src="item.src"
-      ></v-carousel-item>
-    </v-carousel>
     <v-container grid-list-lg class="d-flex flex-wrap justify-space-between">
       <v-toolbar class="mb-3 mt-7" width="100%"
         ><v-text-field
@@ -81,7 +74,7 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-      <v-layout row wrap v-if="list.length != 0">
+      <v-layout row wrap v-if="list.length > 0">
         <v-flex
           v-for="(film, index) in list"
           :key="index"
@@ -146,20 +139,6 @@ export default {
       genreSelectValue: [],
       directorSelectValue: [],
       range: [1950, 2021],
-      items: [
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
-        },
-      ],
       admin: null,
       directors: [],
       list: [],

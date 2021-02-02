@@ -1,7 +1,15 @@
 <template>
-  <v-layout v-if="user" class="justify-center align-center">
-    <addDirector />
-    <v-card width="100%" max-width="700px" outlined>
+  <v-layout v-if="user" class="justify-center align-center myAquaBackGround">
+    <v-card
+      class="myCardStyles positionRelative rounded-xl"
+      width="100%"
+      min-height="60vh"
+      max-width="700px"
+      min-width="300px"
+      outlined
+    >
+      <div class="myCircle myCircle_top"></div>
+      <div class="myCircle myCircle_bottom"></div>
       <v-card-title v-if="admin"
         >Профиль пользователя (Администратор)</v-card-title
       >
@@ -21,15 +29,23 @@
           label="Электронная почта"
         ></v-text-field>
       </v-card-text>
-      <v-card-actions>
-        <v-btn @click="$router.go(-1)">Назад</v-btn>
+      <v-card-actions class="justify-center">
+        <v-btn
+          class="pr-6 pl-6"
+          rounded
+          color="cyan lighten-1"
+          dark
+          @click="$router.go(-1)"
+          >Назад</v-btn
+        >
       </v-card-actions>
     </v-card>
+    <AppProfileBar />
   </v-layout>
 </template>
 
 <script>
-import addDirector from "@/components/AppProfileBar.vue";
+import AppProfileBar from "@/components/AppProfileBar.vue";
 import { mapActions } from "vuex";
 export default {
   data() {
@@ -39,7 +55,7 @@ export default {
     };
   },
   components: {
-    addDirector,
+    AppProfileBar,
   },
   methods: {
     ...mapActions("auth", ["GET_PROFILE"]),
@@ -52,3 +68,43 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.myAquaBackGround {
+  background: linear-gradient(to right top, #65dfc9, #6cdbeb);
+}
+.positionRelative {
+  position: relative;
+  z-index: 5;
+}
+.myCardStyles {
+  background: white !important;
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0.3)
+  ) !important;
+}
+.myCircle {
+  z-index: -1;
+  background: white;
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.1)
+  );
+  width: 12rem;
+  height: 12rem;
+  position: absolute;
+  &_top {
+    top: -65px;
+    right: -65px;
+    border-radius: 50% !important;
+  }
+  &_bottom {
+    bottom: -65px;
+    left: -65px;
+    border-radius: 50% !important;
+  }
+}
+</style>

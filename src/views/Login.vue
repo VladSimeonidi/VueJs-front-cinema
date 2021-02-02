@@ -1,61 +1,53 @@
 <template>
-  <v-app>
-    <v-layout class="center">
-      <v-flex class="card">
-        <v-alert type="error" dark v-if="getError">
-          {{ getError }}
-        </v-alert>
-        <v-card>
-          <v-toolbar dark>
-            <v-toolbar-title>Логин</v-toolbar-title>
-          </v-toolbar>
-          <v-card-text>
-            <v-form>
-              <v-text-field
-                id="username"
-                name="username"
-                v-model="username"
-                :error-messages="nameErrors"
-                label="Логин"
-                required
-                @input="$v.username.$touch()"
-                @blur="$v.username.$touch()"
-              ></v-text-field>
-              <v-text-field
-                id="password"
-                name="password"
-                v-model="password"
-                :error-messages="passwordErrors"
-                label="Пароль"
-                required
-                @input="$v.password.$touch()"
-                @blur="$v.password.$touch()"
-              ></v-text-field>
-              <v-card-actions>
-                <v-btn @click="loginUser">Войти</v-btn>
-                <router-link :to="{ name: 'register' }" class="margin-left"
-                  >Получить аккаунт?</router-link
-                >
-                <v-spacer></v-spacer>
-                <v-btn @click="clear">
-                  Сброс
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-            <v-checkbox
-              v-model="checkbox"
-              label="Войти как администратор?"
-            ></v-checkbox>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-app>
+  <div>
+    <v-card-text>
+      <v-alert type="error" dark v-if="getError">
+        {{ getError }}
+      </v-alert>
+      <v-text-field
+        id="username"
+        name="username"
+        v-model="username"
+        :error-messages="nameErrors"
+        label="Логин"
+        required
+        @input="$v.username.$touch()"
+        @blur="$v.username.$touch()"
+      ></v-text-field>
+      <v-text-field
+        id="password"
+        name="password"
+        v-model="password"
+        :error-messages="passwordErrors"
+        label="Пароль"
+        required
+        @input="$v.password.$touch()"
+        @blur="$v.password.$touch()"
+      ></v-text-field>
+      <v-checkbox
+        v-model="checkbox"
+        label="Войти как администратор?"
+      ></v-checkbox>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn
+        color="cyan accent-3"
+        rounded
+        width="150px"
+        elevation="6"
+        @click="loginUser"
+        >Войти</v-btn
+      >
+      <router-link :to="{ name: 'register' }" class="margin-left"
+        >Получить аккаунт?</router-link
+      >
+    </v-card-actions>
+  </div>
 </template>
 <script>
 import { validationMixin } from "vuelidate";
 import { required, maxLength } from "vuelidate/lib/validators";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   data: () => ({
@@ -89,7 +81,11 @@ export default {
   },
 
   methods: {
+    ...mapMutations({ mut_CLEAR_ERROR: "auth/CLEAR_ERROR" }),
     ...mapActions({ LOGIN: "auth/LOGIN", LOGIN_ADMIN: "auth/LOGIN_ADMIN" }),
+    clearError() {
+      this.mut_CLEAR_ERROR();
+    },
     loginUser() {
       this.$v.$touch();
       if (this.$v.$invalid) return;
@@ -98,6 +94,7 @@ export default {
         password: this.password,
       };
       if (this.checkbox) {
+        console.log("LOGIN ADMIN");
         this.LOGIN_ADMIN(user)
           .then((res) => {
             if (res.data.success) {
@@ -108,6 +105,7 @@ export default {
             console.log(e);
           });
       } else {
+        console.log("LOGIN USER");
         this.LOGIN(user)
           .then((res) => {
             if (res) {
@@ -121,27 +119,9 @@ export default {
           });
       }
     },
-    clear() {
-      this.$v.$reset();
-      this.username = "";
-      this.password = "";
-    },
+  },
+  created() {
+    this.mut_CLEAR_ERROR();
   },
 };
 </script>
-
-<style lang="scss">
-.center {
-  background-image: url("../assets/register.jpg");
-  background-size: 100% 100%;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-}
-.card {
-  max-width: 500px !important;
-}
-.margin-left {
-  margin-left: 20px;
-}
-</style>

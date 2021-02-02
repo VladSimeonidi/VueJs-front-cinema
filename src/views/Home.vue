@@ -1,30 +1,47 @@
 <template>
-  <div>
-    <video-background
-      src="http://test.com:81/videos/nobody.mp4"
-      style="height: 100vh;"
-    >
-      <div class="container">
-        <h1 class="title">Добро пожаловать на хостинг трейлеров</h1>
-        <router-link :to="{ name: 'films' }" class="button"
-          >Перейти к трейлерам</router-link
+  <v-app>
+    <detected-speed>
+      <video-background
+        slot="fast"
+        src="http://test.com:81/videos/front/preview.mp4"
+        style="height: 100vh;"
+      >
+        <div class="container">
+          <h1 class="title">Добро пожаловать на хостинг трейлеров</h1>
+          <router-link :to="{ name: 'films' }" class="button"
+            >Перейти к трейлерам</router-link
+          >
+        </div>
+      </video-background>
+      <div slot="slow">
+        <v-sheet height="100vh"
+          ><v-layout column align-center justify-center fill-height>
+            <div>У вас медленный интернет</div>
+            <router-link :to="{ name: 'films' }" class="button"
+              >Перейти к трейлерам</router-link
+            >
+          </v-layout></v-sheet
         >
       </div>
-    </video-background>
-  </div>
+
+      <div slot="unknown">???????</div>
+    </detected-speed>
+  </v-app>
 </template>
 
 <script>
 import VideoBackground from "vue-responsive-video-background-player";
+import DetectedSpeed from "vue-identify-network";
 export default {
   name: "Home",
   components: {
     "video-background": VideoBackground,
+    DetectedSpeed,
   },
 };
 </script>
 
-<style scoped lang="css">
+<style scoped lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Marck+Script&display=swap");
 body {
   margin: 0;

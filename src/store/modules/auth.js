@@ -11,6 +11,9 @@ export const state = () => ({
   error: null,
 });
 export const mutations = {
+  CLEAR_ERROR(state) {
+    state.error = null;
+  },
   AUTH_REQUEST(state) {
     state.error = null;
     state.status = "loading";
@@ -63,7 +66,6 @@ export const actions = {
         const token = res.data.token;
         const user = res.data.user;
         localStorage.setItem("token", token);
-        // Set the axios defaults
         axios.defaults.headers.common["Authorization"] = token;
         commit("AUTH_SUCCESS", token, user);
       }
@@ -131,9 +133,6 @@ export const getters = {
     }
   },
   GETUSER(state) {
-    // console.log("FROM GETTER USER");
-    // console.log(state.user);
-    // console.log("FROM GETTER USER");
     return state.user;
   },
   STATUS(state) {

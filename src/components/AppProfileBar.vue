@@ -81,8 +81,11 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title>
-              <router-link :to="{ name: 'editfilm', params: { id: 'new' } }"
-                >Добавить фильм</router-link
+              <v-btn
+                block
+                tile
+                :to="{ name: 'editfilm', params: { id: 'new' } }"
+                >Добавить фильм</v-btn
               >
             </v-list-item-title>
           </v-list-item-content>

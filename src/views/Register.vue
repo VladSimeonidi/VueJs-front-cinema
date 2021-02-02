@@ -1,84 +1,79 @@
 <template>
-  <v-app>
-    <v-layout class="center">
-      <v-flex class="card">
-        <v-card>
-          <v-toolbar dark>
-            <v-toolbar-title>Регистрация</v-toolbar-title>
-          </v-toolbar>
-          <v-card-text>
-            <v-form>
-              <v-text-field
-                id="username"
-                name="username"
-                v-model="username"
-                :error-messages="usernameErrors"
-                label="Логин"
-                required
-                @input="$v.username.$touch()"
-                @blur="$v.username.$touch()"
-              ></v-text-field>
-              <v-text-field
-                id="name"
-                name="name"
-                v-model="name"
-                :error-messages="nameErrors"
-                label="Ф.И.О."
-                required
-                @input="$v.name.$touch()"
-                @blur="$v.name.$touch()"
-              ></v-text-field>
-              <v-text-field
-                id="email"
-                name="email"
-                v-model="email"
-                :error-messages="emailErrors"
-                label="Электронная почта"
-                required
-                @input="$v.email.$touch()"
-                @blur="$v.email.$touch()"
-              ></v-text-field>
-              <v-text-field
-                id="password"
-                name="password"
-                v-model="password"
-                :error-messages="passwordErrors"
-                label="Пароль"
-                required
-                @input="$v.password.$touch()"
-                @blur="$v.password.$touch()"
-              ></v-text-field>
-              <v-text-field
-                id="confirmpassword"
-                name="confirmpassword"
-                v-model="confirmpassword"
-                :error-messages="confirmPasswordErrors"
-                label="Подтвердите пароль"
-                required
-                @input="$v.confirmpassword.$touch()"
-                @blur="$v.confirmpassword.$touch()"
-              ></v-text-field>
-              <v-card-actions>
-                <v-btn @click="registerUser">Регистрация</v-btn>
-                <router-link :to="{ name: 'login' }" class="margin-left"
-                  >Есть аккаунт?</router-link
-                >
-                <v-spacer></v-spacer>
-                <v-btn @click="clear">
-                  Сброс
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-app>
+  <div>
+    <v-card-text>
+      <v-alert type="error" dark v-if="getError">
+        {{ getError }}
+      </v-alert>
+      <v-text-field
+        id="username"
+        name="username"
+        v-model="username"
+        :error-messages="usernameErrors"
+        label="Логин"
+        required
+        @input="$v.username.$touch()"
+        @blur="$v.username.$touch()"
+      ></v-text-field>
+      <v-text-field
+        id="name"
+        name="name"
+        v-model="name"
+        :error-messages="nameErrors"
+        label="Ф.И.О."
+        required
+        @input="$v.name.$touch()"
+        @blur="$v.name.$touch()"
+      ></v-text-field>
+      <v-text-field
+        id="email"
+        name="email"
+        v-model="email"
+        :error-messages="emailErrors"
+        label="Электронная почта"
+        required
+        @input="$v.email.$touch()"
+        @blur="$v.email.$touch()"
+      ></v-text-field>
+      <v-text-field
+        id="password"
+        name="password"
+        v-model="password"
+        :error-messages="passwordErrors"
+        label="Пароль"
+        required
+        @input="$v.password.$touch()"
+        @blur="$v.password.$touch()"
+      ></v-text-field>
+      <v-text-field
+        id="confirmpassword"
+        name="confirmpassword"
+        v-model="confirmpassword"
+        :error-messages="confirmPasswordErrors"
+        label="Подтвердите пароль"
+        required
+        @input="$v.confirmpassword.$touch()"
+        @blur="$v.confirmpassword.$touch()"
+      ></v-text-field>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn
+        color="cyan accent-3"
+        rounded
+        width="150px"
+        elevation="6"
+        @click="registerUser"
+        >Регистрация</v-btn
+      >
+      <router-link :to="{ name: 'login' }" class="margin-left"
+        >Есть аккаунт?</router-link
+      >
+    </v-card-actions>
+  </div>
 </template>
 <script>
 import { validationMixin } from "vuelidate";
 import { required, email, sameAs } from "vuelidate/lib/validators";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   mixins: [validationMixin],
@@ -100,6 +95,7 @@ export default {
   }),
 
   computed: {
+    ...mapGetters({ getError: "auth/ERROR" }),
     nameErrors() {
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
@@ -138,6 +134,7 @@ export default {
   },
 
   methods: {
+    ...mapMutations({ mut_CLEAR_ERROR: "auth/CLEAR_ERROR" }),
     ...mapActions("auth", ["REGISTER"]),
     registerUser() {
       console.log(this.$v.$invalid);
@@ -160,18 +157,9 @@ export default {
           console.log(err);
         });
     },
-    clear() {
-      this.$v.$reset();
-      this.username = "";
-      this.password = "";
-      this.name = "";
-      this.confirmpassword = "";
-      this.email = "";
-    },
   },
   created() {
-    console.log("reggy");
-    console.log(this.$v);
+    this.mut_CLEAR_ERROR();
   },
 };
 </script>
