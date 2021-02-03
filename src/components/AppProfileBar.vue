@@ -2,7 +2,7 @@
   <div>
     <v-btn
       class="position-absolute-btn"
-      color="primary"
+      color="indigo darken-1"
       dark
       @click.stop="drawer = !drawer"
     >

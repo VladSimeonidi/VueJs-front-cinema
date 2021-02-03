@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <vue-extend-layouts />
-    <notifications width="400" group="filmError" />
+    <notifications position="bottom right" width="400" group="filmError" />
   </div>
 </template>
 

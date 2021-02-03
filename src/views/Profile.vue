@@ -40,7 +40,7 @@
         >
       </v-card-actions>
     </v-card>
-    <AppProfileBar />
+    <AppProfileBar v-if="admin" />
   </v-layout>
 </template>
 
