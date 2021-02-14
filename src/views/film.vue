@@ -159,9 +159,9 @@
           <v-btn @click="$router.go(-1)">
             Назад
           </v-btn>
-          <v-btn @click="check">
+          <!-- <v-btn @click="check">
             check
-          </v-btn>
+          </v-btn> -->
         </v-card-actions>
       </v-card>
     </v-container>

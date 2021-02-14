@@ -129,6 +129,7 @@ export default {
       rgba(34, 46, 63, 1) 0%,
       rgba(57, 76, 99, 1) 100%
     );
+    position: relative;
   }
   &__flyer {
     background: rgb(109, 223, 202);

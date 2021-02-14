@@ -35,8 +35,9 @@
     >
       Вы администратор, но зашли как обычный пользователь
     </v-alert>
-
-    <router-view class="margin_top"></router-view>
+    <vue-page-transition name="fade">
+      <router-view class="margin_top"></router-view>
+    </vue-page-transition>
   </v-app>
 </template>
 

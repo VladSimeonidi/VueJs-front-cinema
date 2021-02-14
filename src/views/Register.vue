@@ -1,9 +1,6 @@
 <template>
   <div>
     <v-card-text>
-      <v-alert type="error" dark v-if="getError">
-        {{ getError }}
-      </v-alert>
       <v-text-field
         id="username"
         name="username"
@@ -95,7 +92,9 @@ export default {
   }),
 
   computed: {
-    ...mapGetters({ getError: "auth/ERROR" }),
+    authErrorOnPage() {
+      return this.getError();
+    },
     nameErrors() {
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
@@ -136,10 +135,21 @@ export default {
   methods: {
     ...mapMutations({ mut_CLEAR_ERROR: "auth/CLEAR_ERROR" }),
     ...mapActions("auth", ["REGISTER"]),
+    ...mapGetters({ getError: "auth/ERROR" }),
     registerUser() {
-      console.log(this.$v.$invalid);
       this.$v.$touch();
-      if (this.$v.$invalid) return;
+      if (this.$v.$invalid) {
+        this.$notify({
+          group: "filmError",
+          title: "Валидация",
+          text: "Заполните все необходимые поля правильно!",
+          type: "error",
+
+          max: 3,
+          duration: 5000,
+        });
+        return;
+      }
       let userData = {
         username: this.username,
         name: this.name,
@@ -156,6 +166,19 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+  },
+  watch: {
+    authErrorOnPage: function(message) {
+      if (message) {
+        this.$notify({
+          group: "AuthError",
+          title: "Регистрация",
+          text: message,
+          type: "error",
+          duration: 5000,
+        });
+      }
     },
   },
   created() {

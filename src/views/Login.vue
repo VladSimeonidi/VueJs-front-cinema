@@ -1,9 +1,6 @@
 <template>
   <div>
     <v-card-text>
-      <v-alert type="error" dark v-if="getError">
-        {{ getError }}
-      </v-alert>
       <v-text-field
         id="username"
         name="username"
@@ -65,7 +62,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ getError: "auth/ERROR" }),
+    authErrorOnPage() {
+      return this.getError();
+    },
     nameErrors() {
       const errors = [];
       if (!this.$v.username.$dirty) return errors;
@@ -83,12 +82,24 @@ export default {
   methods: {
     ...mapMutations({ mut_CLEAR_ERROR: "auth/CLEAR_ERROR" }),
     ...mapActions({ LOGIN: "auth/LOGIN", LOGIN_ADMIN: "auth/LOGIN_ADMIN" }),
+    ...mapGetters({ getError: "auth/ERROR" }),
     clearError() {
       this.mut_CLEAR_ERROR();
     },
     loginUser() {
       this.$v.$touch();
-      if (this.$v.$invalid) return;
+      if (this.$v.$invalid) {
+        this.$notify({
+          group: "filmError",
+          title: "Валидация",
+          text: "Заполните все необходимые поля правильно!",
+          type: "error",
+
+          max: 3,
+          duration: 5000,
+        });
+        return;
+      }
       const user = {
         username: this.username,
         password: this.password,
@@ -120,8 +131,27 @@ export default {
       }
     },
   },
+  watch: {
+    authErrorOnPage: function(message) {
+      if (message) {
+        this.$notify({
+          group: "AuthError",
+          title: "Логин",
+          text: message,
+          type: "error",
+          duration: 5000,
+        });
+      }
+    },
+  },
   created() {
     this.mut_CLEAR_ERROR();
   },
 };
 </script>
+<style lang="scss" scoped>
+.myAlert {
+  position: absolute;
+  width: 100%;
+}
+</style>

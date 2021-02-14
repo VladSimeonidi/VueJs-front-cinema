@@ -12,6 +12,7 @@ import vuetify from "./plugins/vuetify";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
 import Vuelidate from "vuelidate";
+import VuePageTransition from "vue-page-transition";
 import Notifications from "vue-notification";
 
 Vue.prototype.$http = axios;
@@ -25,6 +26,8 @@ Vue.use(VueAxios, axios);
 Vue.use(Vuelidate);
 Vue.use(VuePlyr);
 Vue.use(Notifications);
+Vue.use(VuePageTransition);
+
 new Vue({
   router,
   store,

@@ -1,5 +1,9 @@
 <template>
-  <v-layout v-if="user" class="justify-center align-center myAquaBackGround">
+  <v-container
+    fluid
+    v-if="user"
+    class="d-flex justify-center align-center myAquaBackGround"
+  >
     <v-card
       class="myCardStyles positionRelative rounded-xl"
       width="100%"
@@ -41,7 +45,7 @@
       </v-card-actions>
     </v-card>
     <AppProfileBar v-if="admin" />
-  </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -72,6 +76,7 @@ export default {
 <style lang="scss" scoped>
 .myAquaBackGround {
   background: linear-gradient(to right top, #65dfc9, #6cdbeb);
+  height: calc(100vh - 48px);
 }
 .positionRelative {
   position: relative;

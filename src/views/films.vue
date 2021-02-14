@@ -80,7 +80,8 @@
           :key="index"
           class="align-start"
           xs12
-          sm4
+          sm6
+          md4
         >
           <v-card
             shaped

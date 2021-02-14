@@ -1,42 +1,73 @@
 <template>
   <v-app>
-    <detected-speed>
-      <video-background
-        slot="fast"
-        src="http://test.com:81/videos/front/preview.mp4"
-        style="height: 100vh;"
+    <v-container class="homeContainer" fluid ref="homeContainer">
+      <!-- <h1 class="homeTitle">Добро пожаловать на хостинг трейлеров</h1> -->
+      <router-link :to="{ name: 'films' }" class="button"
+        >Перейти к трейлерам</router-link
       >
-        <div class="container">
-          <h1 class="title">Добро пожаловать на хостинг трейлеров</h1>
-          <router-link :to="{ name: 'films' }" class="button"
-            >Перейти к трейлерам</router-link
-          >
-        </div>
-      </video-background>
-      <div slot="slow">
-        <v-sheet height="100vh"
-          ><v-layout column align-center justify-center fill-height>
-            <div>У вас медленный интернет</div>
-            <router-link :to="{ name: 'films' }" class="button"
-              >Перейти к трейлерам</router-link
-            >
-          </v-layout></v-sheet
-        >
-      </div>
-
-      <div slot="unknown">???????</div>
-    </detected-speed>
+    </v-container>
   </v-app>
 </template>
 
 <script>
-import VideoBackground from "vue-responsive-video-background-player";
-import DetectedSpeed from "vue-identify-network";
+import anime from "animejs/lib/anime.es.js";
 export default {
   name: "Home",
-  components: {
-    "video-background": VideoBackground,
-    DetectedSpeed,
+  components: {},
+  methods: {
+    animatesircles() {
+      anime({
+        targets: ".block",
+        translateX: function() {
+          return anime.random(-700, 700);
+        },
+        translateY: function() {
+          return anime.random(-500, 500);
+        },
+        scale: function() {
+          return anime.random(1, 5);
+        },
+        easing: "linear",
+        duration: 3000,
+        delay: anime.stagger(10),
+        complete: this.animatesircles,
+      });
+    },
+  },
+  mounted() {
+    const container = this.$refs.homeContainer;
+    for (let i = 0; i < 100; i++) {
+      const block = document.createElement("div");
+      block.classList.add("block");
+      block.style.height = "100px";
+      block.style.width = "50px";
+      block.style.background = "#43a047";
+      block.style.position = "absolute";
+      block.style.boxShadow = "10px 10px 50px rgba(0, 0, 0, 0.2)";
+
+      container.appendChild(block);
+    }
+    this.animatesircles();
+    console.log("1111");
+    // setTimeout(() => {
+    //   console.log("ggggg");
+    //   this.$router.push({ name: "films" });
+    // }, 10000);
+
+    // const targets = ".block";
+    // this.$anime.timeline().add({
+    //   targets,
+    //   translateX: function() {
+    //     return Math.random() * (700 + 700) - 700;
+    //   },
+    //   translateY: function() {
+    //     return Math.random() * (500 + 500) - 500;
+    //   },
+    //   easing: "linear",
+    //   loop: true,
+    //   duration: 3000,
+    //   rotate: "1turn",
+    // });
   },
 };
 </script>
@@ -47,28 +78,31 @@ body {
   margin: 0;
   padding: 0;
 }
-.wrapper {
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
-  background-image: url("../assets/main.jpg");
+.homeContainer {
+  position: relative;
   display: flex;
+  min-height: 100vh;
   justify-content: center;
   align-items: center;
+  background-color: #43a047;
 }
-.container {
-  max-width: 1000px;
-  text-align: center;
-  height: 100%;
-}
-.title {
+.homeTitle {
   font-family: "Marck Script";
   font-weight: 400;
-  font-size: 50px;
-  background-color: rgba(255, 255, 255, 0.1);
+  font-size: 5vw;
+  // background-color: rgba(255, 255, 255, 0.1);
   user-select: none;
 }
+.block {
+  position: absolute;
+  width: 50px;
+  height: 100px;
+  background-color: #43a047;
+  box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.2);
+}
 .button {
+  position: absolute;
+  z-index: 1000;
   font-family: "Arial", sans-serif;
   box-shadow: 0px 10px 14px -7px #347327;
   background: linear-gradient(to bottom, #59b36e 5%, #409940 100%);

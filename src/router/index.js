@@ -53,6 +53,7 @@ const routes = [
     component: FilmDitails,
     meta: {
       requiresAuth: true,
+      transition: "zoom",
     },
   },
   {
