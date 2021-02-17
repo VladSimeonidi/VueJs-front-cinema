@@ -28,6 +28,18 @@ export default {
       clearTimeout(this.timer);
       this.$router.push({ name: "films" });
     },
+    skipIntroViaTimer() {
+      this.timer = setTimeout(() => {
+        this.$router.push({ name: "films" });
+        console.log("timer");
+      }, 8000);
+    },
+    skipIntroByAnyKey() {
+      document.onkeypress = () => {
+        clearTimeout(this.timer);
+        this.$router.push({ name: "films" });
+      };
+    },
   },
   mounted() {
     const blocks = this.$refs.blocks;
@@ -36,14 +48,8 @@ export default {
       el.style.animationDuration = 2 + duration + "s";
       el.style.animationDelay = 2 + duration + "s";
     });
-    this.timer = setTimeout(() => {
-      this.$router.push({ name: "films" });
-      console.log("timer");
-    }, 8000);
-    document.onkeypress = () => {
-      clearTimeout(this.timer);
-      this.$router.push({ name: "films" });
-    };
+    this.skipIntroViaTimer();
+    this.skipIntroByAnyKey();
   },
 };
 </script>
