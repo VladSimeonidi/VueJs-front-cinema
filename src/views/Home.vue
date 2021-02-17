@@ -1,132 +1,125 @@
 <template>
   <v-app>
-    <v-container class="homeContainer" fluid ref="homeContainer">
-      <!-- <h1 class="homeTitle">Добро пожаловать на хостинг трейлеров</h1> -->
-      <router-link :to="{ name: 'films' }" class="button"
-        >Перейти к трейлерам</router-link
-      >
-    </v-container>
+    <div class="homepage" @click="skipIntro">
+      <section class="homepage__section">
+        <div class="homepage__banner">
+          <div
+            class="homepage__blocks"
+            v-for="(n, index) in 400"
+            :key="index"
+            ref="blocks"
+          ></div>
+        </div>
+      </section>
+    </div>
   </v-app>
 </template>
 
 <script>
-import anime from "animejs/lib/anime.es.js";
 export default {
+  data() {
+    return {
+      timer: null,
+    };
+  },
   name: "Home",
-  components: {},
   methods: {
-    animatesircles() {
-      anime({
-        targets: ".block",
-        translateX: function() {
-          return anime.random(-700, 700);
-        },
-        translateY: function() {
-          return anime.random(-500, 500);
-        },
-        scale: function() {
-          return anime.random(1, 5);
-        },
-        easing: "linear",
-        duration: 3000,
-        delay: anime.stagger(10),
-        complete: this.animatesircles,
-      });
+    skipIntro() {
+      clearTimeout(this.timer);
+      this.$router.push({ name: "films" });
     },
   },
   mounted() {
-    const container = this.$refs.homeContainer;
-    for (let i = 0; i < 100; i++) {
-      const block = document.createElement("div");
-      block.classList.add("block");
-      block.style.height = "100px";
-      block.style.width = "50px";
-      block.style.background = "#43a047";
-      block.style.position = "absolute";
-      block.style.boxShadow = "10px 10px 50px rgba(0, 0, 0, 0.2)";
-
-      container.appendChild(block);
-    }
-    this.animatesircles();
-    console.log("1111");
-    // setTimeout(() => {
-    //   console.log("ggggg");
-    //   this.$router.push({ name: "films" });
-    // }, 10000);
-
-    // const targets = ".block";
-    // this.$anime.timeline().add({
-    //   targets,
-    //   translateX: function() {
-    //     return Math.random() * (700 + 700) - 700;
-    //   },
-    //   translateY: function() {
-    //     return Math.random() * (500 + 500) - 500;
-    //   },
-    //   easing: "linear",
-    //   loop: true,
-    //   duration: 3000,
-    //   rotate: "1turn",
-    // });
+    const blocks = this.$refs.blocks;
+    blocks.forEach((el) => {
+      const duration = Math.random() * 3;
+      el.style.animationDuration = 2 + duration + "s";
+      el.style.animationDelay = 2 + duration + "s";
+    });
+    this.timer = setTimeout(() => {
+      this.$router.push({ name: "films" });
+      console.log("timer");
+    }, 8000);
+    document.onkeypress = () => {
+      clearTimeout(this.timer);
+      this.$router.push({ name: "films" });
+    };
   },
 };
 </script>
 
 <style scoped lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Marck+Script&display=swap");
-body {
-  margin: 0;
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
+* {
+  box-sizing: border-box;
   padding: 0;
+  margin: 0;
 }
-.homeContainer {
-  position: relative;
-  display: flex;
-  min-height: 100vh;
-  justify-content: center;
-  align-items: center;
-  background-color: #43a047;
-}
-.homeTitle {
-  font-family: "Marck Script";
-  font-weight: 400;
-  font-size: 5vw;
-  // background-color: rgba(255, 255, 255, 0.1);
-  user-select: none;
-}
-.block {
-  position: absolute;
-  width: 50px;
-  height: 100px;
-  background-color: #43a047;
-  box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.2);
-}
-.button {
-  position: absolute;
-  z-index: 1000;
-  font-family: "Arial", sans-serif;
-  box-shadow: 0px 10px 14px -7px #347327;
-  background: linear-gradient(to bottom, #59b36e 5%, #409940 100%);
-  background-color: #59b36e;
-  border-radius: 8px;
-  border: 0;
-  outline: none;
-  user-select: none;
-  display: inline-block;
-  cursor: pointer;
-  color: #ffffff;
-  font-family: Arial;
-  font-size: 20px;
-  font-weight: bold;
-  padding: 13px 32px;
-  text-decoration: none;
-  text-shadow: 0px 1px 0px #578a3e;
-}
-.button:hover {
-  background: linear-gradient(to bottom, #409940 5%, #59b36e 100%);
-  background-color: #409940;
-}
-.button:active {
-  position: relative;
-  top: 1px;
+.homepage {
+  background-image: url("../assets/filmroll.jpg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  height: 100vh;
+  &__section {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    transform-style: preserve-3d;
+    perspective: 500px;
+  }
+  &__title {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    line-height: 100vh;
+    text-align: center;
+    color: white;
+    font-size: 9vw;
+    font-weight: 700;
+  }
+  &__banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    z-index: 100;
+  }
+  &__blocks {
+    background: url("../assets/intro.jpg");
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: block;
+    width: 5vw;
+    height: 5vh;
+    animation: animate ease-in-out forwards;
+    animation-delay: 3s;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+  }
+  @keyframes animate {
+    0% {
+      transform: translateZ(0px);
+      background: url("../assets/intro.jpg");
+      background-position: center;
+      background-size: cover;
+      background-attachment: fixed;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    100% {
+      transform: translateZ(2000px);
+      background: url("../assets/intro.jpg");
+      background-position: center;
+      background-size: cover;
+      background-attachment: fixed;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0);
+    }
+  }
 }
 </style>

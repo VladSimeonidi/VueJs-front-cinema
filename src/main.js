@@ -14,6 +14,7 @@ import "@mdi/font/css/materialdesignicons.css";
 import Vuelidate from "vuelidate";
 import VuePageTransition from "vue-page-transition";
 import Notifications from "vue-notification";
+import VueTyperPlugin from "vue-typer";
 
 Vue.prototype.$http = axios;
 const token = localStorage.getItem("token");
@@ -27,6 +28,7 @@ Vue.use(Vuelidate);
 Vue.use(VuePlyr);
 Vue.use(Notifications);
 Vue.use(VuePageTransition);
+Vue.use(VueTyperPlugin);
 
 new Vue({
   router,
