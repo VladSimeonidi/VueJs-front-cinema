@@ -49,7 +49,7 @@ export default {
       el.style.animationDelay = 2 + duration + "s";
     });
     this.skipIntroViaTimer();
-    this.skipIntroByAnyKey();
+    // this.skipIntroByAnyKey();
   },
 };
 </script>

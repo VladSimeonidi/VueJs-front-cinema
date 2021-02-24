@@ -1,15 +1,24 @@
 <template>
   <div id="films">
-    <v-container grid-list-lg class="d-flex flex-wrap justify-space-between">
-      <v-toolbar class="mb-3 mt-7" width="100%"
+    <v-sheet
+      class="mb-12 pt-2 pb-2 pl-7 pr-7 d-flex flex-column align-center sheetBgImg"
+      elevation="1"
+      min-height="400px"
+      height="25vh"
+      width="100%"
+      ><v-toolbar
+        rounded="lg"
+        class="mt-2 mb-3 pr-2"
+        height="100%"
+        max-height="80px"
+        width="100%"
         ><v-text-field
           @keydown.enter="search"
           v-model="searchText"
-          label="Поиск"
+          :label="$t('films.search')"
           clearable
-          hide-details
         ></v-text-field
-        ><v-btn @click="search" icon
+        ><v-btn large class="mb-5" @click="search" icon
           ><v-icon>mdi-magnify</v-icon></v-btn
         ></v-toolbar
       >
@@ -19,7 +28,7 @@
             <template>
               <v-row no-gutters>
                 <v-col cols="12">
-                  Расширенный поиск
+                  {{ $t("films.extendedSearch") }}
                 </v-col>
               </v-row>
             </template>
@@ -36,7 +45,7 @@
                   small-chips
                   v-model="genreSelectValue"
                   multiple
-                  label="Выберите жанр"
+                  :label="$t('films.chooseGenre')"
                   color="black"
                   prepend-icon="mdi-filmstrip"
                   return-object
@@ -54,7 +63,7 @@
                   item-text="name"
                   chips
                   multiple
-                  label="Выберите режиссера"
+                  :label="$t('films.chooseDirector')"
                   return-object
                 ></v-select
               ></v-col>
@@ -62,7 +71,7 @@
                 <v-range-slider
                   hide-details
                   dense
-                  label="Выберите год"
+                  :label="$t('films.chooseYear')"
                   v-model="range"
                   max="2021"
                   min="1950"
@@ -74,6 +83,8 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
+    </v-sheet>
+    <v-container grid-list-lg class="d-flex flex-wrap justify-space-between">
       <v-layout row wrap v-if="list.length > 0">
         <v-flex
           v-for="(film, index) in list"
@@ -172,16 +183,17 @@ export default {
     },
   },
   methods: {
-    resetSearchValues() {
-      this.genreSelectValue = [];
-      this.directorSelectValue = [];
-      this.range = [1935, 2021];
-      this.pageSet = {
-        pageNumber: 1,
-        pageSize: 9,
-      };
-      this.paginate(this.pageSet);
-    },
+    ...mapActions({
+      uploadGenresList: "genre/SET_LIST",
+      loadFilmsList: "film/SET_LIST",
+      setListOfDirectors: "director/SET_LIST",
+      getProfile: "auth/GET_PROFILE",
+    }),
+    ...mapGetters("film", ["GET_LIST", "GET_LIST_TOTAL"]),
+    ...mapGetters({
+      getAllGenres: "genre/GET_LIST",
+      getAllDirectors: "director/GET_LIST",
+    }),
     rangeValue(value) {
       this.pageSet.range = value;
       this.paginate(this.pageSet);
@@ -204,17 +216,6 @@ export default {
       this.pageSet.directors = ids;
       this.paginate(this.pageSet);
     },
-    ...mapActions({
-      uploadGenresList: "genre/SET_LIST",
-      loadFilmsList: "film/SET_LIST",
-      setListOfDirectors: "director/SET_LIST",
-      getProfile: "auth/GET_PROFILE",
-    }),
-    ...mapGetters("film", ["GET_LIST", "GET_LIST_TOTAL"]),
-    ...mapGetters({
-      getAllGenres: "genre/GET_LIST",
-      getAllDirectors: "director/GET_LIST",
-    }),
     paginate(mainObj) {
       this.loadFilmsList(mainObj).then(() => {
         this.list = this.GET_LIST();
@@ -226,12 +227,26 @@ export default {
       this.pageSet.search = this.searchText;
       this.paginate(this.pageSet);
     },
+    resetSearchValues() {
+      this.genreSelectValue = [];
+      this.directorSelectValue = [];
+      this.range = [1935, 2021];
+      this.pageSet = {
+        pageNumber: 1,
+        pageSize: 9,
+      };
+      this.paginate(this.pageSet);
+    },
   },
   mounted() {
-    this.getProfile().then((res) => {
-      this.user = res.user;
-      this.admin = res.admin;
-    });
+    this.getProfile()
+      .then((res) => {
+        this.user = res.user;
+        this.admin = res.admin;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     this.paginate(this.pageSet);
     this.uploadGenresList().then(() => {
       this.genres = this.getAllGenres();
@@ -265,12 +280,17 @@ export default {
   transform: scale(1.03);
 }
 #films {
-  background-color: #b2ff59;
+  background-color: #e0f7fa;
 }
 .vElseContainer {
   min-height: 200px;
   font-weight: bold;
   font-family: "Russo One", sans-serif;
   font-size: 2vw;
+}
+.sheetBgImg {
+  background-image: url("../assets/mountians.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 </style>

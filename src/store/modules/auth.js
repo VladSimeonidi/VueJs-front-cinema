@@ -79,7 +79,10 @@ export const actions = {
     try {
       let res = await axios.post(
         config.API.BASE_URL + config.API.USER.LOGIN_ADMIN,
-        user
+        user,
+        {
+          withCredentials: true,
+        }
       );
       if (res.data.success) {
         const token = res.data.token;
@@ -110,10 +113,22 @@ export const actions = {
     }
   },
   async GET_PROFILE({ commit }) {
-    commit("PROFILE_REQUEST");
-    let res = await axios.get(config.API.BASE_URL + config.API.USER.PROFILE);
-    commit("USER_PROFILE", res.data.user);
-    return res.data.user;
+    try {
+      commit("PROFILE_REQUEST");
+      let res = await axios.get(config.API.BASE_URL + config.API.USER.PROFILE);
+      commit("USER_PROFILE", res.data.user);
+      return res.data.user;
+    } catch (error) {
+      if (
+        error.response.data === "Unauthorized" &&
+        error.response.status === 401
+      ) {
+        console.log("Удалить токен");
+        localStorage.removeItem("token");
+        this.reset();
+        router.push("/login");
+      }
+    }
   },
   async LOGOUT({ commit }) {
     await localStorage.removeItem("token");

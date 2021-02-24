@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-container fluid class="form__wrapper d-flex justify-center align-center">
+      <myLocale class="myAbsolute langSelect" />
       <v-sheet
         rounded="lg"
         elevation="24"
@@ -49,12 +50,12 @@
                 :to="{ name: 'login' }"
                 class="chip chip_border-radius-left"
                 :class="{ chip_active: $route.name === 'login' }"
-                >Логин</router-link
+                >{{ $t("authLayout.login") }}</router-link
               ><router-link
                 :to="{ name: 'register' }"
                 class="chip chip_border-radius-right"
                 :class="{ chip_active: $route.name === 'register' }"
-                >Регистрация</router-link
+                >{{ $t("authLayout.register") }}</router-link
               ></v-card-title
             >
             <router-view
@@ -66,6 +67,7 @@
 </template>
 
 <script>
+import myLocale from "@/components/AppLocale.vue";
 export default {
   name: "authlayout",
   data() {
@@ -90,9 +92,7 @@ export default {
       ],
     };
   },
-  created() {
-    console.log(this.$route);
-  },
+  components: { myLocale },
   computed: {
     height() {
       switch (this.$vuetify.breakpoint.name) {
@@ -114,8 +114,15 @@ export default {
 </script>
 
 <style lang="scss">
+.myAbsolute {
+  position: absolute;
+  z-index: 100;
+  top: 10px;
+  right: 10px;
+}
 .form {
   &__wrapper {
+    position: relative;
     height: 100vh;
     background: linear-gradient(
       315deg,
@@ -156,5 +163,8 @@ export default {
   &_active {
     background-color: #00e5ff;
   }
+}
+.langSelect {
+  width: 135px;
 }
 </style>

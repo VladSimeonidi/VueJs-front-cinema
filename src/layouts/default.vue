@@ -1,9 +1,11 @@
 <template>
   <v-app v-if="user">
     <v-app-bar dense dark app>
-      <v-btn title="На главную" :to="{ name: 'home' }" mr-auto icon>
+      <!-- <v-btn title="На главную" :to="{ name: 'home' }" mr-auto icon>
         <v-icon>mdi-home</v-icon>
-      </v-btn>
+      </v-btn> -->
+
+      <myLocale class="langSelect" />
       <v-spacer></v-spacer>
       <v-btn title="Фильмы" :to="{ name: 'films' }" icon>
         <v-icon>mdi-movie</v-icon>
@@ -43,6 +45,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import myLocale from "@/components/AppLocale.vue";
 export default {
   data() {
     return {
@@ -51,6 +54,7 @@ export default {
       admin: null,
     };
   },
+  components: { myLocale },
   created() {
     this.GET_PROFILE().then((res) => {
       this.user = res.user;
@@ -80,5 +84,8 @@ export default {
   z-index: 100;
   left: 50%;
   transform: translate(-50%);
+}
+.langSelect {
+  width: 135px;
 }
 </style>

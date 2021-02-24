@@ -1,6 +1,5 @@
 import { config } from "@/config/config";
 import axios from "axios";
-export const strict = true;
 export const namespaced = true;
 
 export const state = () => ({

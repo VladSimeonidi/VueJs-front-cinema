@@ -3,9 +3,7 @@
     <v-footer dark padless>
       <v-card class="flex" flat tile>
         <v-card-title class="purple darken-4">
-          <strong class="subheading"
-            >Подписывайтесь на нас в социальных сетях!</strong
-          >
+          <strong class="subheading">{{ $t("films.footerText") }}</strong>
 
           <v-spacer></v-spacer>
 
@@ -25,7 +23,8 @@
         </v-card-title>
 
         <v-card-text class="py-2 white--text text-center">
-          {{ new Date().getFullYear() }} — <strong>Мой сайт</strong>
+          {{ new Date().getFullYear() }} —
+          <strong>{{ $t("films.mySite") }}</strong>
         </v-card-text>
       </v-card>
     </v-footer>

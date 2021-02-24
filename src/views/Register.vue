@@ -6,7 +6,7 @@
         name="username"
         v-model="username"
         :error-messages="usernameErrors"
-        label="Логин"
+        :label="$t('register.login')"
         required
         @input="$v.username.$touch()"
         @blur="$v.username.$touch()"
@@ -16,7 +16,7 @@
         name="name"
         v-model="name"
         :error-messages="nameErrors"
-        label="Ф.И.О."
+        :label="$t('register.name')"
         required
         @input="$v.name.$touch()"
         @blur="$v.name.$touch()"
@@ -26,7 +26,7 @@
         name="email"
         v-model="email"
         :error-messages="emailErrors"
-        label="Электронная почта"
+        :label="$t('register.email')"
         required
         @input="$v.email.$touch()"
         @blur="$v.email.$touch()"
@@ -36,7 +36,7 @@
         name="password"
         v-model="password"
         :error-messages="passwordErrors"
-        label="Пароль"
+        :label="$t('register.password')"
         required
         @input="$v.password.$touch()"
         @blur="$v.password.$touch()"
@@ -46,7 +46,7 @@
         name="confirmpassword"
         v-model="confirmpassword"
         :error-messages="confirmPasswordErrors"
-        label="Подтвердите пароль"
+        :label="$t('register.confirmPassword')"
         required
         @input="$v.confirmpassword.$touch()"
         @blur="$v.confirmpassword.$touch()"
@@ -59,11 +59,11 @@
         width="150px"
         elevation="6"
         @click="registerUser"
-        >Регистрация</v-btn
+        >{{ $t("register.register") }}</v-btn
       >
-      <router-link :to="{ name: 'login' }" class="margin-left"
-        >Есть аккаунт?</router-link
-      >
+      <router-link :to="{ name: 'login' }" class="margin-left">{{
+        $t("register.haveAccount")
+      }}</router-link>
     </v-card-actions>
   </div>
 </template>
