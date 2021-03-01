@@ -3,6 +3,11 @@
     <vue-extend-layouts />
     <notifications position="bottom right" width="400" group="filmError" />
     <notifications position="bottom right" width="400" group="AuthError" />
+    <notifications
+      position="bottom right"
+      width="400"
+      group="FilmSaveEditSuccess"
+    />
   </div>
 </template>
 

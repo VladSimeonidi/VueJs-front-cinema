@@ -95,15 +95,17 @@
           md4
         >
           <v-card
+            @click="goToFilmDetails(film._id)"
             shaped
             class="text-center grow pt-5 hoverEffect"
             min-height="420px"
           >
-            <router-link
-              :to="{ name: 'filmditails', params: { id: film._id } }"
+            <img
               v-if="film.poster"
-              ><img class="palyer__img" :src="film.poster.file_path" alt=""
-            /></router-link>
+              class="palyer__img"
+              :src="film.poster.file_path"
+              alt=""
+            />
             <div class="player__title">
               {{ film.name }}
               <v-btn
@@ -173,8 +175,8 @@ export default {
       set(value) {
         this.pageSet.pageNumber = value;
         this.loadFilmsList(this.pageSet).then(() => {
-          this.list = this.GET_LIST();
-          this.listTotal = this.GET_LIST_TOTAL();
+          this.list = this.getFilmLsit();
+          this.listTotal = this.getFilmLsitTotal();
           this.paginatonsCounter = Math.ceil(
             this.listTotal / this.pageSet.pageSize
           );
@@ -189,11 +191,15 @@ export default {
       setListOfDirectors: "director/SET_LIST",
       getProfile: "auth/GET_PROFILE",
     }),
-    ...mapGetters("film", ["GET_LIST", "GET_LIST_TOTAL"]),
     ...mapGetters({
+      getFilmLsitTotal: "film/GET_LIST_TOTAL",
+      getFilmLsit: "film/GET_LIST",
       getAllGenres: "genre/GET_LIST",
       getAllDirectors: "director/GET_LIST",
     }),
+    goToFilmDetails(ID) {
+      this.$router.push({ name: "filmditails", params: { id: ID } });
+    },
     rangeValue(value) {
       this.pageSet.range = value;
       this.paginate(this.pageSet);
@@ -218,8 +224,8 @@ export default {
     },
     paginate(mainObj) {
       this.loadFilmsList(mainObj).then(() => {
-        this.list = this.GET_LIST();
-        this.listTotal = this.GET_LIST_TOTAL();
+        this.list = this.getFilmLsit();
+        this.listTotal = this.getFilmLsitTotal();
         this.paginatonsCounter = Math.ceil(this.listTotal / mainObj.pageSize);
       });
     },
@@ -248,9 +254,13 @@ export default {
         console.log(err);
       });
     this.paginate(this.pageSet);
-    this.uploadGenresList().then(() => {
-      this.genres = this.getAllGenres();
-    });
+    this.uploadGenresList()
+      .then(() => {
+        this.genres = this.getAllGenres();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     this.setListOfDirectors()
       .then((value) => {
         this.directors = value;
@@ -289,7 +299,7 @@ export default {
   font-size: 2vw;
 }
 .sheetBgImg {
-  background-image: url("../assets/mountians.jpg");
+  background-image: url("../assets/films/mountians.jpg");
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }

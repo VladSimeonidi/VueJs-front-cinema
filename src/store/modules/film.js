@@ -145,6 +145,9 @@ export const actions = {
     }
     let dataToSave = state.currentItem;
     formData.append("film", JSON.stringify(dataToSave));
+
+    let response = null;
+
     await axios
       .post(config.API.BASE_URL + config.API.FILM.LIST, formData, {
         headers: {
@@ -154,12 +157,14 @@ export const actions = {
       .then((res) => {
         commit("SET_CURRENT_ITEM", res.data);
         commit("SET_LOADING", false);
+        response = res.status;
         router.push({ name: "filmditails", params: { id: res.data._id } });
       })
-      .catch((e) => {
+      .catch((error) => {
         commit("SET_LOADING", false);
-        console.log(e);
+        console.log(error);
       });
+    return response;
   },
   async EDIT_CURRENT_ITEM({ state, commit }) {
     commit("SET_LOADING", true);
@@ -191,6 +196,7 @@ export const actions = {
         });
     } catch (error) {
       commit("SET_LOADING", false);
+      console.log(error);
       return error;
     }
   },

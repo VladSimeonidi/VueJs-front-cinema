@@ -6,12 +6,14 @@
     </v-card-text>
     <v-container fluid class="text-center myBackgroundBrown">
       <v-row>
-        <v-col>Жанр</v-col>
+        <v-col> {{ $t("filmDetails.genre") }}</v-col>
         <v-col
-          ><span v-if="film.director.length < 2">Режиссер</span>
-          <span v-else>Режиссеры</span></v-col
+          ><span v-if="film.director.length < 2">{{
+            $t("filmDetails.director")
+          }}</span>
+          <span v-else>{{ $t("filmDetails.directors") }}</span></v-col
         >
-        <v-col>Год производства</v-col>
+        <v-col>{{ $t("filmDetails.year") }}</v-col>
       </v-row>
       <v-row>
         <v-col
@@ -28,31 +30,8 @@
         >
         <v-col>{{ film.year }}</v-col>
       </v-row>
-      <!-- <v-flex md4>
-        <v-card-title class="justify-center">Жанр</v-card-title>
-        <v-card-text class="text-center" dense>
-          <span v-for="(genre, genreIndex) in film.genre" :key="genreIndex"
-            >{{ genre.name }} &nbsp; &nbsp;</span
-          >
-        </v-card-text>
-      </v-flex>
-      <v-flex md4 class="trailer__wrapper pa-3 pt-0">
-        <v-card-title v-if="film.director.length < 2">Режиссер</v-card-title>
-        <v-card-title v-else>Режиссеры</v-card-title>
-        <v-card-text dense>
-          <span
-            v-for="(director, directorIndex) in film.director"
-            :key="directorIndex"
-            >{{ director.name }} &nbsp; &nbsp;</span
-          >
-        </v-card-text>
-      </v-flex>
-      <v-flex md4 class="trailer__wrapper pa-3 pt-0">
-        <v-card-title>Год производства</v-card-title>
-        <v-card-text> {{ film.year }} </v-card-text>
-      </v-flex> -->
     </v-container>
-    <v-card-title>Трейлер</v-card-title>
+    <v-card-title>{{ $t("filmDetails.trailer") }}</v-card-title>
     <v-card-text class="text-center">
       <Media
         :kind="'video'"

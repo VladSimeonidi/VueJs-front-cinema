@@ -2,6 +2,7 @@
   <v-app>
     <div class="homepage" @click="skipIntro">
       <section class="homepage__section">
+        <h1 class="homepage__title">{{ $t("intro.welcome") }}</h1>
         <div class="homepage__banner">
           <div
             class="homepage__blocks"
@@ -34,12 +35,12 @@ export default {
         console.log("timer");
       }, 8000);
     },
-    skipIntroByAnyKey() {
-      document.onkeypress = () => {
-        clearTimeout(this.timer);
-        this.$router.push({ name: "films" });
-      };
-    },
+    // skipIntroByAnyKey() {
+    //   document.onkeypress = () => {
+    //     clearTimeout(this.timer);
+    //     this.$router.push({ name: "films" });
+    //   };
+    // },
   },
   mounted() {
     const blocks = this.$refs.blocks;
@@ -48,7 +49,7 @@ export default {
       el.style.animationDuration = 2 + duration + "s";
       el.style.animationDelay = 2 + duration + "s";
     });
-    this.skipIntroViaTimer();
+    // this.skipIntroViaTimer();
     // this.skipIntroByAnyKey();
   },
 };
@@ -62,7 +63,7 @@ export default {
   margin: 0;
 }
 .homepage {
-  background-image: url("../assets/filmroll.jpg");
+  background-image: url("../assets/intro/filmroll.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   height: 100vh;
@@ -74,28 +75,27 @@ export default {
     perspective: 500px;
   }
   &__title {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    line-height: 100vh;
-    text-align: center;
-    color: white;
+    position: absolute;
+    color: black;
     font-size: 9vw;
     font-weight: 700;
+    top: 50%;
+    text-align: center;
+    width: 100%;
   }
   &__banner {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
-    width: 100vw;
+    width: 100%;
     overflow: hidden;
     display: flex;
     flex-wrap: wrap;
     z-index: 100;
   }
   &__blocks {
-    background: url("../assets/intro.jpg");
+    background: url("../assets/intro/intro.jpg");
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
@@ -111,7 +111,7 @@ export default {
   @keyframes animate {
     0% {
       transform: translateZ(0px);
-      background: url("../assets/intro.jpg");
+      background: url("../assets/intro/intro.jpg");
       background-position: center;
       background-size: cover;
       background-attachment: fixed;
@@ -119,7 +119,7 @@ export default {
     }
     100% {
       transform: translateZ(2000px);
-      background: url("../assets/intro.jpg");
+      background: url("../assets/intro/intro.jpg");
       background-position: center;
       background-size: cover;
       background-attachment: fixed;

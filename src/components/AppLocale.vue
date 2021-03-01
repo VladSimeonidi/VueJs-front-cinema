@@ -41,9 +41,9 @@ export default {
   computed: {
     currentLocale: {
       get() {
-        console.log("from computed");
-        console.log(this.getCurrentLocale());
-        console.log("from computed");
+        // console.log("from computed");
+        // console.log(this.getCurrentLocale());
+        // console.log("from computed");
         return this.getCurrentLocale();
       },
       set(value) {

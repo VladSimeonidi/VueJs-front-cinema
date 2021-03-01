@@ -37,6 +37,16 @@ export const i18n = new VueI18n({
         login: "Логин",
         register: "Регистрация",
       },
+      filmDetails: {
+        genre: "Жанр",
+        director: "Режиссер",
+        directors: "Режиссеры",
+        year: "Год производства",
+        trailer: "Трейлер",
+      },
+      intro: {
+        welcome: "Добро пожаловать!",
+      },
     },
     ua: {
       films: {
@@ -68,6 +78,16 @@ export const i18n = new VueI18n({
         login: "Логін",
         register: "Реєстрація",
       },
+      filmDetails: {
+        genre: "Жанр",
+        director: "Режисер",
+        directors: "Режисери",
+        year: "Рік виробництва",
+        trailer: "Трейлер",
+      },
+      intro: {
+        welcome: "Ласкаво просимо!",
+      },
     },
     us: {
       films: {
@@ -98,6 +118,16 @@ export const i18n = new VueI18n({
       authLayout: {
         login: "Login",
         register: "Registration",
+      },
+      filmDetails: {
+        genre: "Genre",
+        director: "Director",
+        directors: "Directors",
+        year: "Year of release",
+        trailer: "Trailer",
+      },
+      intro: {
+        welcome: "Welcome",
       },
     },
   },

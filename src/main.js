@@ -17,6 +17,7 @@ import Notifications from "vue-notification";
 import VueTyperPlugin from "vue-typer";
 import { i18n } from "./plugins/i18n";
 import FlagIcon from "vue-flag-icon";
+import "@/assets/css/main.css";
 
 axios.defaults.withCredentials = true;
 Vue.prototype.$http = axios;

@@ -363,8 +363,12 @@ export default {
       this.$refs.uploaderPoster.click();
     },
     onFilmFileChanged(e) {
-      this.setFilmFile(e.target.files[0]);
-      this.setCurrentItemLink(e.target.files[0].name);
+      try {
+        this.setFilmFile(e.target.files[0]);
+        this.setCurrentItemLink(e.target.files[0].name);
+      } catch (error) {
+        console.log(error);
+      }
     },
     onPosterFileChanged(e) {
       this.setPosterFile(e.target.files[0]);
@@ -400,6 +404,17 @@ export default {
         this.saveFilm()
           .then((res) => {
             console.log(res);
+            if (res === 200) {
+              this.$notify({
+                group: "FilmSaveEditSuccess",
+                title: "Сохранение",
+                text: "Сохранено успешно!",
+                type: "success",
+
+                max: 3,
+                duration: 5000,
+              });
+            }
           })
           .catch((e) => {
             console.log(e);

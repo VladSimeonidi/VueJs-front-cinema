@@ -134,6 +134,7 @@ export const actions = {
     await localStorage.removeItem("token");
     commit("LOGOUT");
     delete axios.defaults.headers.common["Authorization"];
+    await axios.delete(config.API.BASE_URL + config.API.USER.LOGOUT);
     this.reset();
     router.push("/login");
     return;

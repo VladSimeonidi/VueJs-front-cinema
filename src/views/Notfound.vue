@@ -17,7 +17,7 @@
   flex-wrap: wrap;
   height: 100vh;
   width: 100vw;
-  background-image: url("../assets/lol.gif");
+  background-image: url("../assets/notFound/lol.gif");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }

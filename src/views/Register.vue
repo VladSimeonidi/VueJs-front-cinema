@@ -188,13 +188,6 @@ export default {
 </script>
 
 <style lang="scss">
-.center {
-  background-image: url("../assets/register.jpg");
-  background-size: 100% 100%;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-}
 .card {
   max-width: 500px !important;
 }

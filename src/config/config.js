@@ -15,6 +15,7 @@ export const config = {
       PROFILE_AUTOCOMPLETE_LIST: "/user/autocompleteprofile",
       USERPROFILE: "/user/userprofile",
       EDITPROFILE: "/user/editprofile",
+      LOGOUT: "/user/logout",
     },
     DIRECTOR: {
       LIST: "/director",
