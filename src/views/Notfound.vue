@@ -7,6 +7,15 @@
     <router-link :to="{ name: 'home' }" class="button">По домам?</router-link>
   </div>
 </template>
+
+<script>
+export default {
+  metaInfo: {
+    title: "Not Found",
+  },
+};
+</script>
+
 <style lang="css" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Stalinist+One&display=swap");
 .wrapper {

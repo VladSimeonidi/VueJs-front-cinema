@@ -21,15 +21,12 @@ export const mutations = {
   },
   SET_USER_NAME(state, payload) {
     state.currentUser.name = payload;
-    console.log(state.currentUser.name);
   },
   SET_USER_USERNAME(state, payload) {
     state.currentUser.username = payload;
-    console.log(state.currentUser.username);
   },
   SET_USER_EMAIL(state, payload) {
     state.currentUser.email = payload;
-    console.log(state.currentUser.email);
   },
   SET_USER_PASSWORD(state, payload) {
     state.currentUser.password = payload;
@@ -72,15 +69,16 @@ export const actions = {
   async EDIT_CURRENT_USER({ commit, state }) {
     let ID = state.currentUser._id;
     let user = state.currentUser;
-    await axios
+    const response = await axios
       .put(config.API.BASE_URL + config.API.USER.EDITPROFILE + "/" + ID, user)
       .then((res) => {
-        commit("SET_CURRENT_USER", res.data);
+        commit("SET_CURRENT_USER", res.data.editedUser);
         return res.data;
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        return error.response.data;
       });
+    return response;
   },
 };
 

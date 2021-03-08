@@ -14,10 +14,12 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
+                clearable
                 v-model="newDirector.name"
                 label="Имя"
               ></v-text-field>
               <v-file-input
+                v-model="newDirectorImage"
                 @change="getDirectorPicture"
                 label="файл"
               ></v-file-input>
@@ -68,14 +70,14 @@ export default {
         () => {
           this.setListOfDirectors().then((value) => {
             this.$emit("getDirectors", value);
+            this.newDirectorImage = {};
+            this.dialog = false;
+            this.newDirector = {
+              name: "",
+              image: "",
+              films: [],
+            };
           });
-          this.newDirectorImage = null;
-          this.dialog = false;
-          this.newDirector = {
-            name: "",
-            image: "",
-            films: [],
-          };
         }
       );
     },

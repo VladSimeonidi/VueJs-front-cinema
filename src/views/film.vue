@@ -181,6 +181,9 @@ import { mapGetters, mapActions, mapMutations } from "vuex";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 export default {
+  metaInfo: {
+    title: "Edit / Save Film",
+  },
   data() {
     return {
       genres: null,
@@ -372,7 +375,6 @@ export default {
     },
     onPosterFileChanged(e) {
       this.setPosterFile(e.target.files[0]);
-      console.log(e.target.files[0]);
       this.setCurrentItemPoster(e.target.files[0].name);
     },
     check() {
@@ -403,7 +405,6 @@ export default {
       } else {
         this.saveFilm()
           .then((res) => {
-            console.log(res);
             if (res === 200) {
               this.$notify({
                 group: "FilmSaveEditSuccess",

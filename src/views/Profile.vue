@@ -55,6 +55,9 @@
 import AppProfileBar from "@/components/AppProfileBar.vue";
 import { mapActions } from "vuex";
 export default {
+  metaInfo: {
+    title: "Profile",
+  },
   data() {
     return {
       user: null,
@@ -79,7 +82,7 @@ export default {
 <style lang="scss" scoped>
 .myAquaBackGround {
   background: linear-gradient(to right top, #65dfc9, #6cdbeb);
-  height: calc(100vh - 48px);
+  min-height: calc(100vh - 48px);
 }
 .positionRelative {
   position: relative;

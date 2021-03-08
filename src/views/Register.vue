@@ -73,6 +73,9 @@ import { required, email, sameAs } from "vuelidate/lib/validators";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
+  metaInfo: {
+    title: "Register",
+  },
   mixins: [validationMixin],
 
   validations: {

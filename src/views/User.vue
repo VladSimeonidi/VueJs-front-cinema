@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="justify-center align-center">
+  <v-layout class="justify-center align-center pt-10">
     <v-card width="100%" max-width="700px" outlined>
       <v-card-title>Редактирование пользователя</v-card-title>
       <v-card-text>
@@ -48,6 +48,9 @@ import { mapActions, mapGetters, mapMutations } from "vuex";
 import { validationMixin } from "vuelidate";
 import { required, email } from "vuelidate/lib/validators";
 export default {
+  metaInfo: {
+    title: "Edit User",
+  },
   data() {
     return {
       checkbox: false,
@@ -154,10 +157,39 @@ export default {
     save() {
       this.$v.$touch();
       if (this.$v.$invalid) {
+        this.$notify({
+          group: "UserEditError",
+          title: "Валидация",
+          text: "Заполните все необходимые поля правильно!",
+          type: "error",
+          max: 3,
+          duration: 5000,
+        });
         return;
       }
-      this.editUser();
-      this.$router.go(-1);
+      this.editUser().then((res) => {
+        if (!res.success) {
+          this.$notify({
+            group: "UserEditError",
+            title: "Ошибка",
+            text: res.msg,
+            type: "error",
+            max: 3,
+            duration: 5000,
+          });
+          return;
+        } else {
+          this.$notify({
+            group: "UserEditError",
+            title: "Успех",
+            text: res.msg,
+            type: "success",
+            max: 3,
+            duration: 5000,
+          });
+          this.$router.go(-1);
+        }
+      });
     },
   },
   created() {

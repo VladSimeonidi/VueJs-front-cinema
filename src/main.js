@@ -17,17 +17,18 @@ import Notifications from "vue-notification";
 import VueTyperPlugin from "vue-typer";
 import { i18n } from "./plugins/i18n";
 import FlagIcon from "vue-flag-icon";
+import VueMeta from "vue-meta";
 import "@/assets/css/main.css";
 
 axios.defaults.withCredentials = true;
 Vue.prototype.$http = axios;
 const token = localStorage.getItem("token");
 const localStorageLocale = localStorage.getItem("locale");
-if (!localStorageLocale) {
-  localStorage.setItem("locale", "ru");
-}
 if (token) {
   Vue.prototype.$http.defaults.headers.common["Authorization"] = token;
+}
+if (!localStorageLocale) {
+  localStorage.setItem("locale", "ru");
 }
 
 Vue.config.productionTip = false;
@@ -39,6 +40,7 @@ Vue.use(Notifications);
 Vue.use(VuePageTransition);
 Vue.use(VueTyperPlugin);
 Vue.use(FlagIcon);
+Vue.use(VueMeta);
 
 new Vue({
   router,

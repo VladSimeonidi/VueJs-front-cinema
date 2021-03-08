@@ -148,6 +148,9 @@
 import Footer from "@/components/AppFooter.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
+  metaInfo: {
+    title: "Films",
+  },
   data() {
     return {
       genreSelectValue: [],

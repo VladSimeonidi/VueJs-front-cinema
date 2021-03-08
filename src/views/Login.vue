@@ -58,6 +58,9 @@ import { mapActions, mapGetters, mapMutations } from "vuex";
 import { config } from "@/config/config";
 
 export default {
+  metaInfo: {
+    title: "Login",
+  },
   data: () => ({
     username: "",
     password: "",

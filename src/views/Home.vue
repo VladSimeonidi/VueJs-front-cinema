@@ -1,23 +1,15 @@
 <template>
-  <v-app>
-    <div class="homepage" @click="skipIntro">
-      <section class="homepage__section">
-        <h1 class="homepage__title">{{ $t("intro.welcome") }}</h1>
-        <div class="homepage__banner">
-          <div
-            class="homepage__blocks"
-            v-for="(n, index) in 400"
-            :key="index"
-            ref="blocks"
-          ></div>
-        </div>
-      </section>
-    </div>
-  </v-app>
+  <div class="myContainer" @click="skipIntro">
+    <h1 class="introTitle">welcome</h1>
+    <div ref="clip" class="clip"></div>
+  </div>
 </template>
 
 <script>
 export default {
+  metaInfo: {
+    title: "Welcome Page",
+  },
   data() {
     return {
       timer: null,
@@ -29,28 +21,21 @@ export default {
       clearTimeout(this.timer);
       this.$router.push({ name: "films" });
     },
-    skipIntroViaTimer() {
-      this.timer = setTimeout(() => {
-        this.$router.push({ name: "films" });
-        console.log("timer");
-      }, 8000);
+    skipIntroByAnyKey(value) {
+      console.log(value);
+      clearTimeout(this.timer);
+      this.$router.push({ name: "films" });
     },
-    // skipIntroByAnyKey() {
-    //   document.onkeypress = () => {
-    //     clearTimeout(this.timer);
-    //     this.$router.push({ name: "films" });
-    //   };
-    // },
   },
   mounted() {
-    const blocks = this.$refs.blocks;
-    blocks.forEach((el) => {
-      const duration = Math.random() * 3;
-      el.style.animationDuration = 2 + duration + "s";
-      el.style.animationDelay = 2 + duration + "s";
+    const clipImage = require(`@/assets/intro/test.jpg`);
+    const clip = this.$refs.clip;
+    clip.addEventListener("animationend", () => {
+      clip.style.backgroundImage = `url(${clipImage})`;
+      setTimeout(() => {
+        this.$router.push({ name: "films" });
+      }, 2000);
     });
-    // this.skipIntroViaTimer();
-    // this.skipIntroByAnyKey();
   },
 };
 </script>
@@ -62,70 +47,43 @@ export default {
   padding: 0;
   margin: 0;
 }
-.homepage {
-  background-image: url("../assets/intro/filmroll.jpg");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+.myContainer {
   height: 100vh;
-  &__section {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    transform-style: preserve-3d;
-    perspective: 500px;
+  width: 100%;
+  position: relative;
+  background-image: url("../assets/intro/infinite.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.clip {
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: animate 3s ease-in-out 2s;
+}
+.introTitle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 8vw;
+  color: #fff;
+  text-transform: uppercase;
+}
+@keyframes animate {
+  0% {
+    clip-path: circle(0% at 0% 0%);
+    background-image: url("../assets/intro/test.jpg");
   }
-  &__title {
-    position: absolute;
-    color: black;
-    font-size: 9vw;
-    font-weight: 700;
-    top: 50%;
-    text-align: center;
-    width: 100%;
-  }
-  &__banner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-wrap: wrap;
-    z-index: 100;
-  }
-  &__blocks {
-    background: url("../assets/intro/intro.jpg");
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    position: relative;
-    display: block;
-    width: 5vw;
-    height: 5vh;
-    animation: animate ease-in-out forwards;
-    animation-delay: 3s;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
-  }
-  @keyframes animate {
-    0% {
-      transform: translateZ(0px);
-      background: url("../assets/intro/intro.jpg");
-      background-position: center;
-      background-size: cover;
-      background-attachment: fixed;
-      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
-    }
-    100% {
-      transform: translateZ(2000px);
-      background: url("../assets/intro/intro.jpg");
-      background-position: center;
-      background-size: cover;
-      background-attachment: fixed;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0);
-    }
+  100% {
+    clip-path: circle(70.7% at 50% 50%);
+    background-image: url("../assets/intro/test.jpg");
   }
 }
 </style>
