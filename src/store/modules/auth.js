@@ -155,6 +155,8 @@ export const getters = {
     return state.status;
   },
   ERROR(state) {
+    console.log("ERROR");
+    console.log(state.error);
     return state.error;
   },
 };

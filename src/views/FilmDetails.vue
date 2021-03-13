@@ -31,7 +31,7 @@
     <v-card-text>
       {{ film.description }}
     </v-card-text>
-    <v-sheet color="blue accent-2" class="pb-10">
+    <v-sheet min-height="100vh" color="blue accent-2" class="pb-10">
       <v-card-title class="white--text">{{
         $t("filmDetails.trailer")
       }}</v-card-title>

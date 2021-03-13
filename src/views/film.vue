@@ -387,15 +387,12 @@ export default {
     save() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.$notify({
-          group: "filmError",
-          title: "Валидация",
-          text: "Заполните все необходимые поля правильно!",
-          type: "error",
-
-          max: 3,
-          duration: 5000,
-        });
+        this.appAlert(
+          "filmError",
+          "Валидация",
+          "Заполните все необходимые поля правильно!",
+          "error"
+        );
         return;
       }
       if (this.$route.params.id !== "new") {

@@ -146,7 +146,7 @@
 </template>
 <script>
 import Footer from "@/components/AppFooter.vue";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   metaInfo: {
     title: "Films",
@@ -160,10 +160,7 @@ export default {
       directors: [],
       list: [],
       listTotal: null,
-      pageSet: {
-        pageNumber: 1,
-        pageSize: 9,
-      },
+      pageSet: this.getFilmsPagination(),
       paginatonsCounter: null,
       searchText: "",
       genres: null,
@@ -199,6 +196,10 @@ export default {
       getFilmLsit: "film/GET_LIST",
       getAllGenres: "genre/GET_LIST",
       getAllDirectors: "director/GET_LIST",
+      getFilmsPagination: "pagination/GET_FILMS_PAGINATION",
+    }),
+    ...mapMutations({
+      setupCurrentFilmsPagination: "pagination/SET_CURRENT_FILMS_PAGINATION",
     }),
     goToFilmDetails(ID) {
       this.$router.push({ name: "filmditails", params: { id: ID } });
@@ -248,6 +249,7 @@ export default {
     },
   },
   mounted() {
+    console.log(new Date().toLocaleTimeString());
     this.getProfile()
       .then((res) => {
         this.user = res.user;

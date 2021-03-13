@@ -19,6 +19,7 @@ import { i18n } from "./plugins/i18n";
 import FlagIcon from "vue-flag-icon";
 import VueMeta from "vue-meta";
 import "@/assets/css/main.css";
+import MyAlert from "./mixins/MyAlert";
 
 axios.defaults.withCredentials = true;
 Vue.prototype.$http = axios;
@@ -41,6 +42,8 @@ Vue.use(VuePageTransition);
 Vue.use(VueTyperPlugin);
 Vue.use(FlagIcon);
 Vue.use(VueMeta);
+
+Vue.mixin(MyAlert);
 
 new Vue({
   router,
