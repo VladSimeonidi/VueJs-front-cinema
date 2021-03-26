@@ -97,6 +97,9 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  // console.group("to.matched");
+  // console.log(to.matched);
+  // console.groupEnd();
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!store.getters["auth/LOGGED"]) {
       // Перенаправление на Login Page

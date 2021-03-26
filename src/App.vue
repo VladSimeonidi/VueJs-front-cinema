@@ -13,15 +13,9 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
 import VueExtendLayouts from "vue-extend-layout";
 export default {
   components: { VueExtendLayouts },
-  methods: {
-    ...mapActions({
-      setProfile: "auth/GET_PROFILE",
-    }),
-  },
 };
 </script>
 <style lang="scss">

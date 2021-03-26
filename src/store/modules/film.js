@@ -80,15 +80,18 @@ export const mutations = {
 export const actions = {
   async SET_LIST({ commit }, pageSet) {
     const qs = querystring.stringify(pageSet);
-    await axios
+    const res = await axios
       .get(config.API.BASE_URL + config.API.FILM.PAGINATION + "?" + qs)
       .then((res) => {
         commit("SET_LIST", res.data.filmList);
         commit("SET_LIST_TOTAL", res.data.filmListCount);
+        return res.data.filmList;
       })
       .catch((e) => {
         console.log(e);
       });
+
+    return res;
   },
   async SET_AUTOCOMPLETE_LIST({ commit }, query) {
     let res = await axios
@@ -181,24 +184,26 @@ export const actions = {
       formData.append("movieMetaData", state.OneFilmFile.name);
     }
     formData.append("film", JSON.stringify(editData));
-    try {
-      await axios
-        .put(config.API.BASE_URL + config.API.FILM.LIST + "/" + ID, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          commit("SET_CURRENT_ITEM", res.data);
-          commit("SET_LOADING", false);
-          router.push({ name: "filmditails", params: { id: ID } });
-          return res;
-        });
-    } catch (error) {
-      commit("SET_LOADING", false);
-      console.log(error);
-      return error;
-    }
+    let response = null;
+    await axios
+      .put(config.API.BASE_URL + config.API.FILM.LIST + "/" + ID, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        commit("SET_CURRENT_ITEM", res.data);
+        commit("SET_LOADING", false);
+        response = res.status;
+        router.push({ name: "filmditails", params: { id: ID } });
+        return res;
+      })
+      .catch((error) => {
+        commit("SET_LOADING", false);
+        console.log(error);
+        return error;
+      });
+    return response;
   },
   async DELETE_CURRENT_ITEM({ commit }, ID) {
     console.log("ID");
