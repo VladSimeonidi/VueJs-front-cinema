@@ -45,6 +45,15 @@
             width="100%"
           >
             <v-card-title class="mb-4">
+              <router-link to="/about"
+                ><v-img
+                  max-height="24px"
+                  max-width="24px"
+                  class="animated-question-mark"
+                  alt="about"
+                  src="../assets/about/help_outline-24px.svg"
+                ></v-img
+              ></router-link>
               <v-spacer></v-spacer>
               <router-link
                 :to="{ name: 'login' }"
@@ -166,5 +175,18 @@ export default {
 }
 .langSelect {
   width: 135px;
+}
+.animated-question-mark {
+  cursor: pointer;
+  animation: animated-question-mark 1.5s ease-in-out infinite;
+}
+@keyframes animated-question-mark {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
 }
 </style>

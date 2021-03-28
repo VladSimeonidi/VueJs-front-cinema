@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper">
     <div class="gif"></div>
-    <h1 class="title">
+    <div class="title">
       Ничего не найдено
-    </h1>
+    </div>
     <router-link :to="{ name: 'home' }" class="button">По домам?</router-link>
   </div>
 </template>
@@ -19,11 +19,6 @@ export default {
 <style lang="css" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Stalinist+One&display=swap");
 .wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
   height: 100vh;
   width: 100vw;
   background-image: url("../assets/notFound/lol.gif");
@@ -35,9 +30,15 @@ export default {
   color: white;
   font-family: "Stalinist One", cursive;
   font-size: 5vw;
+  text-align: center;
   margin-bottom: auto;
 }
 .button {
+  position: absolute;
+  left: 50%;
+  bottom: 5vh;
+  transform: translateX(-50%);
+  cursor: pointer;
   box-shadow: inset 0px 34px 0px -15px #ede9e8;
   background-color: #c4d4c3;
   border: 1px solid #e0dcd7;
@@ -57,8 +58,14 @@ export default {
 .button:hover {
   background-color: #dbd3d2;
 }
-.button:active {
-  position: relative;
-  top: 1px;
+.gif {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 50vh;
+  width: 50vh;
+  background-image: url("../assets/notFound/travolta.gif");
+  background-size: cover;
+  background-position: center;
 }
 </style>

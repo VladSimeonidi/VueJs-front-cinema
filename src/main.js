@@ -18,8 +18,8 @@ import VueTyperPlugin from "vue-typer";
 import { i18n } from "./plugins/i18n";
 import FlagIcon from "vue-flag-icon";
 import VueMeta from "vue-meta";
-import "@/assets/css/main.css";
 import MyAlert from "./mixins/MyAlert";
+// import "@/assets/css/main.css";
 
 axios.defaults.withCredentials = true;
 Vue.prototype.$http = axios;
@@ -44,6 +44,17 @@ Vue.use(FlagIcon);
 Vue.use(VueMeta);
 
 Vue.mixin(MyAlert);
+
+// Vue.directive("scroll", {
+//   inserted: function(el, binding) {
+//     let f = function(evt) {
+//       if (binding.value(evt, el)) {
+//         window.removeEventListener("scroll", f);
+//       }
+//     };
+//     window.addEventListener("scroll", f);
+//   },
+// });
 
 new Vue({
   router,

@@ -9,6 +9,9 @@ import Register from "../views/Register.vue";
 import Profile from "../views/Profile.vue";
 import FilmDitails from "../views/FilmDetails.vue";
 import UserProfile from "../views/User";
+import About from "../views/About.vue";
+import Director from "../views/Director.vue";
+
 import store from "../store";
 Vue.use(VueRouter);
 
@@ -58,6 +61,14 @@ const routes = [
     },
   },
   {
+    path: "/director/:id",
+    name: "director",
+    component: Director,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/login",
     name: "login",
     component: Login,
@@ -89,6 +100,15 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    path: "/about",
+    name: "about",
+    component: About,
+    meta: {
+      layout: "empty",
+      requiresAuth: false,
+    },
+  },
 ];
 
 const router = new VueRouter({
@@ -97,9 +117,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // console.group("to.matched");
-  // console.log(to.matched);
-  // console.groupEnd();
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!store.getters["auth/LOGGED"]) {
       // Перенаправление на Login Page

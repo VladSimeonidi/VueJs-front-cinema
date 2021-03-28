@@ -134,7 +134,7 @@ export default {
   watch: {
     authErrorOnPage: function(message) {
       if (message) {
-        this.appAlert("AuthError", "Логин111", message, "error", 5000);
+        this.appAlert("AuthError", "Логин", message, "error", 5000);
       }
     },
   },

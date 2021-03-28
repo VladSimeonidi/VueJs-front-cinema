@@ -165,11 +165,7 @@
         </v-card-actions>
       </v-card>
     </v-container>
-    <loading
-      :active.sync="this.getLoading()"
-      color="blue"
-      is-full-page
-    ></loading>
+    <loading :active.sync="this.getLoading" color="blue" is-full-page></loading>
   </v-app>
 </template>
 <script>
@@ -191,6 +187,18 @@ export default {
       dataLoaded: false,
     };
   },
+  // beforeRouteLeave(to, from, next) {
+
+  //   if (this.$route.params.id === "new" && this.getCurrentFilm) {
+  //     const confirmed = confirm("Покинуть");
+  //     if (confirmed) {
+  //       next();
+  //     } else {
+  //       return;
+  //     }
+  //   }
+  //   next();
+  // },
   mixins: [validationMixin],
   validations: {
     Name: { required },
@@ -207,9 +215,23 @@ export default {
     Loading,
   },
   computed: {
+    ...mapGetters({
+      getAllGenres: "genre/GET_LIST",
+      getAllDirectors: "director/GET_LIST",
+      getCurrentFilm: "film/GET_CURRENT_ITEM",
+      getCurrentItemName: "film/GET_CURRENT_NAME",
+      getCurrentItemTeaser: "film/GET_CURRENT_TEASER",
+      getCurrentItemGenre: "film/GET_CURRENT_GENRE",
+      getCurrentItemDirector: "film/GET_CURRENT_DIRECTOR",
+      getCurrentItemYear: "film/GET_CURRENT_YEAR",
+      getCurrentItemDescription: "film/GET_CURRENT_DESCRIPTION",
+      getCurrentItemLink: "film/GET_CURRENT_LINK",
+      getCurrentItemPoster: "film/GET_CURRENT_POSTER",
+      getLoading: "film/GET_LOADING",
+    }),
     Name: {
       get() {
-        return this.getCurrentItemName();
+        return this.getCurrentItemName;
       },
       set(value) {
         this.setCurrentItemName(value);
@@ -217,7 +239,7 @@ export default {
     },
     Teaser: {
       get() {
-        return this.getCurrentItemTeaser();
+        return this.getCurrentItemTeaser;
       },
       set(value) {
         this.setCurrentItemTeaser(value);
@@ -225,7 +247,7 @@ export default {
     },
     Genre: {
       get() {
-        return this.getCurrentItemGenre();
+        return this.getCurrentItemGenre;
       },
       set(value) {
         this.setCurrentItemGenre(value);
@@ -233,7 +255,7 @@ export default {
     },
     Director: {
       get() {
-        return this.getCurrentItemDirector();
+        return this.getCurrentItemDirector;
       },
       set(value) {
         this.setCurrentItemDirector(value);
@@ -241,7 +263,7 @@ export default {
     },
     Year: {
       get() {
-        return this.getCurrentItemYear();
+        return this.getCurrentItemYear;
       },
       set(value) {
         this.setCurrentItemYear(value);
@@ -249,7 +271,7 @@ export default {
     },
     Description: {
       get() {
-        return this.getCurrentItemDescription();
+        return this.getCurrentItemDescription;
       },
       set(value) {
         this.setCurrentItemDescription(value);
@@ -257,12 +279,12 @@ export default {
     },
     Link: {
       get() {
-        return this.getCurrentItemLink();
+        return this.getCurrentItemLink;
       },
     },
     Poster: {
       get() {
-        return this.getCurrentItemPoster();
+        return this.getCurrentItemPoster;
       },
     },
     // ВАЛИДАТОР ОШИБКИ
@@ -339,20 +361,6 @@ export default {
       setFilmFile: "film/SET_FILM_FILE",
       setPosterFile: "film/SET_POSTER_FILE",
     }),
-    ...mapGetters({
-      getAllGenres: "genre/GET_LIST",
-      getAllDirectors: "director/GET_LIST",
-      getCurrentFilm: "film/GET_CURRENT_ITEM",
-      getCurrentItemName: "film/GET_CURRENT_NAME",
-      getCurrentItemTeaser: "film/GET_CURRENT_TEASER",
-      getCurrentItemGenre: "film/GET_CURRENT_GENRE",
-      getCurrentItemDirector: "film/GET_CURRENT_DIRECTOR",
-      getCurrentItemYear: "film/GET_CURRENT_YEAR",
-      getCurrentItemDescription: "film/GET_CURRENT_DESCRIPTION",
-      getCurrentItemLink: "film/GET_CURRENT_LINK",
-      getCurrentItemPoster: "film/GET_CURRENT_POSTER",
-      getLoading: "film/GET_LOADING",
-    }),
     onClickGenreComponent(value) {
       this.genres = value;
     },
@@ -379,9 +387,9 @@ export default {
     },
     check() {
       // console.log("currentItem");
-      // console.log(this.getCurrentFilm());
-      console.log("validation");
-      console.log(this.$v);
+      // console.log(this.getCurrentFilm);
+      // console.log("validation");
+      // console.log(this.$v);
     },
 
     save() {
@@ -458,7 +466,7 @@ export default {
   },
   created() {
     this.uploadGenresList().then(() => {
-      this.genres = this.getAllGenres();
+      this.genres = this.getAllGenres;
     });
     this.getProfile();
     if (this.$route.params.id !== "new") {

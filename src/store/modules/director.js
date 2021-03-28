@@ -6,6 +6,7 @@ export const namespaced = true;
 export const state = () => ({
   list: [],
   currentItem: {},
+  OneDirectorPosterImage: null,
 });
 export const mutations = {
   SET_LIST(state, payload) {

@@ -1,94 +1,6 @@
 <template>
   <div id="films">
-    <!-- <v-sheet
-      class="mb-12 pt-2 pb-2 pl-7 pr-7 d-flex flex-column align-center sheetBgImg"
-      elevation="1"
-      min-height="200px"
-      width="100%"
-      ><v-toolbar
-        rounded="lg"
-        class="mt-2 mb-3 pr-2"
-        height="100%"
-        max-height="80px"
-        width="100%"
-        ><v-text-field
-          @keydown.enter="search"
-          v-model="searchText"
-          :label="$t('films.search')"
-          clearable
-        ></v-text-field
-        ><v-btn large class="mb-5" @click="search" icon
-          ><v-icon>mdi-magnify</v-icon></v-btn
-        ></v-toolbar
-      >
-      <v-expansion-panels
-        focusable
-        @change="resetSearchValues"
-        class="mb-7"
-        v-model="panel"
-      >
-        <v-expansion-panel>
-          <v-expansion-panel-header>
-            <template>
-              <v-row no-gutters>
-                <v-col cols="12">
-                  {{ $t("films.extendedSearch") }}
-                </v-col>
-              </v-row>
-            </template>
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-row no-gutters>
-              <v-col class="d-flex" cols="3" sm="3">
-                <v-select
-                  clearable
-                  @change="paginateGenres"
-                  :items="genres"
-                  item-text="name"
-                  chips
-                  small-chips
-                  v-model="genreSelectValue"
-                  multiple
-                  :label="$t('films.chooseGenre')"
-                  color="black"
-                  prepend-icon="mdi-filmstrip"
-                  return-object
-                ></v-select>
-              </v-col>
-              <v-col class="d-flex ml-2" cols="3" sm="3">
-                <v-select
-                  clearable
-                  prepend-icon="mdi-account"
-                  @change="paginateDirectors"
-                  v-model="directorSelectValue"
-                  color="black"
-                  :items="directors"
-                  small-chips
-                  item-text="name"
-                  chips
-                  multiple
-                  :label="$t('films.chooseDirector')"
-                  return-object
-                ></v-select
-              ></v-col>
-              <v-col class="d-flex ml-2 align-center" cols="4" sm="3">
-                <v-range-slider
-                  hide-details
-                  dense
-                  :label="$t('films.chooseYear')"
-                  v-model="range"
-                  max="2021"
-                  min="1950"
-                  thumb-label="always"
-                  @change="rangeValue"
-                ></v-range-slider>
-              </v-col>
-            </v-row>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </v-sheet> -->
-    <v-container grid-list-lg class="d-flex flex-wrap justify-space-between">
+    <v-container grid-list-lg class="container-min-height">
       <v-toolbar
         rounded="lg"
         class="mt-2 mb-3 pr-2"
@@ -208,34 +120,39 @@
           </v-card>
         </v-flex>
       </v-layout>
-      <v-layout v-else-if="listTotal === 0" class="vElseContainer">
-        <v-card
-          class="d-flex justify-center align-center"
-          width="100%"
-          height="100%"
-          >Нет фильмов</v-card
+      <v-layout row v-else-if="listTotal === 0" class="vElseContainer">
+        <v-flex>
+          <v-card
+            class="d-flex justify-center align-center"
+            width="100%"
+            height="100%"
+            >Нет фильмов</v-card
+          ></v-flex
         >
       </v-layout>
       <v-layout v-else-if="listTotal === null" class="vElseContainer">
-        <v-card
-          class="d-flex justify-center align-center"
-          width="100%"
-          height="100%"
-          >Ждем-c</v-card
+        <v-flex>
+          <v-card
+            class="d-flex justify-center align-center"
+            width="100%"
+            height="100%"
+            >Ждем-c</v-card
+          ></v-flex
         >
       </v-layout>
+      <v-card-actions class="mb-5 justify-center">
+        <v-pagination
+          v-if="listTotal"
+          color="orange"
+          circle
+          light
+          total-visible="10"
+          v-model="currentSelectedPage"
+          :length="paginatonsCounter"
+        ></v-pagination>
+      </v-card-actions>
     </v-container>
-    <v-card-actions class="mb-5 justify-center">
-      <v-pagination
-        v-if="listTotal"
-        color="orange"
-        circle
-        light
-        total-visible="10"
-        v-model="currentSelectedPage"
-        :length="paginatonsCounter"
-      ></v-pagination>
-    </v-card-actions>
+
     <Footer />
   </div>
 </template>
@@ -394,6 +311,9 @@ export default {
 };
 </script>
 <style scoped lang="css">
+.container-min-height {
+  min-height: 100vh;
+}
 @import url("https://fonts.googleapis.com/css2?family=Russo+One&display=swap");
 .player__title {
   font-size: 24px;
