@@ -172,7 +172,12 @@
 import addGenre from "@/components/AddGenre.vue";
 import addDirector from "@/components/AddDirector.vue";
 import { validationMixin } from "vuelidate";
-import { required, numeric, maxLength } from "vuelidate/lib/validators";
+import {
+  required,
+  numeric,
+  maxLength,
+  between,
+} from "vuelidate/lib/validators";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
@@ -205,7 +210,7 @@ export default {
     Teaser: { required, maxLength: maxLength(140) },
     Genre: { required },
     Director: { required },
-    Year: { required, numeric },
+    Year: { required, numeric, between: between(1950, 2021) },
     Link: { required },
     Poster: { required },
   },
@@ -322,6 +327,8 @@ export default {
       !this.$v.Year.required && errors.push("Год производства необходим");
       !this.$v.Year.numeric &&
         errors.push("Год производства должен быть числом");
+      !this.$v.Year.between &&
+        errors.push("Год производства должен быть от 1950 по 2021");
       return errors;
     },
     linkErrors() {
@@ -382,6 +389,7 @@ export default {
       }
     },
     onPosterFileChanged(e) {
+      // console.log(e.target.files[0]);
       this.setPosterFile(e.target.files[0]);
       this.setCurrentItemPoster(e.target.files[0].name);
     },

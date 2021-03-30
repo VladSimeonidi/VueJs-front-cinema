@@ -16,10 +16,19 @@
         </v-card-title>
         <v-card-text>
           <v-text-field
-            label="Тизер"
-            placeholder="Введите тизер"
+            v-model="Name"
+            :error-messages="nameErrors"
+            @input="$v.Name.$touch()"
+            @blur="$v.Name.$touch()"
+            label="Имя"
+            placeholder="Введите имя"
           ></v-text-field>
           <v-text-field
+            :error-messages="imageErrors"
+            @input="$v.Image.$touch()"
+            @blur="$v.Image.$touch()"
+            class="mt-3"
+            v-model="Image"
             dense
             filled
             readonly
@@ -64,6 +73,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
 export default {
@@ -81,27 +91,79 @@ export default {
     Image: { required },
   },
   computed: {
+    ...mapGetters({
+      getDirectorName: "director/GET_CURRENT_ITEM_NAME",
+      getDirectorImageName: "director/GET_CURRENT_ITEM_IMAGE_NAME",
+      getDirector: "director/GET_CURRENT_ITEM",
+    }),
+    Name: {
+      get() {
+        return this.getDirectorName;
+      },
+      set(value) {
+        this.mutSetDirectorName(value);
+      },
+    },
+    Image: {
+      get() {
+        return this.getDirectorImageName;
+      },
+    },
     nameErrors() {
       const errors = [];
       if (!this.$v.Name.$dirty) return errors;
-      !this.$v.Name.required && errors.push("Название необходимо");
+      !this.$v.Name.required && errors.push("Имя необходимо");
       return errors;
     },
     imageErrors() {
       const errors = [];
       if (!this.$v.Image.$dirty) return errors;
-      !this.$v.Image.required && errors.push("Картинка необходима");
+      !this.$v.Image.required && errors.push("Фотография необходима");
       return errors;
     },
   },
   methods: {
+    ...mapActions({
+      setListOfDirectors: "director/SET_LIST",
+      saveNewDirector: "director/SAVE_NEW_DIRECTOR",
+      setDirectorImage: "director/SET_DIRECTOR_IMAGE",
+    }),
+    ...mapMutations({
+      addNewDirector: "director/ADD_NEW_DIRECTOR",
+      mutSetDirectorName: "director/SET_CURRENT_NAME",
+      mutSetDirectorImageAndImageData: "director/SET_CURRENT_IMAGE",
+    }),
     onPosterFileButtonClick() {
       this.$refs.uploaderPoster.click();
     },
     onPosterFileChanged(e) {
-      this.setPosterFile(e.target.files[0]);
-      this.setCurrentItemPoster(e.target.files[0].name);
+      this.setDirectorImage(e.target.files[0]);
     },
+    save() {
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this.appAlert(
+          "filmError",
+          "Валидация",
+          "Заполните все необходимые поля правильно!",
+          "error"
+        );
+        return;
+      }
+      if (this.$route.params.id !== "new") {
+        console.log("Правка еще не готово");
+      } else {
+        this.saveNewDirector().then(() => {
+          this.$v.$reset();
+          console.log("OK");
+        });
+      }
+    },
+  },
+  mounted() {
+    if (this.$route.params.id === "new") {
+      this.addNewDirector();
+    }
   },
 };
 </script>

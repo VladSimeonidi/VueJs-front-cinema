@@ -53,7 +53,6 @@ export default {
     checkbox: false,
     error: null,
   }),
-
   mixins: [validationMixin],
 
   validations: {

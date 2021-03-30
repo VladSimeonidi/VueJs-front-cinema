@@ -117,8 +117,6 @@ export const actions = {
       commit("PROFILE_REQUEST");
       let res = await axios.get(config.API.BASE_URL + config.API.USER.PROFILE);
       commit("USER_PROFILE", res.data.user);
-      console.log("res.data.user");
-      console.log(res.data.user);
 
       return res.data.user;
     } catch (error) {
