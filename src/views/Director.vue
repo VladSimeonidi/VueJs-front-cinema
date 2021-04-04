@@ -126,7 +126,9 @@ export default {
     ...mapActions({
       setListOfDirectors: "director/SET_LIST",
       saveNewDirector: "director/SAVE_NEW_DIRECTOR",
+      editNewDirector: "director/EDIT_NEW_DIRECTOR",
       setDirectorImage: "director/SET_DIRECTOR_IMAGE",
+      uploadOneDirector: "director/UPLOAD_CURRENT_ITEM",
     }),
     ...mapMutations({
       addNewDirector: "director/ADD_NEW_DIRECTOR",
@@ -151,7 +153,7 @@ export default {
         return;
       }
       if (this.$route.params.id !== "new") {
-        console.log("Правка еще не готово");
+        this.editNewDirector();
       } else {
         this.saveNewDirector().then(() => {
           this.$v.$reset();
@@ -163,6 +165,8 @@ export default {
   mounted() {
     if (this.$route.params.id === "new") {
       this.addNewDirector();
+    } else {
+      this.uploadOneDirector(this.$route.params.id);
     }
   },
 };

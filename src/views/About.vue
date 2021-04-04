@@ -22,18 +22,7 @@
       ratione recusandae blanditiis eius odio, reiciendis possimus eaque soluta
       dolorem, sint doloribus minus aspernatur iste. Pariatur repellat modi
       explicabo ducimus ratione, corporis at tempora sunt obcaecati accusantium
-      eveniet asperiores beatae illo eius. Hic neque, est ipsa sint tempora
-      reprehenderit minima sunt maxime quam. Modi quod unde magnam quisquam
-      asperiores neque excepturi! Unde, rerum labore consectetur dolorum hic
-      sapiente officia qui impedit modi et quis cum maiores doloremque corporis
-      laboriosam reiciendis id blanditiis libero, quibusdam asperiores ullam.
-      Aliquid aperiam molestias facere perspiciatis minus omnis atque magnam qui
-      cum itaque maiores tenetur at distinctio natus hic quod voluptas vel aut,
-      quos modi quibusdam doloribus fugit dicta soluta! Porro, nemo nesciunt sed
-      optio voluptas quae delectus quam officia ipsam sunt. Quisquam nesciunt
-      animi nemo laudantium, vel dicta cupiditate autem nisi, perferendis ipsum
-      sapiente iste omnis eligendi, cum vero perspiciatis non. Velit soluta
-      pariatur nihil facilis autem!
+      eveniet asperiores beatae illo eius.
     </p>
     <div class="back-arrow">
       <img
@@ -71,7 +60,7 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Caveat&display=swap");
 .wrapper {
   background-color: #0a2a43;
-  min-height: 1500px;
+  min-height: 1300px;
 }
 section {
   position: relative;
@@ -123,8 +112,10 @@ section img {
 .about-text {
   font-family: "Caveat", cursive;
   font-size: 2em;
+  line-height: 3rem;
+  letter-spacing: 0.2rem;
   color: #fff;
-  padding: 40px 1rem 0 1rem;
+  padding: 40px 2rem 0 2rem;
 }
 .back-arrow {
   margin-top: 50px;

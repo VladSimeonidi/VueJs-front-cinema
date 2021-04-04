@@ -310,7 +310,7 @@ export default {
   },
 };
 </script>
-<style scoped lang="css">
+<style scoped lang="scss">
 .container-min-height {
   min-height: 100vh;
 }

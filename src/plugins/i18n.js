@@ -10,7 +10,7 @@ export const i18n = new VueI18n({
     ru: {
       films: {
         extendedSearch: "Расширенный поиск",
-        search: "Поиск",
+        search: "Поиск по названию",
         chooseGenre: "Выберите жанр",
         chooseDirector: "Выберите режиссера",
         chooseYear: "Выберите год",
@@ -51,7 +51,7 @@ export const i18n = new VueI18n({
     ua: {
       films: {
         extendedSearch: "Розширений пошук",
-        search: "Пошук",
+        search: "Пошук за назвою",
         chooseGenre: "Оберіть жанр",
         chooseDirector: "Оберіть режисера",
         chooseYear: "Оберіть рік",
@@ -92,7 +92,7 @@ export const i18n = new VueI18n({
     us: {
       films: {
         extendedSearch: "Extended search",
-        search: "Search",
+        search: "Search by name",
         chooseGenre: "Choose genre",
         chooseDirector: "Сhoose director",
         chooseYear: "Сhoose year",

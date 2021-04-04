@@ -7,6 +7,7 @@ export const namespaced = true;
 export const state = () => ({
   status: "",
   profiles: [],
+  directors: [],
   currentUser: {},
 });
 export const mutations = {
@@ -15,6 +16,9 @@ export const mutations = {
   },
   SET_LIST(state, payload) {
     state.profiles = payload;
+  },
+  SET_LIST_DIRECTORS(state, payload) {
+    state.directors = payload;
   },
   SET_CURRENT_USER(state, payload) {
     state.currentUser = payload;
@@ -48,6 +52,24 @@ export const actions = {
       )
       .then((res) => {
         commit("SET_LIST", res.data);
+        return res.data;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    return res;
+  },
+  async SET_AUTOCOMPLETE_LIST_DIRECTORS({ commit }, query) {
+    let res = await axios
+      .get(
+        config.API.BASE_URL +
+          config.API.USER.PROFILE_AUTOCOMPLETE_LIST_DIRECTORS +
+          "?" +
+          "search=" +
+          query
+      )
+      .then((res) => {
+        commit("SET_LIST_DIRECTORS", res.data);
         return res.data;
       })
       .catch((e) => {

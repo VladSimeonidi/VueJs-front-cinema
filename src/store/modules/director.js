@@ -9,12 +9,23 @@ export const state = () => ({
     name: "",
     image: [],
   },
-  DirectorPosterImage: null,
+  DirectorPosterImageFile: null,
+  DirectorPosterImage_Id: null,
+  currentItem_Id: null,
   error: null,
 });
 export const mutations = {
   SET_LIST(state, payload) {
     state.list = payload;
+  },
+  SET_CURRENT_ITEM(state, payload) {
+    console.log("state", state);
+    console.log(payload);
+    state.currentItem.name = payload.name;
+    state.currentItem.image = payload.image.file_name;
+    state.DirectorPosterImage_Id = payload.image._id;
+    state.currentItem_Id = payload._id;
+    console.log(state.DirectorPosterImage_Id);
   },
   ADD_NEW_DIRECTOR(state) {
     const newDirector = {
@@ -34,10 +45,19 @@ export const mutations = {
   SET_CURRENT_IMAGE_DATA(state, payload) {
     console.log("IMDATA");
     console.log(payload);
-    state.DirectorPosterImage = payload;
+    state.DirectorPosterImageFile = payload;
   },
   SAVE_NEW_DIRECTOR(state, payload) {
     state.list.push(payload);
+  },
+  RESET_DIRECTOR(state) {
+    state.currentItem = {
+      name: "",
+      image: [],
+    };
+  },
+  RESET_DIRECTOR_IMAGEDATA(state) {
+    state.DirectorPosterImageFile = null;
   },
 };
 export const actions = {
@@ -57,9 +77,9 @@ export const actions = {
     commit("SET_CURRENT_IMAGE", payload.name);
     commit("SET_CURRENT_IMAGE_DATA", payload);
   },
-  async SAVE_NEW_DIRECTOR({ state }) {
+  async SAVE_NEW_DIRECTOR({ state, commit }) {
     let formData = new FormData();
-    let imgData = state.DirectorPosterImage;
+    let imgData = state.DirectorPosterImageFile;
     formData.append("file", imgData);
     formData.append("director", JSON.stringify(state.currentItem));
     const res = await axios
@@ -71,6 +91,37 @@ export const actions = {
       .then((res) => {
         console.log("director");
         console.log(res.data);
+        commit("RESET_DIRECTOR_IMAGEDATA");
+        return res;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    return res.data._id;
+  },
+  async EDIT_NEW_DIRECTOR({ state }) {
+    let formData = new FormData();
+    let imgData = state.DirectorPosterImageFile;
+    let ID = state.currentItem_Id;
+    console.log("ID", ID);
+    if (imgData) {
+      state.currentItem.prevImg_Id = state.DirectorPosterImage_Id;
+      formData.append("file", imgData);
+    }
+    formData.append("director", JSON.stringify(state.currentItem));
+    const res = await axios
+      .put(
+        config.API.BASE_URL + config.API.DIRECTOR.LIST + "/" + ID,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((res) => {
+        console.log("director");
+        console.log(res.data);
         // commit("SAVE_NEW_DIRECTOR", payload[1]);
         return res;
       })
@@ -78,6 +129,18 @@ export const actions = {
         console.log(e);
       });
     return res.data._id;
+  },
+  async UPLOAD_CURRENT_ITEM({ commit }, ID) {
+    let res = await axios
+      .get(config.API.BASE_URL + config.API.DIRECTOR.LIST + "/" + ID)
+      .then((res) => {
+        commit("SET_CURRENT_ITEM", res.data);
+        return res.data;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    return res;
   },
 };
 export const getters = {
@@ -88,13 +151,9 @@ export const getters = {
     return state.currentItem;
   },
   GET_CURRENT_ITEM_NAME(state) {
-    // console.log("get");
-    // console.log(state.currentItem.name);
     return state.currentItem.name;
   },
   GET_CURRENT_ITEM_IMAGE_NAME(state) {
-    // console.log("get");
-    // console.log(state.currentItem.name);
     console.log(state.currentItem.image);
     return state.currentItem.image;
   },

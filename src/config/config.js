@@ -13,6 +13,7 @@ export const config = {
       REGISTER: "/user/register",
       PROFILE: "/user/profile",
       PROFILE_AUTOCOMPLETE_LIST: "/user/autocompleteprofile",
+      PROFILE_AUTOCOMPLETE_LIST_DIRECTORS: "/director/directorsautocomplete",
       USERPROFILE: "/user/userprofile",
       EDITPROFILE: "/user/editprofile",
       LOGOUT: "/user/logout",
