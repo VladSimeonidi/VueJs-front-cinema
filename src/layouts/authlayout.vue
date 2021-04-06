@@ -108,7 +108,7 @@ export default {
         case "xs":
           return 550;
         case "sm":
-          return 450;
+          return 550;
         case "md":
           return 550;
         case "lg":
@@ -132,7 +132,7 @@ export default {
 .form {
   &__wrapper {
     position: relative;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(
       315deg,
       rgba(202, 102, 121, 1) 0%,

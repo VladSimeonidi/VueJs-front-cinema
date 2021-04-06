@@ -79,10 +79,7 @@ export const actions = {
     try {
       let res = await axios.post(
         config.API.BASE_URL + config.API.USER.LOGIN_ADMIN,
-        user,
-        {
-          withCredentials: true,
-        }
+        user
       );
       if (res.data.success) {
         const token = res.data.token;
@@ -133,10 +130,10 @@ export const actions = {
   },
   async LOGOUT({ commit }) {
     await localStorage.removeItem("token");
-    commit("LOGOUT");
     delete axios.defaults.headers.common["Authorization"];
     await axios.delete(config.API.BASE_URL + config.API.USER.LOGOUT);
     this.reset();
+    commit("LOGOUT");
     router.push("/login");
     return;
   },

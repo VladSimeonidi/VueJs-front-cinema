@@ -143,7 +143,7 @@
       <v-card-actions class="mb-5 justify-center">
         <v-pagination
           v-if="listTotal"
-          color="orange"
+          color="light-blue darken-2"
           circle
           light
           total-visible="10"
@@ -205,9 +205,6 @@ export default {
     },
   },
   methods: {
-    panelck() {
-      console.log(this.panel);
-    },
     ...mapActions({
       uploadGenresList: "genre/SET_LIST",
       loadFilmsList: "film/SET_LIST",
@@ -249,11 +246,6 @@ export default {
           this.list = this.getFilmLsit;
           this.listTotal = this.getFilmLsitTotal;
           this.paginatonsCounter = Math.ceil(this.listTotal / mainObj.pageSize);
-          // console.group("List in pag");
-          // console.log(this.list);
-          // console.log(Array.isArray(this.list));
-          // console.log(this.list.length);
-          // console.groupEnd();
         })
         .catch((error) => {
           console.log(error);

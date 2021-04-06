@@ -85,6 +85,9 @@
           <v-textarea
             v-model="Description"
             label="Описание"
+            :error-messages="descErrors"
+            @input="$v.Description.$touch()"
+            @blur="$v.Description.$touch()"
             placeholder="Введите описание фильма"
           ></v-textarea>
           <v-text-field
@@ -206,10 +209,11 @@ export default {
   // },
   mixins: [validationMixin],
   validations: {
-    Name: { required },
+    Name: { required, maxLength: maxLength(100) },
     Teaser: { required, maxLength: maxLength(140) },
     Genre: { required },
     Director: { required },
+    Description: { maxLength: maxLength(1500) },
     Year: { required, numeric, between: between(1950, 2021) },
     Link: { required },
     Poster: { required },
@@ -297,6 +301,10 @@ export default {
       const errors = [];
       if (!this.$v.Name.$dirty) return errors;
       !this.$v.Name.required && errors.push("Название необходимо");
+      !this.$v.Name.maxLength &&
+        errors.push(
+          `Количество символов не должно превышать ${this.$v.Name.$params.maxLength.max}`
+        );
       return errors;
     },
     teaserErrors() {
@@ -306,6 +314,15 @@ export default {
       !this.$v.Teaser.maxLength &&
         errors.push(
           `Количество символов не должно превышать ${this.$v.Teaser.$params.maxLength.max}`
+        );
+      return errors;
+    },
+    descErrors() {
+      const errors = [];
+      if (!this.$v.Description.$dirty) return errors;
+      !this.$v.Description.maxLength &&
+        errors.push(
+          `Количество символов не должно превышать ${this.$v.Description.$params.maxLength.max}`
         );
       return errors;
     },
