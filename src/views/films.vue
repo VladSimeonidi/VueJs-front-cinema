@@ -291,15 +291,14 @@ export default {
       .catch((err) => {
         console.log(err);
       });
-    this.paginate(this.pageSet), this.paginate(this.pageSet);
-
-    this.uploadGenresList()
-      .then(() => {
-        this.genres = this.getAllGenres;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.paginate(this.pageSet),
+      this.uploadGenresList()
+        .then(() => {
+          this.genres = this.getAllGenres;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     this.setListOfDirectors()
       .then((value) => {
         this.directors = value;
@@ -311,6 +310,9 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+.button:focus {
+  outline: none !important;
+}
 .container-min-height {
   min-height: 100vh;
 }

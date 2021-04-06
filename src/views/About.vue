@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-scroll="handleScroll">
+  <div v-cloak class="wrapper" v-scroll="handleScroll">
     <section>
       <img class="bg" src="../assets/about/bg.jpg" ref="bg" alt="bg" />
       <img class="moon" src="../assets/about/moon.png" ref="moon" alt="moon" />
@@ -57,6 +57,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+[v-cloak] {
+  display: none;
+}
 @import url("https://fonts.googleapis.com/css2?family=Caveat&display=swap");
 .wrapper {
   background-color: #0a2a43;

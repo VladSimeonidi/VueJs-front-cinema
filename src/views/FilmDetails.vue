@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="film">
+  <v-card v-cloak v-if="film">
     <v-sheet color="blue accent-2" class="text-center">
       <v-row class="text-lg-h6 white--text">
         <v-col> {{ $t("filmDetails.genre") }}</v-col>
@@ -87,3 +87,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+[v-cloak] {
+  display: none;
+}
+</style>
