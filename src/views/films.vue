@@ -8,12 +8,12 @@
         max-height="80px"
         width="100%"
         ><v-text-field
-          @keydown.enter="search"
-          v-model="searchText"
+          @keydown.enter="searchByName"
           :label="$t('films.search')"
+          v-model="searchText"
           clearable
         ></v-text-field
-        ><v-btn large class="mb-5" @click="search" icon
+        ><v-btn large class="mb-5" @click="searchByName" icon
           ><v-icon>mdi-magnify</v-icon></v-btn
         ></v-toolbar
       >
@@ -39,7 +39,7 @@
                 <v-select
                   clearable
                   @change="paginateGenres"
-                  :items="genres"
+                  :items="getAllGenres"
                   item-text="name"
                   chips
                   small-chips
@@ -58,7 +58,7 @@
                   @change="paginateDirectors"
                   v-model="directorSelectValue"
                   color="black"
-                  :items="directors"
+                  :items="getAllDirectors"
                   small-chips
                   item-text="name"
                   chips
@@ -76,16 +76,16 @@
                   max="2021"
                   min="1950"
                   thumb-label="always"
-                  @change="rangeValue"
+                  @mouseup="rangeValue"
                 ></v-range-slider>
               </v-col>
             </v-row>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-      <v-layout row wrap v-if="list && listTotal" v-cloak>
+      <v-layout row wrap v-if="FilmLsit && FilmLsitTotal" v-cloak>
         <v-flex
-          v-for="(film, index) in list"
+          v-for="(film, index) in FilmLsit"
           :key="index"
           class="align-start"
           xs12
@@ -120,7 +120,7 @@
           </v-card>
         </v-flex>
       </v-layout>
-      <v-layout row v-else-if="listTotal === 0" class="vElseContainer">
+      <v-layout row v-else-if="FilmLsitTotal === 0" class="vElseContainer">
         <v-flex>
           <v-card
             class="d-flex justify-center align-center"
@@ -130,7 +130,7 @@
           ></v-flex
         >
       </v-layout>
-      <v-layout v-else-if="listTotal === null" class="vElseContainer">
+      <v-layout v-else-if="FilmLsitTotal === null" class="vElseContainer">
         <v-flex>
           <v-card
             class="d-flex justify-center align-center"
@@ -142,7 +142,7 @@
       </v-layout>
       <v-card-actions class="mb-5 justify-center">
         <v-pagination
-          v-if="listTotal"
+          v-if="FilmLsitTotal"
           color="light-blue darken-2"
           circle
           light
@@ -158,7 +158,7 @@
 </template>
 <script>
 import Footer from "@/components/AppFooter.vue";
-import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   metaInfo: {
     title: "Films",
@@ -169,27 +169,26 @@ export default {
       genreSelectValue: [],
       directorSelectValue: [],
       range: [1950, 2021],
-      admin: null,
-      directors: [],
-      list: null,
-      listTotal: null,
-      pageSet: { pageNumber: 1, pageSize: 9 },
-      paginatonsCounter: null,
       searchText: "",
-      genres: null,
+      admin: null,
+      pageSet: {
+        pageNumber: 1,
+        pageSize: 9,
+        range: [1950, 2021],
+        search: "",
+        directors: [],
+        genres: [],
+      },
+      paginatonsCounter: null,
     };
   },
   components: { Footer },
   computed: {
     ...mapState({
-      TTT: (state) => state.film.OneFilmPosterImage,
-    }),
-    ...mapGetters({
-      getFilmLsitTotal: "film/GET_LIST_TOTAL",
-      getFilmLsit: "film/GET_LIST",
-      getAllGenres: "genre/GET_LIST",
-      getAllDirectors: "director/GET_LIST",
-      getFilmsPagination: "pagination/GET_FILMS_PAGINATION",
+      FilmLsitTotal: (state) => state.film.listTotal,
+      FilmLsit: (state) => state.film.list,
+      getAllGenres: (state) => state.genre.list,
+      getAllDirectors: (state) => state.director.list,
     }),
     currentSelectedPage: {
       get() {
@@ -197,13 +196,7 @@ export default {
       },
       set(value) {
         this.pageSet.pageNumber = value;
-        this.loadFilmsList(this.pageSet).then(() => {
-          this.list = this.getFilmLsit;
-          this.listTotal = this.getFilmLsitTotal;
-          this.paginatonsCounter = Math.ceil(
-            this.listTotal / this.pageSet.pageSize
-          );
-        });
+        this.paginate(this.pageSet);
       },
     },
   },
@@ -214,15 +207,8 @@ export default {
       setListOfDirectors: "director/SET_LIST",
       getProfile: "auth/GET_PROFILE",
     }),
-    ...mapMutations({
-      setupCurrentFilmsPagination: "pagination/SET_CURRENT_FILMS_PAGINATION",
-    }),
     goToFilmDetails(ID) {
       this.$router.push({ name: "filmditails", params: { id: ID } });
-    },
-    rangeValue(value) {
-      this.pageSet.range = value;
-      this.paginate(this.pageSet);
     },
     selectSearch(value) {
       const idsArray = value.map((el) => {
@@ -232,52 +218,54 @@ export default {
       this.pageSet.pageSize = 9;
       return idsArray;
     },
-    paginateGenres(value) {
-      const ids = this.selectSearch(value);
-      this.pageSet.genres = ids;
-      this.setupCurrentFilmsPagination(this.pageSet);
-      this.paginate(this.pageSet);
-    },
-    paginateDirectors(value) {
-      const ids = this.selectSearch(value);
-      this.pageSet.directors = ids;
-      this.paginate(this.pageSet);
-    },
-    paginate(mainObj) {
-      this.loadFilmsList(mainObj)
+    paginate(pageSettings) {
+      this.loadFilmsList(pageSettings)
         .then(() => {
-          this.list = this.getFilmLsit;
-          this.listTotal = this.getFilmLsitTotal;
-          this.paginatonsCounter = Math.ceil(this.listTotal / mainObj.pageSize);
+          this.paginatonsCounter = Math.ceil(
+            this.FilmLsitTotal / pageSettings.pageSize
+          );
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    search() {
+    rangeValue() {
+      this.pageSet.range = this.range;
+    },
+    paginateGenres(value) {
+      const ids = this.selectSearch(value);
+      this.pageSet.genres = ids;
+    },
+    paginateDirectors(value) {
+      const ids = this.selectSearch(value);
+      this.pageSet.directors = ids;
+    },
+    searchByName() {
       this.pageSet.search = this.searchText;
-      this.paginate(this.pageSet);
     },
     resetSearchValues() {
-      // console.log(this.panel);
       if (this.panel === undefined) {
         this.genreSelectValue = [];
         this.directorSelectValue = [];
-        this.range = [1935, 2021];
         this.pageSet = {
           pageNumber: 1,
           pageSize: 9,
+          range: [1950, 2021],
+          search: "",
         };
         this.searchText = "";
-        this.paginate(this.pageSet);
       }
     },
   },
+  watch: {
+    pageSet: {
+      deep: true,
+      handler() {
+        this.paginate(this.pageSet);
+      },
+    },
+  },
   mounted() {
-    // console.log(new Date().toLocaleTimeString());
-    // console.group("boolean");
-    // console.log(Boolean(""));
-    // console.groupEnd();
     this.getProfile()
       .then((res) => {
         this.user = res.user;
@@ -286,24 +274,13 @@ export default {
       .catch((err) => {
         console.log(err);
       });
-    this.paginate(this.pageSet),
-      this.uploadGenresList()
-        .then(() => {
-          this.genres = this.getAllGenres;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    this.setListOfDirectors()
-      .then((value) => {
-        this.directors = value;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    console.group("TTT");
-    console.log(this.TTT);
-    console.groupEnd();
+    this.paginate(this.pageSet);
+    this.uploadGenresList().catch((e) => {
+      console.log(e);
+    });
+    this.setListOfDirectors().catch((e) => {
+      console.log(e);
+    });
   },
 };
 </script>

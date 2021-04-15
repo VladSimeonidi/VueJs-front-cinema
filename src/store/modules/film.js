@@ -223,12 +223,9 @@ export const actions = {
   },
 };
 export const getters = {
-  GET_LIST(state) {
-    return state.list;
-  },
-  GET_LIST_TOTAL(state) {
-    return state.listTotal;
-  },
+  // GET_LIST(state) {
+  //   return state.list;
+  // },
   GET_CURRENT_ITEM(state) {
     return state.currentItem;
   },
