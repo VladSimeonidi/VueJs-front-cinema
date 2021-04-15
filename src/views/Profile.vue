@@ -1,54 +1,60 @@
 <template>
-  <v-container
-    fluid
-    v-if="user"
-    class="d-flex justify-center align-center myAquaBackGround"
-  >
-    <v-card
-      class="myCardStyles positionRelative rounded-xl"
-      width="100%"
-      min-height="60vh"
-      max-width="700px"
-      min-width="300px"
-      outlined
+  <v-main>
+    <v-container
+      fluid
+      v-if="user"
+      class="d-flex justify-center align-center myAquaBackGround"
     >
-      <div class="myCircle myCircle_top"></div>
-      <div class="myCircle myCircle_bottom"></div>
-      <v-card-title v-if="admin">
-        <vue-typer
-          text="Профиль пользователя (Администратор)"
-          :repeat="0"
-        ></vue-typer>
-      </v-card-title>
-      <v-card-title v-else>Профиль пользователя</v-card-title>
-      <v-card-text>
-        <v-text-field v-model="user.name" readonly label="Ф.И.О"></v-text-field>
+      <AppProfileBar v-if="admin" />
+      <v-card
+        class="myCardStyles positionRelative rounded-xl"
+        width="100%"
+        min-height="60vh"
+        max-width="700px"
+        min-width="300px"
+        outlined
+      >
+        <div class="myCircle myCircle_top"></div>
+        <div class="myCircle myCircle_bottom"></div>
+        <v-card-title v-if="admin">
+          <vue-typer
+            text="Профиль пользователя (Администратор)"
+            :repeat="0"
+          ></vue-typer>
+        </v-card-title>
+        <v-card-title v-else>Профиль пользователя</v-card-title>
+        <v-card-text>
+          <v-text-field
+            v-model="user.name"
+            readonly
+            label="Ф.И.О"
+          ></v-text-field>
 
-        <v-text-field
-          v-model="user.username"
-          readonly
-          label="Логин"
-        ></v-text-field>
+          <v-text-field
+            v-model="user.username"
+            readonly
+            label="Логин"
+          ></v-text-field>
 
-        <v-text-field
-          v-model="user.email"
-          readonly
-          label="Электронная почта"
-        ></v-text-field>
-      </v-card-text>
-      <v-card-actions class="justify-center">
-        <v-btn
-          class="pr-6 pl-6"
-          rounded
-          color="cyan lighten-1"
-          dark
-          @click="$router.go(-1)"
-          >Назад</v-btn
-        >
-      </v-card-actions>
-    </v-card>
-    <AppProfileBar v-if="admin" />
-  </v-container>
+          <v-text-field
+            v-model="user.email"
+            readonly
+            label="Электронная почта"
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions class="justify-center">
+          <v-btn
+            class="pr-6 pl-6"
+            rounded
+            color="cyan lighten-1"
+            dark
+            @click="$router.go(-1)"
+            >Назад</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-container>
+  </v-main>
 </template>
 
 <script>
@@ -86,7 +92,10 @@ export default {
 }
 .positionRelative {
   position: relative;
-  z-index: 5;
+  z-index: 1;
+}
+.appBarZIndex {
+  z-index: 1000;
 }
 .myCardStyles {
   background: white !important;

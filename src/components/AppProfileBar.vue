@@ -105,6 +105,18 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>
+              <v-btn
+                block
+                tile
+                :to="{ name: 'director', params: { id: 'new' } }"
+                >Добавить режиссера</v-btn
+              >
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -183,7 +195,7 @@ $colorShadeE: rgb(205, 243, 255);
 .myButton-position {
   position: absolute;
   right: 10px;
-  top: 60px;
+  top: 15px;
 }
 .myButton {
   display: inline-block;

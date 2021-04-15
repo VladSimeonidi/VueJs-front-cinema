@@ -1,12 +1,18 @@
 <template>
-  <div>
+  <v-main>
     <v-container
       fluid
-      class="d-flex justify-center align-center pa-10 filmWrapper"
+      class="d-flex justify-center align-center pa-10 contWrapper"
     >
-      <v-card elevation="15" max-width="800px" width="100%" class="text-center">
+      <v-card
+        dark
+        elevation="15"
+        max-width="800px"
+        width="100%"
+        class="text-center"
+      >
         <v-card-title v-if="this.$route.params.id !== 'new'"
-          >Страница одного режиссера<v-spacer></v-spacer>
+          >Страница режиссера<v-spacer></v-spacer>
           <!-- <v-btn color="red" @click="deleteItem($route.params.id)">
             удалить
           </v-btn> -->
@@ -69,7 +75,7 @@
         </v-card-actions>
       </v-card>
     </v-container>
-  </div>
+  </v-main>
 </template>
 
 <script>
@@ -171,3 +177,13 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.contWrapper {
+  min-height: calc(100vh - 48px);
+  background-color: #11aa44;
+  background-image: url("../assets/images/director/Tortoise-Shell.svg");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+</style>

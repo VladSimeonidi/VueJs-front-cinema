@@ -1,46 +1,48 @@
 <template>
-  <v-layout class="justify-center align-center pt-10">
-    <v-card width="100%" max-width="700px" outlined>
-      <v-card-title>Редактирование пользователя</v-card-title>
-      <v-card-text>
-        <v-text-field
-          v-model="Name"
-          :error-messages="nameErrors"
-          @input="$v.Name.$touch()"
-          @blur="$v.Name.$touch()"
-          label="Ф.И.О"
-        ></v-text-field>
+  <v-main>
+    <v-layout class="justify-center align-center pt-10">
+      <v-card width="100%" max-width="700px" outlined>
+        <v-card-title>Редактирование пользователя</v-card-title>
+        <v-card-text>
+          <v-text-field
+            v-model="Name"
+            :error-messages="nameErrors"
+            @input="$v.Name.$touch()"
+            @blur="$v.Name.$touch()"
+            label="Ф.И.О"
+          ></v-text-field>
 
-        <v-text-field
-          v-model="UserName"
-          :error-messages="usernameErrors"
-          @input="$v.UserName.$touch()"
-          @blur="$v.UserName.$touch()"
-          label="Логин"
-        ></v-text-field>
+          <v-text-field
+            v-model="UserName"
+            :error-messages="usernameErrors"
+            @input="$v.UserName.$touch()"
+            @blur="$v.UserName.$touch()"
+            label="Логин"
+          ></v-text-field>
 
-        <v-text-field
-          v-model="Password"
-          :error-messages="passwordErrors"
-          label="Пароль"
-          @input="$v.Password.$touch()"
-          @blur="$v.Password.$touch()"
-        ></v-text-field>
-        <v-text-field
-          v-model="Email"
-          :error-messages="emailErrors"
-          @input="$v.Email.$touch()"
-          @blur="$v.Email.$touch()"
-          label="Электронная почта"
-        ></v-text-field>
-        <v-checkbox v-model="checkbox" label="Сделать администратором?" />
-      </v-card-text>
-      <v-card-actions>
-        <v-btn @click="save">Сохранить</v-btn>
-        <v-btn @click="$router.go(-1)">Назад</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-layout>
+          <v-text-field
+            v-model="Password"
+            :error-messages="passwordErrors"
+            label="Пароль"
+            @input="$v.Password.$touch()"
+            @blur="$v.Password.$touch()"
+          ></v-text-field>
+          <v-text-field
+            v-model="Email"
+            :error-messages="emailErrors"
+            @input="$v.Email.$touch()"
+            @blur="$v.Email.$touch()"
+            label="Электронная почта"
+          ></v-text-field>
+          <v-checkbox v-model="checkbox" label="Сделать администратором?" />
+        </v-card-text>
+        <v-card-actions>
+          <v-btn @click="save">Сохранить</v-btn>
+          <v-btn @click="$router.go(-1)">Назад</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-layout>
+  </v-main>
 </template>
 
 <script>

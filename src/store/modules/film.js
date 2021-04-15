@@ -48,6 +48,8 @@ export const mutations = {
     state.currentItem.link = payload;
   },
   SET_CURRENT_POSTER(state, payload) {
+    console.log("eedddd");
+    console.log(payload);
     state.currentItem.poster.file_name = payload;
   },
   SET_FILM_FILE(state, payload) {

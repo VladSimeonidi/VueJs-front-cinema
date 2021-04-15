@@ -21,7 +21,7 @@ export default {
 .wrapper {
   height: 100vh;
   width: 100vw;
-  background-image: url("../assets/notFound/lol.gif");
+  background-image: url("../assets/images/notFound/lol.gif");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
@@ -64,7 +64,7 @@ export default {
   right: 0;
   height: 50vh;
   width: 50vh;
-  background-image: url("../assets/notFound/travolta.gif");
+  background-image: url("../assets/images/notFound/travolta.gif");
   background-size: cover;
   background-position: center;
 }

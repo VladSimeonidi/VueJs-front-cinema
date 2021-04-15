@@ -28,7 +28,7 @@ export default {
     },
   },
   mounted() {
-    const clipImage = require(`@/assets/intro/test.jpg`);
+    const clipImage = require(`@/assets/images/intro/test.jpg`);
     const clip = this.$refs.clip;
     clip.addEventListener("animationend", () => {
       clip.style.backgroundImage = `url(${clipImage})`;
@@ -51,7 +51,7 @@ export default {
   height: 100vh;
   width: 100%;
   position: relative;
-  background-image: url("../assets/intro/infinite.jpg");
+  background-image: url("../assets/images/intro/infinite.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -79,11 +79,11 @@ export default {
 @keyframes animate {
   0% {
     clip-path: circle(0% at 0% 0%);
-    background-image: url("../assets/intro/test.jpg");
+    background-image: url("../assets/images/intro/test.jpg");
   }
   100% {
     clip-path: circle(70.7% at 50% 50%);
-    background-image: url("../assets/intro/test.jpg");
+    background-image: url("../assets/images/intro/test.jpg");
   }
 }
 </style>

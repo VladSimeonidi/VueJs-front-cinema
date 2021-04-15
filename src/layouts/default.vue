@@ -1,10 +1,6 @@
 <template>
   <v-app v-if="user">
     <v-app-bar dense dark app>
-      <!-- <v-btn title="На главную" :to="{ name: 'home' }" mr-auto icon>
-        <v-icon>mdi-home</v-icon>
-      </v-btn> -->
-
       <myLocale class="langSelect" />
       <v-spacer></v-spacer>
       <v-btn title="Фильмы" :to="{ name: 'films' }" icon>
@@ -38,7 +34,7 @@
       Вы администратор, но зашли как обычный пользователь
     </v-alert>
     <vue-page-transition name="fade">
-      <router-view class="margin_top"></router-view>
+      <router-view></router-view>
     </vue-page-transition>
   </v-app>
 </template>
@@ -59,6 +55,7 @@ export default {
     this.GET_PROFILE().then((res) => {
       this.user = res.user;
       this.admin = res.admin;
+      if (!this.admin && this.user.isAdmin) this.alert = true;
     });
   },
   methods: {
@@ -80,7 +77,7 @@ export default {
 }
 .pos-abs {
   position: fixed;
-  top: 48px;
+  top: 60px;
   z-index: 100;
   left: 50%;
   transform: translate(-50%);

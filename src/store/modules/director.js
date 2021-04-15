@@ -4,6 +4,7 @@ import axios from "axios";
 export const namespaced = true;
 
 export const state = () => ({
+  test: null,
   list: [],
   currentItem: {
     name: "",
@@ -154,7 +155,6 @@ export const getters = {
     return state.currentItem.name;
   },
   GET_CURRENT_ITEM_IMAGE_NAME(state) {
-    console.log(state.currentItem.image);
     return state.currentItem.image;
   },
 };

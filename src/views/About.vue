@@ -1,15 +1,25 @@
 <template>
   <div v-cloak class="wrapper" v-scroll="handleScroll">
     <section>
-      <img class="bg" src="../assets/about/bg.jpg" ref="bg" alt="bg" />
-      <img class="moon" src="../assets/about/moon.png" ref="moon" alt="moon" />
+      <img class="bg" src="../assets/images/about/bg.jpg" ref="bg" alt="bg" />
+      <img
+        class="moon"
+        src="../assets/images/about/moon.png"
+        ref="moon"
+        alt="moon"
+      />
       <img
         class="mountain"
-        src="../assets/about/mountain.png"
+        src="../assets/images/about/mountain.png"
         ref="mountain"
         alt="mountain"
       />
-      <img class="road" src="../assets/about/road.png" ref="road" alt="road" />
+      <img
+        class="road"
+        src="../assets/images/about/road.png"
+        ref="road"
+        alt="road"
+      />
       <h2 class="text" ref="text">About Us</h2>
     </section>
     <p class="about-text">
@@ -28,7 +38,7 @@
       <img
         @click="goBack"
         class="back-arrow__img"
-        src="../assets/about/left-arrow.svg"
+        src="../assets/images/about/left-arrow.svg"
         alt=""
       />
     </div>

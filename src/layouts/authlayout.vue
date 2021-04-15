@@ -51,7 +51,7 @@
                   max-width="24px"
                   class="animated-question-mark"
                   alt="about"
-                  src="../assets/about/help_outline-24px.svg"
+                  src="../assets/images/about/help_outline-24px.svg"
                 ></v-img
               ></router-link>
               <v-spacer></v-spacer>
@@ -84,19 +84,19 @@ export default {
       items: [
         {
           text: "Не знаешь какой фильм посмотреть?",
-          src: require("@/assets/vuetifyswiper/lost.svg"),
+          src: require("@/assets/images/vuetifyswiper/lost.svg"),
         },
         {
           text: "Тут 'много' фильмов",
-          src: require("@/assets/vuetifyswiper/search.svg"),
+          src: require("@/assets/images/vuetifyswiper/search.svg"),
         },
         {
           text: "Выбирай!",
-          src: require("@/assets/vuetifyswiper/choose.svg"),
+          src: require("@/assets/images/vuetifyswiper/choose.svg"),
         },
         {
           text: "Смотри!",
-          src: require("@/assets/vuetifyswiper/movie.svg"),
+          src: require("@/assets/images/vuetifyswiper/movie.svg"),
         },
       ],
     };
