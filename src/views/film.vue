@@ -38,20 +38,20 @@
           <v-row no-gutters>
             <v-col class="d-flex" cols="12" sm="12">
               <v-select
-                v-if="genres"
+                v-if="Genres"
                 v-model="Genre"
                 :error-messages="genreErrors"
                 @input="$v.Genre.$touch()"
                 @blur="$v.Genre.$touch()"
                 dense
-                :items="genres"
+                :items="Genres"
                 item-text="name"
                 chips
                 multiple
                 label="Выберите жанр"
                 return-object
               ></v-select>
-              <addGenre @getGenres="onClickGenreComponent" />
+              <addGenre />
             </v-col>
           </v-row>
           <!-- РЕЖИСЕР -->
@@ -62,7 +62,7 @@
                 :error-messages="directorErrors"
                 @input="$v.Director.$touch()"
                 @blur="$v.Director.$touch()"
-                :items="directors"
+                :items="Directors"
                 item-text="name"
                 chips
                 multiple
@@ -70,7 +70,7 @@
                 label="Выберите режиссера"
                 return-object
               ></v-select>
-              <addDirector @getDirectors="onClickDirectorComponent" />
+              <addDirector />
             </v-col>
           </v-row>
           <v-text-field
@@ -163,13 +163,13 @@
           <v-btn @click="goBack">
             Назад
           </v-btn>
-          <!-- <v-btn @click="check">
+          <v-btn @click="check">
             check
-          </v-btn> -->
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-container>
-    <loading :active.sync="this.getLoading" color="blue" is-full-page></loading>
+    <loading :active.sync="this.Loading" color="blue" is-full-page></loading>
   </v-main>
 </template>
 <script>
@@ -182,7 +182,7 @@ import {
   maxLength,
   between,
 } from "vuelidate/lib/validators";
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 export default {
@@ -191,28 +191,9 @@ export default {
   },
   data() {
     return {
-      genres: null,
-      directors: [],
       dataLoaded: false,
     };
   },
-  // beforeRouteLeave(to, from, next) {
-  //   if (this.$route.params.id === "new") {
-  //     let currentFilm = this.getCurrentFilm;
-  //     let valuesArr = Object.values(currentFilm);
-  //     console.log(valuesArr);
-  //     next("/editfilm/new");
-  //     return;
-  //   }
-
-  // const confirmed = confirm("Покинуть 1");
-  //       if (confirmed) {
-  //         next();
-  //       } else {
-  //         return;
-  //       }
-  // next();
-  // },
   mixins: [validationMixin],
   validations: {
     Name: { required, maxLength: maxLength(100) },
@@ -230,23 +211,15 @@ export default {
     Loading,
   },
   computed: {
-    ...mapGetters({
-      getAllGenres: "genre/GET_LIST",
-      getAllDirectors: "director/GET_LIST",
-      getCurrentFilm: "film/GET_CURRENT_ITEM",
-      getCurrentItemName: "film/GET_CURRENT_NAME",
-      getCurrentItemTeaser: "film/GET_CURRENT_TEASER",
-      getCurrentItemGenre: "film/GET_CURRENT_GENRE",
-      getCurrentItemDirector: "film/GET_CURRENT_DIRECTOR",
-      getCurrentItemYear: "film/GET_CURRENT_YEAR",
-      getCurrentItemDescription: "film/GET_CURRENT_DESCRIPTION",
-      getCurrentItemLink: "film/GET_CURRENT_LINK",
-      getCurrentItemPoster: "film/GET_CURRENT_POSTER",
-      getLoading: "film/GET_LOADING",
+    ...mapState({
+      CurrentFilm: (state) => state.film.currentItem,
+      Genres: (state) => state.genre.list,
+      Directors: (state) => state.director.list,
+      Loading: (state) => state.film.Loading,
     }),
     Name: {
       get() {
-        return this.getCurrentItemName;
+        return this.$store.state.film.currentItem.name;
       },
       set(value) {
         this.setCurrentItemName(value);
@@ -254,7 +227,7 @@ export default {
     },
     Teaser: {
       get() {
-        return this.getCurrentItemTeaser;
+        return this.$store.state.film.currentItem.teaser;
       },
       set(value) {
         this.setCurrentItemTeaser(value);
@@ -262,7 +235,7 @@ export default {
     },
     Genre: {
       get() {
-        return this.getCurrentItemGenre;
+        return this.$store.state.film.currentItem.genre;
       },
       set(value) {
         this.setCurrentItemGenre(value);
@@ -270,7 +243,7 @@ export default {
     },
     Director: {
       get() {
-        return this.getCurrentItemDirector;
+        return this.$store.state.film.currentItem.director;
       },
       set(value) {
         this.setCurrentItemDirector(value);
@@ -278,7 +251,7 @@ export default {
     },
     Year: {
       get() {
-        return this.getCurrentItemYear;
+        return this.$store.state.film.currentItem.year;
       },
       set(value) {
         this.setCurrentItemYear(value);
@@ -286,7 +259,7 @@ export default {
     },
     Description: {
       get() {
-        return this.getCurrentItemDescription;
+        return this.$store.state.film.currentItem.description;
       },
       set(value) {
         this.setCurrentItemDescription(value);
@@ -294,12 +267,12 @@ export default {
     },
     Link: {
       get() {
-        return this.getCurrentItemLink;
+        return this.$store.state.film.currentItem.link;
       },
     },
     Poster: {
       get() {
-        return this.getCurrentItemPoster;
+        return this.$store.state.film.currentItem.poster.file_name;
       },
     },
     // ВАЛИДАТОР ОШИБКИ
@@ -391,12 +364,6 @@ export default {
       setFilmFile: "film/SET_FILM_FILE",
       setPosterFile: "film/SET_POSTER_FILE",
     }),
-    onClickGenreComponent(value) {
-      this.genres = value;
-    },
-    onClickDirectorComponent(value) {
-      this.directors = value;
-    },
     onFilmFileButtonClick() {
       this.$refs.uploaderFilm.click();
     },
@@ -417,8 +384,7 @@ export default {
       this.setCurrentItemPoster(e.target.files[0].name);
     },
     check() {
-      // console.log("currentItem");
-      // console.log(this.getCurrentFilm);
+      console.log("currentItem");
       // console.log("validation");
       // console.log(this.$v);
     },
@@ -496,12 +462,12 @@ export default {
     },
     goBack() {
       if (this.$route.params.id === "new") {
-        let currentFilm = Object.assign({}, this.getCurrentFilm);
+        let currentFilm = Object.assign({}, this.CurrentFilm);
         delete currentFilm.poster;
         delete currentFilm.link;
 
         console.log(currentFilm);
-        console.log(this.getCurrentFilm);
+        console.log(this.CurrentFilm);
         let valuesArr = Object.values(currentFilm);
         let result = valuesArr.some((value) => {
           return value.length != 0;
@@ -524,9 +490,7 @@ export default {
     },
   },
   created() {
-    this.uploadGenresList().then(() => {
-      this.genres = this.getAllGenres;
-    });
+    this.uploadGenresList();
     this.getProfile();
     if (this.$route.params.id !== "new") {
       this.setCurrentFilm(this.$route.params.id)
@@ -545,13 +509,9 @@ export default {
           alert(e);
         });
     }
-    this.setListOfDirectors()
-      .then((value) => {
-        this.directors = value;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    this.setListOfDirectors().catch((e) => {
+      console.log(e);
+    });
   },
 };
 </script>

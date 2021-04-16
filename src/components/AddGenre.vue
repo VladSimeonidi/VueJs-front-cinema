@@ -26,7 +26,7 @@
         <v-btn color="blue darken-1" text @click="close">
           Закрыть
         </v-btn>
-        <v-btn color="blue darken-1" text @click="saveGenre">
+        <v-btn color="blue darken-1" text @click="save">
           Сохранить
         </v-btn>
       </v-card-actions>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -45,21 +45,23 @@ export default {
       textfieldGenre: null,
     };
   },
+  computed: {
+    ...mapState({ GenresList: (state) => state.genre.list }),
+  },
   methods: {
     ...mapActions({
-      addGenre: "genre/SAVE_NEW_ITEM",
+      SaveGenre: "genre/SAVE_NEW_ITEM",
       uploadGenresList: "genre/SET_LIST",
       getProfile: "auth/GET_PROFILE",
     }),
-    ...mapGetters({ getAllGenres: "genre/GET_LIST" }),
-    async saveGenre() {
+    async save() {
       const genreData = {
         name: this.textfieldGenre,
       };
-      await this.addGenre(genreData)
+      await this.SaveGenre(genreData)
         .then(() => {
           this.uploadGenresList().then(() => {
-            this.$emit("getGenres", this.getAllGenres());
+            this.$emit("getGenres", this.GenresList);
           });
           this.textfieldGenre = null;
           this.dialog = false;

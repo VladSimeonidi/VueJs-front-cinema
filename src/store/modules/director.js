@@ -4,7 +4,6 @@ import axios from "axios";
 export const namespaced = true;
 
 export const state = () => ({
-  test: null,
   list: [],
   currentItem: {
     name: "",
@@ -13,6 +12,7 @@ export const state = () => ({
   DirectorPosterImageFile: null,
   DirectorPosterImage_Id: null,
   currentItem_Id: null,
+  status: "",
   error: null,
 });
 export const mutations = {
@@ -39,13 +39,9 @@ export const mutations = {
     state.currentItem.name = payload;
   },
   SET_CURRENT_IMAGE(state, payload) {
-    console.log("imNAME");
-    console.log(payload);
     state.currentItem.image = payload;
   },
   SET_CURRENT_IMAGE_DATA(state, payload) {
-    console.log("IMDATA");
-    console.log(payload);
     state.DirectorPosterImageFile = payload;
   },
   SAVE_NEW_DIRECTOR(state, payload) {
@@ -144,17 +140,4 @@ export const actions = {
     return res;
   },
 };
-export const getters = {
-  GET_LIST(state) {
-    return state.list;
-  },
-  GET_CURRENT_ITEM(state) {
-    return state.currentItem;
-  },
-  GET_CURRENT_ITEM_NAME(state) {
-    return state.currentItem.name;
-  },
-  GET_CURRENT_ITEM_IMAGE_NAME(state) {
-    return state.currentItem.image;
-  },
-};
+export const getters = {};

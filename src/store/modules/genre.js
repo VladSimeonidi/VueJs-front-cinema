@@ -38,8 +38,4 @@ export const actions = {
       });
   },
 };
-export const getters = {
-  GET_LIST(state) {
-    return state.list;
-  },
-};
+export const getters = {};

@@ -75,9 +75,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 import { validationMixin } from "vuelidate";
-import { required } from "vuelidate/lib/validators";
+import { required, maxLength } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
@@ -86,18 +86,13 @@ export default {
   },
   mixins: [validationMixin],
   validations: {
-    Name: { required },
+    Name: { required, maxLength: maxLength(25) },
     Image: { required },
   },
   computed: {
-    ...mapGetters({
-      getDirectorName: "director/GET_CURRENT_ITEM_NAME",
-      getDirectorImageName: "director/GET_CURRENT_ITEM_IMAGE_NAME",
-      getDirector: "director/GET_CURRENT_ITEM",
-    }),
     Name: {
       get() {
-        return this.getDirectorName;
+        return this.$store.state.director.currentItem.name;
       },
       set(value) {
         this.mutSetDirectorName(value);
@@ -105,13 +100,17 @@ export default {
     },
     Image: {
       get() {
-        return this.getDirectorImageName;
+        return this.$store.state.director.currentItem.image;
       },
     },
     nameErrors() {
       const errors = [];
       if (!this.$v.Name.$dirty) return errors;
       !this.$v.Name.required && errors.push("Название необходимо");
+      !this.$v.Name.maxLength &&
+        errors.push(
+          `Количество символов не должно превышать ${this.$v.Name.$params.maxLength.max}`
+        );
       return errors;
     },
     imageErrors() {

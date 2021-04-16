@@ -48,8 +48,6 @@ export const mutations = {
     state.currentItem.link = payload;
   },
   SET_CURRENT_POSTER(state, payload) {
-    console.log("eedddd");
-    console.log(payload);
     state.currentItem.poster.file_name = payload;
   },
   SET_FILM_FILE(state, payload) {
@@ -222,38 +220,4 @@ export const actions = {
     }
   },
 };
-export const getters = {
-  // GET_LIST(state) {
-  //   return state.list;
-  // },
-  GET_CURRENT_ITEM(state) {
-    return state.currentItem;
-  },
-  GET_CURRENT_NAME(state) {
-    return state.currentItem.name;
-  },
-  GET_CURRENT_TEASER(state) {
-    return state.currentItem.teaser;
-  },
-  GET_CURRENT_GENRE(state) {
-    return state.currentItem.genre;
-  },
-  GET_CURRENT_DIRECTOR(state) {
-    return state.currentItem.director;
-  },
-  GET_CURRENT_YEAR(state) {
-    return state.currentItem.year;
-  },
-  GET_CURRENT_DESCRIPTION(state) {
-    return state.currentItem.description;
-  },
-  GET_CURRENT_LINK(state) {
-    return state.currentItem.link;
-  },
-  GET_CURRENT_POSTER(state) {
-    return state.currentItem.poster.file_name;
-  },
-  GET_LOADING(state) {
-    return state.Loading;
-  },
-};
+export const getters = {};

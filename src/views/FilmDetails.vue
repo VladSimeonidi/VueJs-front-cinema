@@ -1,9 +1,11 @@
 <template>
-  <v-main v-cloak v-if="film">
-    <v-sheet width="100%" min-height="500px" class="position-relative">
-      <v-card-title class="white--text text-h5 text-center">{{
-        film.name
-      }}</v-card-title>
+  <v-main v-if="!Loading">
+    <v-sheet
+      width="100%"
+      min-height="500px"
+      class="d-flex justify-center position-relative"
+    >
+      <div class="header-styling">{{ Film.name }}</div>
       <!-- svg -->
       <div class="custom-shape-divider-bottom">
         <svg
@@ -20,17 +22,14 @@
       </div>
       <!-- svg -->
     </v-sheet>
-    <v-sheet min-height="100vh" color="#00cffa" class="pa-8">
-      <v-card-text class="custom-font-style">
-        {{ film.description }}
-      </v-card-text>
-      <v-row no-gutters>
-        <v-col cols="3">
+    <v-sheet min-height="100vh" color="#fae3d2" class="pa-8">
+      <v-row no-gutters class="mb-10">
+        <v-col cols="4">
           <v-row no-gutters>
-            <v-col cols="12">
+            <v-col cols="8">
               <v-subheader
                 class="white--text text-h6"
-                v-if="film.director.length < 2"
+                v-if="Film.director.length < 2"
                 >{{ $t("filmDetails.director") }}</v-subheader
               >
               <v-subheader class="white--text text-h6" v-else>
@@ -38,7 +37,7 @@
               </v-subheader>
 
               <v-list-item
-                v-for="(director, index) in film.director"
+                v-for="(director, index) in Film.director"
                 :key="index"
               >
                 <v-list-item-avatar>
@@ -50,14 +49,12 @@
                 </v-list-item-content>
               </v-list-item>
             </v-col>
-          </v-row>
-          <v-row no-gutters>
-            <v-col cols="12">
+            <v-col cols="4">
               <v-subheader class="white--text text-h6">{{
                 $t("filmDetails.genre")
               }}</v-subheader>
 
-              <v-list-item v-for="(genre, index) in film.genre" :key="index">
+              <v-list-item v-for="(genre, index) in Film.genre" :key="index">
                 <v-list-item-content>
                   <v-list-item-title v-text="genre.name"></v-list-item-title>
                 </v-list-item-content>
@@ -65,12 +62,12 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col class="text-center pa-5" cols="9">
+        <v-col class="text-right" cols="8">
           <Media
             :kind="'video'"
             :controls="true"
-            :src="film.link"
-            :poster="film.poster.file_path"
+            :src="Film.link"
+            :poster="Film.poster.file_path"
             :style="{
               width: '70%',
               maxHeight: '600px',
@@ -82,40 +79,52 @@
           </Media>
         </v-col>
       </v-row>
+      <v-card outlined color="#fff">
+        <v-card-text class="custom-font-style">
+          {{ Film.description }}
+        </v-card-text></v-card
+      >
     </v-sheet>
     <Footer />
+  </v-main>
+  <v-main v-else>
+    loading
   </v-main>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 import Footer from "@/components/AppFooter.vue";
 import Media from "@dongido/vue-viaudio";
 export default {
   metaInfo: {
     title: "Film Details",
   },
+  data() {
+    return {
+      Loading: true,
+    };
+  },
   components: {
     Media,
     Footer,
   },
-  data() {
-    return {
-      film: null,
-    };
+  computed: {
+    ...mapState({
+      Film: (state) => state.film.currentItem,
+    }),
   },
-  created() {
-    this.SET_CURRENT_ITEM_AS_DETAILS(this.$route.params.id)
+  methods: {
+    ...mapActions({ uploadCurrentItem: "film/SET_CURRENT_ITEM_AS_DETAILS" }),
+  },
+  mounted() {
+    this.uploadCurrentItem(this.$route.params.id)
       .then(() => {
-        this.film = this.GET_CURRENT_ITEM();
+        this.Loading = false;
       })
       .catch((e) => {
         alert(e);
       });
-  },
-  methods: {
-    ...mapGetters("film", ["GET_CURRENT_ITEM"]),
-    ...mapActions("film", ["SET_CURRENT_ITEM_AS_DETAILS"]),
   },
 };
 </script>
@@ -129,12 +138,10 @@ export default {
   letter-spacing: 3px;
   line-height: 2rem;
 }
-[v-cloak] {
-  display: none;
-}
+
 .position-relative {
   position: relative;
-  background-image: url("http://test.com:81/cart/pexels.jpg");
+  background-image: url("../assets/images/pexels.jpg");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-attachment: fixed;
@@ -158,9 +165,23 @@ export default {
 }
 
 .shape-fill {
-  fill: #00cffa;
+  fill: #fae3d2;
 }
 .text-purple-red {
   color: #ff0038;
+}
+.header-styling {
+  color: #fff;
+  font-size: 3rem;
+  transform: translateY(30px);
+  animation: text-down 1s ease-out;
+}
+@keyframes text-down {
+  from {
+    transform: translateY(-30px);
+  }
+  to {
+    transform: translateY(30px);
+  }
 }
 </style>

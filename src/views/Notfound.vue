@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="gif"></div>
     <div class="title">
-      Ничего не найдено
+      404 Ничего не найдено
     </div>
     <router-link :to="{ name: 'home' }" class="button">По домам?</router-link>
   </div>
@@ -26,12 +26,12 @@ export default {
   background-repeat: no-repeat;
 }
 .title {
+  padding-top: 3vw;
   background-color: rgba(0, 0, 0, 0.05);
   color: white;
   font-family: "Stalinist One", cursive;
-  font-size: 5vw;
+  font-size: 3vw;
   text-align: center;
-  margin-bottom: auto;
 }
 .button {
   position: absolute;

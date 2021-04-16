@@ -1,5 +1,5 @@
 <template>
-  <v-main id="films">
+  <v-main id="films" v-cloak>
     <v-container grid-list-lg class="container-min-height">
       <v-toolbar
         rounded="lg"
@@ -39,7 +39,7 @@
                 <v-select
                   clearable
                   @change="paginateGenres"
-                  :items="getAllGenres"
+                  :items="AllGenres"
                   item-text="name"
                   chips
                   small-chips
@@ -58,7 +58,7 @@
                   @change="paginateDirectors"
                   v-model="directorSelectValue"
                   color="black"
-                  :items="getAllDirectors"
+                  :items="AllDirectors"
                   small-chips
                   item-text="name"
                   chips
@@ -187,8 +187,8 @@ export default {
     ...mapState({
       FilmLsitTotal: (state) => state.film.listTotal,
       FilmLsit: (state) => state.film.list,
-      getAllGenres: (state) => state.genre.list,
-      getAllDirectors: (state) => state.director.list,
+      AllGenres: (state) => state.genre.list,
+      AllDirectors: (state) => state.director.list,
     }),
     currentSelectedPage: {
       get() {
@@ -219,7 +219,7 @@ export default {
       return idsArray;
     },
     paginate(pageSettings) {
-      this.loadFilmsList(pageSettings)
+      return this.loadFilmsList(pageSettings)
         .then(() => {
           this.paginatonsCounter = Math.ceil(
             this.FilmLsitTotal / pageSettings.pageSize
@@ -266,21 +266,21 @@ export default {
     },
   },
   mounted() {
-    this.getProfile()
-      .then((res) => {
-        this.user = res.user;
-        this.admin = res.admin;
+    Promise.all([
+      this.getProfile(),
+      this.paginate(this.pageSet),
+      this.uploadGenresList(),
+      this.setListOfDirectors(),
+    ])
+      .then((response) => {
+        const [profile] = response;
+        this.user = profile.user;
+        this.admin = profile.admin;
+        this.Loading = false;
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
-    this.paginate(this.pageSet);
-    this.uploadGenresList().catch((e) => {
-      console.log(e);
-    });
-    this.setListOfDirectors().catch((e) => {
-      console.log(e);
-    });
   },
 };
 </script>
