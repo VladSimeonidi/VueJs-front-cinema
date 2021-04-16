@@ -12,6 +12,14 @@ export const state = () => ({
   OneFilmFile: null,
   OneFilmPosterImage: null,
   Loading: false,
+  pageSet: {
+    pageNumber: 1,
+    pageSize: 3,
+    range: [1950, 2021],
+    search: "",
+    director: [],
+    genres: [],
+  },
 });
 export const mutations = {
   SET_LIST(state, payload) {
@@ -76,10 +84,37 @@ export const mutations = {
     };
     state.currentItem = emptyForm;
   },
+  SET_PAGESET_PAGE_NUMBER(state, payload) {
+    state.pageSet.pageNumber = payload;
+  },
+  SET_PAGESET_YEAR_RANGE(state, payload) {
+    state.pageSet.range = payload;
+  },
+  SET_PAGESET_GENRES(state, payload) {
+    console.log(payload);
+    state.pageSet.genres = payload;
+  },
+  SET_PAGESET_DIRECTORS(state, payload) {
+    state.pageSet.director = payload;
+  },
+  SET_PAGESET_SEARCH(state, payload) {
+    state.pageSet.search = payload;
+  },
 };
 export const actions = {
-  async SET_LIST({ commit }, pageSet) {
-    const qs = querystring.stringify(pageSet);
+  async SET_LIST({ state, commit }) {
+    const query = Object.assign({}, state.pageSet);
+    if (query.director.length > 0) {
+      query.director = query.director.map((el) => {
+        return el._id;
+      });
+    }
+    if (query.genres.length > 0) {
+      query.genres = query.genres.map((el) => {
+        return el._id;
+      });
+    }
+    const qs = querystring.stringify(query);
     const res = await axios
       .get(config.API.BASE_URL + config.API.FILM.PAGINATION + "?" + qs)
       .then((res) => {
@@ -220,4 +255,11 @@ export const actions = {
     }
   },
 };
-export const getters = {};
+export const getters = {
+  paginatonsCounter(state) {
+    let total = state.listTotal;
+    let pageSize = state.pageSet.pageSize;
+    console.log(Math.ceil(total / pageSize));
+    return Math.ceil(total / pageSize);
+  },
+};

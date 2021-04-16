@@ -10,7 +10,7 @@
         ><v-text-field
           @keydown.enter="searchByName"
           :label="$t('films.search')"
-          v-model="searchText"
+          v-model="Search"
           clearable
         ></v-text-field
         ><v-btn large class="mb-5" @click="searchByName" icon
@@ -22,6 +22,7 @@
         @change="resetSearchValues"
         class="mb-7"
         v-model="panel"
+        dark
       >
         <v-expansion-panel>
           <v-expansion-panel-header>
@@ -35,15 +36,14 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-row no-gutters>
-              <v-col class="d-flex" cols="3" sm="3">
+              <v-col class="d-flex" sm="3" xs="12">
                 <v-select
                   clearable
-                  @change="paginateGenres"
                   :items="AllGenres"
                   item-text="name"
                   chips
                   small-chips
-                  v-model="genreSelectValue"
+                  v-model="Genres"
                   multiple
                   :label="$t('films.chooseGenre')"
                   color="black"
@@ -51,12 +51,11 @@
                   return-object
                 ></v-select>
               </v-col>
-              <v-col class="d-flex ml-2" cols="3" sm="3">
+              <v-col class="d-flex ml-2" sm="3" xs="12">
                 <v-select
                   clearable
                   prepend-icon="mdi-account"
-                  @change="paginateDirectors"
-                  v-model="directorSelectValue"
+                  v-model="CompDirectors"
                   color="black"
                   :items="AllDirectors"
                   small-chips
@@ -67,15 +66,16 @@
                   return-object
                 ></v-select
               ></v-col>
-              <v-col class="d-flex ml-2 align-center" cols="5" sm="4">
+              <v-col class="d-flex ml-2 align-center" sm="5" xs="12">
                 <v-range-slider
                   hide-details
                   dense
                   :label="$t('films.chooseYear')"
-                  v-model="range"
+                  v-model="rangeYear"
                   max="2021"
                   min="1950"
                   thumb-label="always"
+                  thumb-color="grey"
                   @mouseup="rangeValue"
                 ></v-range-slider>
               </v-col>
@@ -148,7 +148,7 @@
           light
           total-visible="10"
           v-model="currentSelectedPage"
-          :length="paginatonsCounter"
+          :length="PaginatonCounter"
         ></v-pagination>
       </v-card-actions>
     </v-container>
@@ -158,7 +158,7 @@
 </template>
 <script>
 import Footer from "@/components/AppFooter.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState, mapGetters } from "vuex";
 export default {
   metaInfo: {
     title: "Films",
@@ -166,9 +166,8 @@ export default {
   data() {
     return {
       panel: null,
-      genreSelectValue: [],
-      directorSelectValue: [],
       range: [1950, 2021],
+      setRange: null,
       searchText: "",
       admin: null,
       pageSet: {
@@ -184,6 +183,9 @@ export default {
   },
   components: { Footer },
   computed: {
+    ...mapGetters({
+      PaginatonCounter: "film/paginatonsCounter",
+    }),
     ...mapState({
       FilmLsitTotal: (state) => state.film.listTotal,
       FilmLsit: (state) => state.film.list,
@@ -192,11 +194,46 @@ export default {
     }),
     currentSelectedPage: {
       get() {
-        return this.pageSet.pageNumber;
+        return this.$store.state.film.pageSet.pageNumber;
       },
       set(value) {
-        this.pageSet.pageNumber = value;
-        this.paginate(this.pageSet);
+        this.setPageSetPageNumber(value);
+      },
+    },
+    rangeYear: {
+      get() {
+        return this.$store.state.film.pageSet.range;
+      },
+      set(value) {
+        this.setPageSetPageNumber(1);
+        this.setRange = value;
+      },
+    },
+    Genres: {
+      get() {
+        return this.$store.state.film.pageSet.genres;
+      },
+      set(value) {
+        this.setPageSetPageNumber(1);
+        this.setPageSetGenre(value);
+      },
+    },
+    CompDirectors: {
+      get() {
+        return this.$store.state.film.pageSet.director;
+      },
+      set(value) {
+        this.setPageSetPageNumber(1);
+        this.setPageSetDirectors(value);
+      },
+    },
+    Search: {
+      get() {
+        return this.$store.state.film.pageSet.search;
+      },
+      set(value) {
+        this.setPageSetPageNumber(1);
+        this.searchText = value;
       },
     },
   },
@@ -207,80 +244,59 @@ export default {
       setListOfDirectors: "director/SET_LIST",
       getProfile: "auth/GET_PROFILE",
     }),
+    ...mapMutations({
+      setPageSetPageNumber: "film/SET_PAGESET_PAGE_NUMBER",
+      setPageSetRangeYear: "film/SET_PAGESET_YEAR_RANGE",
+      setPageSetGenre: "film/SET_PAGESET_GENRES",
+      setPageSetDirectors: "film/SET_PAGESET_DIRECTORS",
+      setPageSetSearch: "film/SET_PAGESET_SEARCH",
+    }),
     goToFilmDetails(ID) {
       this.$router.push({ name: "filmditails", params: { id: ID } });
     },
-    selectSearch(value) {
-      const idsArray = value.map((el) => {
-        return el._id;
-      });
-      this.pageSet.pageNumber = 1;
-      this.pageSet.pageSize = 9;
-      return idsArray;
+    rangeValue() {
+      this.setPageSetRangeYear(this.setRange);
     },
-    paginate(pageSettings) {
-      return this.loadFilmsList(pageSettings)
-        .then(() => {
-          this.paginatonsCounter = Math.ceil(
-            this.FilmLsitTotal / pageSettings.pageSize
-          );
+    searchByName() {
+      this.setPageSetSearch(this.searchText);
+    },
+    resetSearchValues() {
+      if (this.panel === undefined) {
+        console.log("PANEL CLOSED");
+        console.log(this.$store.state.film.pageSet);
+        console.log("Genres", this.Genres);
+      }
+    },
+  },
+  mounted() {
+    (this.unwatch = this.$store.watch(
+      (state) => state.film.pageSet,
+      () => {
+        console.log("changed");
+        this.loadFilmsList();
+      },
+      {
+        deep: true,
+      }
+    )),
+      Promise.all([
+        this.getProfile(),
+        this.loadFilmsList(),
+        this.uploadGenresList(),
+        this.setListOfDirectors(),
+      ])
+        .then((response) => {
+          const [profile] = response;
+          this.user = profile.user;
+          this.admin = profile.admin;
+          this.Loading = false;
         })
         .catch((error) => {
           console.log(error);
         });
-    },
-    rangeValue() {
-      this.pageSet.range = this.range;
-    },
-    paginateGenres(value) {
-      const ids = this.selectSearch(value);
-      this.pageSet.genres = ids;
-    },
-    paginateDirectors(value) {
-      const ids = this.selectSearch(value);
-      this.pageSet.directors = ids;
-    },
-    searchByName() {
-      this.pageSet.search = this.searchText;
-    },
-    resetSearchValues() {
-      if (this.panel === undefined) {
-        this.genreSelectValue = [];
-        this.directorSelectValue = [];
-        this.pageSet = {
-          pageNumber: 1,
-          pageSize: 9,
-          range: [1950, 2021],
-          search: "",
-        };
-        this.searchText = "";
-      }
-    },
   },
-  watch: {
-    pageSet: {
-      deep: true,
-      handler() {
-        this.paginate(this.pageSet);
-      },
-    },
-  },
-  mounted() {
-    Promise.all([
-      this.getProfile(),
-      this.paginate(this.pageSet),
-      this.uploadGenresList(),
-      this.setListOfDirectors(),
-    ])
-      .then((response) => {
-        const [profile] = response;
-        this.user = profile.user;
-        this.admin = profile.admin;
-        this.Loading = false;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  beforeDestroy() {
+    this.unwatch();
   },
 };
 </script>
