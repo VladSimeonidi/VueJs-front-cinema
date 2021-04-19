@@ -3,7 +3,12 @@
     <v-app-bar dense dark app>
       <myLocale class="langSelect" />
       <v-spacer></v-spacer>
-      <v-btn title="Фильмы" :to="{ name: 'films' }" icon>
+      <v-btn
+        @click="resetFilmStoreState"
+        title="Фильмы"
+        :to="{ name: 'films' }"
+        icon
+      >
         <v-icon>mdi-movie</v-icon>
       </v-btn>
       <v-btn
@@ -40,7 +45,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 import myLocale from "@/components/AppLocale.vue";
 export default {
   data() {
@@ -51,23 +56,29 @@ export default {
     };
   },
   components: { myLocale },
+  methods: {
+    ...mapActions({
+      Logout: "auth/LOGOUT",
+      GetProfile: "auth/GET_PROFILE",
+      reserFilmState: "film/RESET_STATE",
+    }),
+    logoutUser() {
+      let conf = confirm(
+        "Выйти из учетной записи и перейти на страницу логина?"
+      );
+      if (!conf) return;
+      this.Logout();
+    },
+    resetFilmStoreState() {
+      this.reserFilmState();
+    },
+  },
   created() {
-    this.GET_PROFILE().then((res) => {
+    this.GetProfile().then((res) => {
       this.user = res.user;
       this.admin = res.admin;
       if (!this.admin && this.user.isAdmin) this.alert = true;
     });
-  },
-  methods: {
-    ...mapGetters("auth", ["GETUSER"]),
-    ...mapActions("auth", ["LOGOUT", "GET_PROFILE"]),
-    logoutUser() {
-      let logout = confirm(
-        "Выйти из учетной записи и перейти на страницу логина?"
-      );
-      if (!logout) return;
-      this.LOGOUT();
-    },
   },
 };
 </script>

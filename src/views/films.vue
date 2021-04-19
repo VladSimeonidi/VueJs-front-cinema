@@ -92,32 +92,45 @@
           sm6
           md4
         >
-          <v-card
-            @click="goToFilmDetails(film._id)"
-            shaped
-            class="text-center grow pt-5 hoverEffect"
-            min-height="420px"
-          >
-            <img
-              v-if="film.poster"
-              class="palyer__img"
-              :src="film.poster.file_path"
-              alt=""
-            />
-            <div class="player__title">
-              {{ film.name }}
-              <v-btn
-                color="blue"
-                v-if="admin"
-                icon
-                :to="{ name: 'editfilm', params: { id: film._id } }"
-                ><v-icon large>mdi-pencil-circle</v-icon></v-btn
-              >
-            </div>
-            <v-card-subtitle class="subtitle-2">{{
-              film.teaser
-            }}</v-card-subtitle>
-          </v-card>
+          <v-hover>
+            <template v-slot:default="{ hover }">
+              <v-card shaped class="text-center pt-5" min-height="420px">
+                <img
+                  v-if="film.poster"
+                  class="palyer__img"
+                  :src="film.poster.file_path"
+                  alt=""
+                />
+                <div class="player__title">
+                  {{ film.name }}
+                </div>
+                <v-card-subtitle class="subtitle-2">{{
+                  film.teaser
+                }}</v-card-subtitle>
+                <v-fade-transition>
+                  <v-overlay
+                    z-index="0"
+                    opacity="0.8"
+                    v-if="hover"
+                    absolute
+                    color="#03546b"
+                  >
+                    <v-btn @click="goToFilmDetails(film._id)"
+                      >Рассмотреть подробнее</v-btn
+                    >
+                    <v-btn
+                      class="ml-5"
+                      color="white"
+                      v-if="admin"
+                      icon
+                      :to="{ name: 'editfilm', params: { id: film._id } }"
+                      ><v-icon large>mdi-pencil-circle</v-icon></v-btn
+                    >
+                  </v-overlay>
+                </v-fade-transition>
+              </v-card>
+            </template>
+          </v-hover>
         </v-flex>
       </v-layout>
       <v-layout row v-else-if="FilmLsitTotal === 0" class="vElseContainer">
@@ -166,19 +179,10 @@ export default {
   data() {
     return {
       panel: null,
-      range: [1950, 2021],
       setRange: null,
       searchText: "",
       admin: null,
-      pageSet: {
-        pageNumber: 1,
-        pageSize: 9,
-        range: [1950, 2021],
-        search: "",
-        directors: [],
-        genres: [],
-      },
-      paginatonsCounter: null,
+      unwatch: null,
     };
   },
   components: { Footer },
@@ -263,8 +267,8 @@ export default {
     resetSearchValues() {
       if (this.panel === undefined) {
         console.log("PANEL CLOSED");
-        console.log(this.$store.state.film.pageSet);
-        console.log("Genres", this.Genres);
+        // console.log(this.$store.state.film.pageSet);
+        // console.log("Genres", this.Genres);
       }
     },
   },
@@ -324,9 +328,7 @@ export default {
   max-height: 200px;
   border-radius: 15px 0 15px 0;
 }
-.grow:hover {
-  transform: scale(1.03);
-}
+
 #films {
   background-color: #ffffff;
   background-image: url("../assets/images/films/Wintery-Sunburst.svg");

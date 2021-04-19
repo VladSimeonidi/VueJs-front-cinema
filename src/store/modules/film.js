@@ -5,22 +5,26 @@ import router from "../../router/index";
 
 export const namespaced = true;
 
-export const state = () => ({
-  currentItem: {},
-  list: [],
-  listTotal: null,
-  OneFilmFile: null,
-  OneFilmPosterImage: null,
-  Loading: false,
-  pageSet: {
-    pageNumber: 1,
-    pageSize: 3,
-    range: [1950, 2021],
-    search: "",
-    director: [],
-    genres: [],
-  },
-});
+const getDefaultState = () => {
+  return {
+    currentItem: {},
+    list: [],
+    listTotal: null,
+    OneFilmFile: null,
+    OneFilmPosterImage: null,
+    Loading: false,
+    pageSet: {
+      pageNumber: 1,
+      pageSize: 9,
+      range: [1950, 2021],
+      search: "",
+      director: [],
+      genres: [],
+    },
+  };
+};
+
+export const state = () => getDefaultState();
 export const mutations = {
   SET_LIST(state, payload) {
     state.list = payload;
@@ -99,6 +103,9 @@ export const mutations = {
   },
   SET_PAGESET_SEARCH(state, payload) {
     state.pageSet.search = payload;
+  },
+  RESET_STATE(state) {
+    Object.assign(state, getDefaultState());
   },
 };
 export const actions = {
@@ -253,6 +260,9 @@ export const actions = {
     } catch (error) {
       return error;
     }
+  },
+  RESET_STATE({ commit }) {
+    commit("RESET_STATE");
   },
 };
 export const getters = {
