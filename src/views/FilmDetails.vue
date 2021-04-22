@@ -7,7 +7,7 @@
     >
       <div class="header-styling">{{ Film.name }}</div>
       <!-- svg -->
-      <div class="custom-shape-divider-bottom">
+      <!-- <div class="custom-shape-divider-bottom">
         <svg
           data-name="Layer 1"
           xmlns="http://www.w3.org/2000/svg"
@@ -15,14 +15,14 @@
           preserveAspectRatio="none"
         >
           <path
-            d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+            d="M600,112.77C268.63,112.77,0,65.52,0,7.23V120H1200V7.23C1200,65.52,931.37,112.77,600,112.77Z"
             class="shape-fill"
           ></path>
         </svg>
-      </div>
+      </div> -->
       <!-- svg -->
     </v-sheet>
-    <v-sheet min-height="100vh" color="#fae3d2" class="pa-8">
+    <v-sheet min-height="100vh" color="blue" class="pa-8">
       <v-row no-gutters class="mb-10">
         <v-col cols="4">
           <v-row no-gutters>
@@ -148,25 +148,25 @@ export default {
   background-position: 0 150%;
 }
 
-.custom-shape-divider-bottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  line-height: 0;
-}
+// .custom-shape-divider-bottom {
+//   position: absolute;
+//   bottom: 0;
+//   left: 0;
+//   width: 100%;
+//   overflow: hidden;
+//   line-height: 0;
+// }
 
-.custom-shape-divider-bottom svg {
-  display: block;
-  width: calc(100% + 1.3px);
-  height: 150px;
-  transform: rotateY(180deg);
-}
+// .custom-shape-divider-bottom svg {
+//   position: relative;
+//   display: block;
+//   width: calc(100% + 1.3px);
+//   height: 110px;
+// }
 
-.shape-fill {
-  fill: #fae3d2;
-}
+// .shape-fill {
+//   fill: #fae3d2;
+// }
 .text-purple-red {
   color: #ff0038;
 }

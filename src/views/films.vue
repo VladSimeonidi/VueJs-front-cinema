@@ -115,9 +115,9 @@
                     absolute
                     color="#03546b"
                   >
-                    <v-btn @click="goToFilmDetails(film._id)"
-                      >Рассмотреть подробнее</v-btn
-                    >
+                    <v-btn @click="goToFilmDetails(film._id)">{{
+                      $t("films.seeMore")
+                    }}</v-btn>
                     <v-btn
                       class="ml-5"
                       color="white"
