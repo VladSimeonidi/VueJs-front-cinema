@@ -1,5 +1,6 @@
 <template>
   <v-main id="films" v-cloak>
+    <vue-speech lang="ru-RU" />
     <v-container grid-list-lg class="container-min-height">
       <v-toolbar
         rounded="lg"
