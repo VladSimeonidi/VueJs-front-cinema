@@ -1,32 +1,29 @@
 <template>
   <v-main v-if="!Loading">
+    <div class="header-styling">{{ Film.name }}</div>
     <v-sheet
       width="100%"
       min-height="500px"
-      class="d-flex justify-center position-relative"
+      class="d-flex justify-center align-center position-relative"
     >
-      <div class="header-styling">{{ Film.name }}</div>
-      <!-- svg -->
-      <!-- <div class="custom-shape-divider-bottom">
-        <svg
-          data-name="Layer 1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1200 120"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M600,112.77C268.63,112.77,0,65.52,0,7.23V120H1200V7.23C1200,65.52,931.37,112.77,600,112.77Z"
-            class="shape-fill"
-          ></path>
-        </svg>
-      </div> -->
-      <!-- svg -->
+      <Media
+        :kind="'video'"
+        :controls="true"
+        :src="Film.link"
+        :style="{
+          outline: 'none',
+          boxShadow: '0 0 15px rgba(0,0,0,0.5)',
+          width: '50%',
+          borderRadius: '10px',
+        }"
+      >
+      </Media>
     </v-sheet>
     <v-sheet min-height="100vh" color="blue" class="pa-8">
       <v-row no-gutters class="mb-10">
-        <v-col cols="4">
+        <v-col cols="6">
           <v-row no-gutters>
-            <v-col cols="8">
+            <v-col cols="6">
               <v-subheader
                 class="white--text text-h6"
                 v-if="Film.director.length < 2"
@@ -49,7 +46,7 @@
                 </v-list-item-content>
               </v-list-item>
             </v-col>
-            <v-col cols="4">
+            <v-col cols="2">
               <v-subheader class="white--text text-h6">{{
                 $t("filmDetails.genre")
               }}</v-subheader>
@@ -60,23 +57,18 @@
                 </v-list-item-content>
               </v-list-item>
             </v-col>
+            <v-col cols="4">
+              <v-subheader class="white--text text-h6">{{
+                $t("filmDetails.year")
+              }}</v-subheader>
+
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title v-text="Film.year"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-col>
           </v-row>
-        </v-col>
-        <v-col class="text-right" cols="8">
-          <Media
-            :kind="'video'"
-            :controls="true"
-            :src="Film.link"
-            :poster="Film.poster.file_path"
-            :style="{
-              width: '70%',
-              maxHeight: '600px',
-              outline: 'none',
-              boxShadow: '0 0 15px rgba(0,0,0,0.5)',
-              borderRadius: '10px',
-            }"
-          >
-          </Media>
         </v-col>
       </v-row>
       <v-card outlined color="#fff">
@@ -138,7 +130,6 @@ export default {
   letter-spacing: 3px;
   line-height: 2rem;
 }
-
 .position-relative {
   position: relative;
   background-image: url("../assets/images/pexels.jpg");
@@ -147,31 +138,11 @@ export default {
   background-attachment: fixed;
   background-position: 0 150%;
 }
-
-// .custom-shape-divider-bottom {
-//   position: absolute;
-//   bottom: 0;
-//   left: 0;
-//   width: 100%;
-//   overflow: hidden;
-//   line-height: 0;
-// }
-
-// .custom-shape-divider-bottom svg {
-//   position: relative;
-//   display: block;
-//   width: calc(100% + 1.3px);
-//   height: 110px;
-// }
-
-// .shape-fill {
-//   fill: #fae3d2;
-// }
 .text-purple-red {
   color: #ff0038;
 }
 .header-styling {
-  color: #fff;
+  // color: #fff;
   font-size: 3rem;
   transform: translateY(30px);
   animation: text-down 1s ease-out;

@@ -1,9 +1,6 @@
 <template>
-  <v-main>
-    <v-container
-      fluid
-      class="d-flex justify-center align-center pa-10 contWrapper"
-    >
+  <v-main class="d-flex align-center Wrapper">
+    <v-container fluid class="d-flex justify-center align-center pa-10">
       <v-card
         dark
         elevation="15"
@@ -150,7 +147,6 @@ export default {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.appAlert(
-          "filmError",
           "Валидация",
           "Заполните все необходимые поля правильно!",
           "error"
@@ -158,14 +154,34 @@ export default {
         return;
       }
       if (this.$route.params.id !== "new") {
-        this.editNewDirector().catch((e) => {
-          console.log(e);
-        });
+        this.editNewDirector()
+          .then((res) => {
+            if (res.status === 200) {
+              this.appAlert("Редактирование", "Сохранено успешно!", "success");
+            } else {
+              this.appAlert(
+                "Редактирование",
+                `Ошибка сохранения ${res.status} - ${res.data}`,
+                "error"
+              );
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       } else {
         this.saveNewDirector()
-          .then(() => {
+          .then((res) => {
+            if (res.status === 200) {
+              this.appAlert("Сохранение", "Сохранено успешно!", "success");
+            } else {
+              this.appAlert(
+                "Сохранение",
+                `Ошибка сохранения ${res.status} - ${res.data}`,
+                "error"
+              );
+            }
             this.$v.$reset();
-            console.log("OK");
           })
           .catch((e) => {
             console.log(e);
@@ -182,9 +198,9 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-.contWrapper {
-  min-height: calc(100vh - 48px);
+<style scoped lang="scss">
+.Wrapper {
+  min-height: 100vh;
   background-color: #11aa44;
   background-image: url("../assets/images/director/Tortoise-Shell.svg");
   background-attachment: fixed;

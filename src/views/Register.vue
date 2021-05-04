@@ -181,15 +181,11 @@ export default {
     registerUser() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.$notify({
-          group: "filmError",
-          title: "Валидация",
-          text: "Заполните все необходимые поля правильно!",
-          type: "error",
-
-          max: 3,
-          duration: 5000,
-        });
+        this.appAlert(
+          "Валидация",
+          "Заполните все необходимые поля правильно!",
+          "error"
+        );
         return;
       }
       let userData = {
@@ -213,19 +209,12 @@ export default {
   watch: {
     authErrorOnPage: function(message) {
       if (message) {
-        this.$notify({
-          group: "AuthError",
-          title: "Регистрация",
-          text: message,
-          type: "error",
-          duration: 5000,
-        });
+        this.appAlert("Регистрация", message, "error");
       }
     },
   },
   created() {
     this.mut_CLEAR_ERROR();
-    console.log(this.$v.password.$params);
   },
 };
 </script>

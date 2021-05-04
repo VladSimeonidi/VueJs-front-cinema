@@ -21,7 +21,11 @@
         @input="$v.password.$touch()"
         @blur="$v.password.$touch()"
       ></v-text-field>
-      <v-checkbox v-model="checkbox" :label="$t('login.asAdmin')"></v-checkbox>
+      <v-switch
+        color="cyan accent-3"
+        v-model="checkbox"
+        :label="$t('login.asAdmin')"
+      ></v-switch>
     </v-card-text>
     <v-card-actions>
       <v-btn
@@ -88,15 +92,12 @@ export default {
     loginUser() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.$notify({
-          group: "filmError",
-          title: "Валидация",
-          text: "Заполните все необходимые поля правильно!",
-          type: "error",
+        this.appAlert(
+          "Валидация",
+          "Заполните все необходимые поля правильно!",
+          "error"
+        );
 
-          max: 3,
-          duration: 5000,
-        });
         return;
       }
       const user = {
@@ -133,7 +134,7 @@ export default {
   watch: {
     authErrorOnPage: function(message) {
       if (message) {
-        this.appAlert("AuthError", "Логин", message, "error", 5000);
+        this.appAlert("Логин", message, "error");
       }
     },
   },

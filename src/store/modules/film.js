@@ -8,7 +8,7 @@ export const namespaced = true;
 const getDefaultState = () => {
   return {
     currentItem: {},
-    list: [],
+    list: null,
     listTotal: null,
     OneFilmFile: null,
     OneFilmPosterImage: null,
@@ -202,12 +202,12 @@ export const actions = {
       .then((res) => {
         commit("SET_CURRENT_ITEM", res.data);
         commit("SET_LOADING", false);
-        response = res.status;
+        response = { data: res.data, status: res.status };
         router.push({ name: "filmditails", params: { id: res.data._id } });
       })
       .catch((error) => {
         commit("SET_LOADING", false);
-        console.log(error);
+        response = { data: error.response.data, status: error.response.status };
       });
     return response;
   },
@@ -236,30 +236,29 @@ export const actions = {
       .then((res) => {
         commit("SET_CURRENT_ITEM", res.data);
         commit("SET_LOADING", false);
-        response = res.status;
+        response = response = { data: res.data, status: res.status };
         router.push({ name: "filmditails", params: { id: ID } });
         return res;
       })
       .catch((error) => {
         commit("SET_LOADING", false);
-        console.log(error);
-        return error;
+        response = { data: error.response.data, status: error.response.status };
       });
     return response;
   },
   async DELETE_CURRENT_ITEM({ commit }, ID) {
-    console.log("ID");
-    console.log(ID);
-    try {
-      await axios
-        .delete(config.API.BASE_URL + config.API.FILM.LIST + "/" + ID)
-        .then(() => {
-          commit("SET_CURRENT_ITEM", {});
-          router.push({ name: "films" });
-        });
-    } catch (error) {
-      return error;
-    }
+    let response = null;
+    await axios
+      .delete(config.API.BASE_URL + config.API.FILM.LIST + "/" + ID)
+      .then((res) => {
+        commit("SET_CURRENT_ITEM", {});
+        response = { data: res.data, status: res.status };
+        router.push({ name: "films" });
+      })
+      .catch((error) => {
+        response = { data: error.response.data, status: error.response.status };
+      });
+    return response;
   },
   RESET_STATE({ commit }) {
     commit("RESET_STATE");

@@ -1,6 +1,6 @@
 <template>
-  <v-main>
-    <v-layout class="justify-center align-center pt-10">
+  <v-main class="d-flex align-center Wrapper">
+    <v-container fluid class="d-flex justify-center align-center">
       <v-card width="100%" max-width="700px" outlined>
         <v-card-title>Редактирование пользователя</v-card-title>
         <v-card-text>
@@ -41,7 +41,7 @@
           <v-btn @click="$router.go(-1)">Назад</v-btn>
         </v-card-actions>
       </v-card>
-    </v-layout>
+    </v-container>
   </v-main>
 </template>
 
@@ -159,36 +159,20 @@ export default {
     save() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.$notify({
-          group: "UserEditError",
-          title: "Валидация",
-          text: "Заполните все необходимые поля правильно!",
-          type: "error",
-          max: 3,
-          duration: 5000,
-        });
+        console.log("111");
+        this.appAlert(
+          "Валидация",
+          "Заполните все необходимые поля правильно!",
+          "error"
+        );
         return;
       }
       this.editUser().then((res) => {
         if (!res.success) {
-          this.$notify({
-            group: "UserEditError",
-            title: "Ошибка",
-            text: res.msg,
-            type: "error",
-            max: 3,
-            duration: 5000,
-          });
+          this.appAlert("Ошибка редактирования", res.msg, "error");
           return;
         } else {
-          this.$notify({
-            group: "UserEditError",
-            title: "Успех",
-            text: res.msg,
-            type: "success",
-            max: 3,
-            duration: 5000,
-          });
+          this.appAlert("Сохранено успешно", res.msg, "success");
           this.$router.go(-1);
         }
       });
@@ -199,3 +183,11 @@ export default {
   },
 };
 </script>
+<style scoped lang="scss">
+.Wrapper {
+  background-image: url("../assets/images/user/Sun-Tornado.svg");
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+}
+</style>

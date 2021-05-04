@@ -1,7 +1,7 @@
 export default {
   methods: {
-    appAlert(group, title, text, type, duration = 5000) {
-      this.$notify({ group, title, text, type, duration });
+    appAlert(title, text, type, duration = 5000) {
+      this.$notify({ group: "Notification", title, text, type, duration });
     },
   },
 };

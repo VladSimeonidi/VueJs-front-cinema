@@ -79,34 +79,33 @@ export const actions = {
     let imgData = state.DirectorPosterImageFile;
     formData.append("file", imgData);
     formData.append("director", JSON.stringify(state.currentItem));
-    const res = await axios
+    let response = null;
+    await axios
       .post(config.API.BASE_URL + config.API.DIRECTOR.LIST, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
-        console.log("director");
-        console.log(res.data);
+        response = { data: res.data, status: res.status };
         commit("RESET_DIRECTOR_IMAGEDATA");
-        return res;
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        response = { data: error.response.data, status: error.response.status };
       });
-    return res.data._id;
+    return response;
   },
   async EDIT_NEW_DIRECTOR({ state }) {
     let formData = new FormData();
     let imgData = state.DirectorPosterImageFile;
     let ID = state.currentItem_Id;
-    console.log("ID", ID);
     if (imgData) {
       state.currentItem.prevImg_Id = state.DirectorPosterImage_Id;
       formData.append("file", imgData);
     }
     formData.append("director", JSON.stringify(state.currentItem));
-    const res = await axios
+    let response = null;
+    await axios
       .put(
         config.API.BASE_URL + config.API.DIRECTOR.LIST + "/" + ID,
         formData,
@@ -117,15 +116,12 @@ export const actions = {
         }
       )
       .then((res) => {
-        console.log("director");
-        console.log(res.data);
-        // commit("SAVE_NEW_DIRECTOR", payload[1]);
-        return res;
+        response = { data: res.data, status: res.status };
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        response = { data: error.response.data, status: error.response.status };
       });
-    return res.data._id;
+    return response;
   },
   async UPLOAD_CURRENT_ITEM({ commit }, ID) {
     let res = await axios

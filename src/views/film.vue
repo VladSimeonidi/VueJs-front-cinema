@@ -163,9 +163,9 @@
           <v-btn @click="goBack">
             Назад
           </v-btn>
-          <v-btn @click="check">
+          <!-- <v-btn @click="check">
             check
-          </v-btn>
+          </v-btn> -->
         </v-card-actions>
       </v-card>
     </v-container>
@@ -383,17 +383,16 @@ export default {
       this.setPosterFile(e.target.files[0]);
       this.setCurrentItemPoster(e.target.files[0].name);
     },
-    check() {
-      console.log("currentItem");
-      // console.log("validation");
-      // console.log(this.$v);
-    },
+    // check() {
+    //   console.log("currentItem");
+    // console.log("validation");
+    // console.log(this.$v);
+    // },
 
     save() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.appAlert(
-          "filmError",
           "Валидация",
           "Заполните все необходимые поля правильно!",
           "error"
@@ -403,15 +402,14 @@ export default {
       if (this.$route.params.id !== "new") {
         this.editFilm()
           .then((res) => {
-            if (res === 200) {
-              this.$notify({
-                group: "FilmSaveEditSuccess",
-                title: "Редактирование",
-                text: "Сохранено успешно!",
-                type: "success",
-                max: 3,
-                duration: 5000,
-              });
+            if (res.status === 200) {
+              this.appAlert("Редактирование", "Сохранено успешно!", "success");
+            } else {
+              this.appAlert(
+                "Редактирование",
+                `Ошибка сохранения ${res.status} - ${res.data}`,
+                "error"
+              );
             }
           })
           .catch((e) => {
@@ -420,16 +418,14 @@ export default {
       } else {
         this.saveFilm()
           .then((res) => {
-            if (res === 200) {
-              this.$notify({
-                group: "FilmSaveEditSuccess",
-                title: "Сохранение",
-                text: "Сохранено успешно!",
-                type: "success",
-
-                max: 3,
-                duration: 5000,
-              });
+            if (res.status === 200) {
+              this.appAlert("Сохранение", "Сохранено успешно!", "success");
+            } else {
+              this.appAlert(
+                "Сохранение",
+                `Ошибка сохранения ${res.status} - ${res.data}`,
+                "error"
+              );
             }
           })
           .catch((e) => {
@@ -444,15 +440,14 @@ export default {
       if (confirmed) {
         this.deleteFilm(id)
           .then((res) => {
-            if (res.response.status === 404) {
-              this.$notify({
-                group: "filmError",
-                title: "Ошибка 404",
-                text: res.response.data,
-                type: "error",
-                max: 3,
-                duration: 5000,
-              });
+            if (res.status === 200) {
+              this.appAlert("Удаление", "Удалено успешно!", "success");
+            } else {
+              this.appAlert(
+                "Удаление",
+                `Ошибка удаления ${res.status}`,
+                "error"
+              );
             }
           })
           .catch((e) => {
@@ -466,8 +461,6 @@ export default {
         delete currentFilm.poster;
         delete currentFilm.link;
 
-        console.log(currentFilm);
-        console.log(this.CurrentFilm);
         let valuesArr = Object.values(currentFilm);
         let result = valuesArr.some((value) => {
           return value.length != 0;

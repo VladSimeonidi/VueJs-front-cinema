@@ -1,6 +1,5 @@
 <template>
   <v-main id="films" v-cloak>
-    <vue-speech lang="ru-RU" />
     <v-container grid-list-lg class="container-min-height">
       <v-toolbar
         rounded="lg"
@@ -95,33 +94,37 @@
         >
           <v-hover>
             <template v-slot:default="{ hover }">
-              <v-card shaped class="text-center pt-5" min-height="420px">
-                <img
+              <v-card
+                shaped
+                class="text-center pt-3 pl-3 pr-3"
+                min-height="420px"
+              >
+                <v-img
+                  height="200px"
                   v-if="film.poster"
-                  class="palyer__img"
                   :src="film.poster.file_path"
                   alt=""
                 />
-                <div class="player__title">
+                <v-card-subtitle class="RussoOneFont">
                   {{ film.name }}
-                </div>
-                <v-card-subtitle class="subtitle-2">{{
+                </v-card-subtitle>
+                <v-card-subtitle class="subtitle-2 pt-0">{{
                   film.teaser
                 }}</v-card-subtitle>
                 <v-fade-transition>
                   <v-overlay
                     z-index="0"
-                    opacity="0.8"
+                    opacity="0.6"
                     v-if="hover"
                     absolute
-                    color="#03546b"
+                    color="#fff"
                   >
                     <v-btn @click="goToFilmDetails(film._id)">{{
                       $t("films.seeMore")
                     }}</v-btn>
                     <v-btn
                       class="ml-5"
-                      color="white"
+                      color="black"
                       v-if="admin"
                       icon
                       :to="{ name: 'editfilm', params: { id: film._id } }"
@@ -316,18 +319,11 @@ export default {
   min-height: 100vh;
 }
 @import url("https://fonts.googleapis.com/css2?family=Russo+One&display=swap");
-.player__title {
+.RussoOneFont {
+  font-family: "Russo One", sans-serif !important;
   font-size: 24px;
-  line-height: 30px;
-  font-weight: bold;
-  font-family: "Russo One", sans-serif;
-}
-.palyer__img {
-  width: 100%;
-  height: 100%;
-  max-width: 340px;
-  max-height: 200px;
-  border-radius: 15px 0 15px 0;
+  text-align: center;
+  color: black !important;
 }
 
 #films {
