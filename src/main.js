@@ -19,6 +19,7 @@ import { i18n } from "./plugins/i18n";
 import FlagIcon from "vue-flag-icon";
 import VueMeta from "vue-meta";
 import MyAlert from "./mixins/MyAlert";
+import VuetifyConfirm from "vuetify-confirm";
 
 // import "@/assets/css/main.css";
 
@@ -43,6 +44,7 @@ Vue.use(VuePageTransition);
 Vue.use(VueTyperPlugin);
 Vue.use(FlagIcon);
 Vue.use(VueMeta);
+Vue.use(VuetifyConfirm);
 Vue.mixin(MyAlert);
 
 new Vue({

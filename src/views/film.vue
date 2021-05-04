@@ -433,11 +433,18 @@ export default {
           });
       }
     },
-    deleteItem(id) {
-      const confirmed = confirm(
-        "Удалить фильм? (Данные фильма будут удалены, а файлы постера и трейлера попадут в корзину)"
+    async deleteItem(id) {
+      const conf = await this.$confirm(
+        "Удалить фильм? (Данные фильма будут удалены безвозвратно, а файлы постера и трейлера попадут в корзину)",
+        {
+          title: "Удалить",
+          color: "primary",
+          buttonTrueText: "Удалить",
+          buttonFalseText: "Нет",
+          icon: "mdi-delete",
+        }
       );
-      if (confirmed) {
+      if (conf) {
         this.deleteFilm(id)
           .then((res) => {
             if (res.status === 200) {
@@ -453,9 +460,11 @@ export default {
           .catch((e) => {
             console.log(e);
           });
+      } else {
+        return;
       }
     },
-    goBack() {
+    async goBack() {
       if (this.$route.params.id === "new") {
         let currentFilm = Object.assign({}, this.CurrentFilm);
         delete currentFilm.poster;
@@ -466,10 +475,17 @@ export default {
           return value.length != 0;
         });
         if (result) {
-          const confirmed = confirm(
-            "В форме есть заполненные поля! Все равно выйти?"
+          const conf = await this.$confirm(
+            "В форме есть заполненные поля! Все равно выйти?",
+            {
+              title: "Выход",
+              color: "primary",
+              buttonTrueText: "Да",
+              buttonFalseText: "Нет",
+              icon: "mdi-exit-to-app",
+            }
           );
-          if (confirmed) {
+          if (conf) {
             this.$router.go(-1);
           } else {
             return;
@@ -491,7 +507,7 @@ export default {
           this.dataLoaded = true;
         })
         .catch((e) => {
-          alert(e);
+          console.log(e);
         });
     } else {
       this.addNewFilm()
@@ -499,7 +515,7 @@ export default {
           this.dataLoaded = true;
         })
         .catch((e) => {
-          alert(e);
+          console.log(e);
         });
     }
     this.setListOfDirectors().catch((e) => {

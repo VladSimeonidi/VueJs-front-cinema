@@ -62,12 +62,22 @@ export default {
       GetProfile: "auth/GET_PROFILE",
       reserFilmState: "film/RESET_STATE",
     }),
-    logoutUser() {
-      let conf = confirm(
-        "Выйти из учетной записи и перейти на страницу логина?"
+    async logoutUser() {
+      const res = await this.$confirm(
+        "Выйти из учетной записи и перейти на страницу логина?",
+        {
+          title: "Выйти",
+          color: "primary",
+          buttonTrueText: "Покинуть",
+          buttonFalseText: "Нет",
+          icon: "mdi-logout",
+        }
       );
-      if (!conf) return;
-      this.Logout();
+      if (res) {
+        this.Logout();
+      } else {
+        return;
+      }
     },
     resetFilmStoreState() {
       this.reserFilmState();
