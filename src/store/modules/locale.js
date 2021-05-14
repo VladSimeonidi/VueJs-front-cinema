@@ -33,14 +33,6 @@ export const getters = {
     let locale = state.locales.find((el) => {
       return el.flag == localStorage.getItem("locale");
     });
-    // console.log(state.locales[2]);
-    // console.log("GETTER ONE LOCALE");
-    // console.log(locale);
     return locale;
-  },
-  GET_LOCALES(state) {
-    // console.log("GETTER ALL");
-    // console.log(state.locales);
-    return state.locales;
   },
 };

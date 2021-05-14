@@ -39,11 +39,7 @@
             placeholder="Постер"
           >
             <template v-slot:append>
-              <v-btn
-                color="primary"
-                class="text-none mb-3"
-                @click="onPosterFileButtonClick"
-              >
+              <v-btn class="text-none mb-3" @click="onPosterFileButtonClick">
                 <v-icon left>
                   mdi-cloud-upload
                 </v-icon>
@@ -59,7 +55,7 @@
           ></v-text-field>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="save" color="primary">
+          <v-btn @click="save">
             Сохранить
           </v-btn>
           <v-spacer></v-spacer>

@@ -238,7 +238,6 @@ export const actions = {
         commit("SET_LOADING", false);
         response = response = { data: res.data, status: res.status };
         router.push({ name: "filmditails", params: { id: ID } });
-        return res;
       })
       .catch((error) => {
         commit("SET_LOADING", false);
@@ -268,7 +267,6 @@ export const getters = {
   paginatonsCounter(state) {
     let total = state.listTotal;
     let pageSize = state.pageSet.pageSize;
-    console.log(Math.ceil(total / pageSize));
     return Math.ceil(total / pageSize);
   },
 };

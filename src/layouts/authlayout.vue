@@ -9,10 +9,9 @@
         min-width="280px"
         width="100%"
         :height="height"
-        max-height="650px"
         class="d-flex"
       >
-        <v-flex sm6 md6 class="d-none d-sm-flex form__flyer">
+        <v-flex sm6 md6 class="d-none d-md-flex form__flyer">
           <v-carousel
             hide-delimiter-background
             cycle
@@ -34,7 +33,7 @@
             </v-carousel-item>
           </v-carousel>
         </v-flex>
-        <v-flex sm6 md6 xs12>
+        <v-flex sm12 md6 xs12>
           <v-card
             dark
             class="form__card"
@@ -114,7 +113,7 @@ export default {
         case "lg":
           return 550;
         case "xl":
-          return 650;
+          return "70vh";
       }
       return null;
     },

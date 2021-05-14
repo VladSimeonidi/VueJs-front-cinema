@@ -3,7 +3,7 @@
     <v-select
       dense
       solo
-      :items="locales"
+      :items="AllLocales"
       class="ml-2"
       hide-details
       v-model="currentLocale"
@@ -22,35 +22,29 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapState } from "vuex";
 export default {
-  data() {
-    return {
-      locales: this.getAllLocales(),
-    };
-  },
-  methods: {
+  computed: {
+    ...mapState({
+      AllLocales: (state) => state.locale.locales,
+    }),
     ...mapGetters({
-      getAllLocales: "locale/GET_LOCALES",
       getCurrentLocale: "locale/GET_CURRENT_LOCALE",
     }),
-    ...mapMutations({
-      setCurrentLocale: "locale/SET_CURRENT_LOCALE",
-    }),
-  },
-  computed: {
     currentLocale: {
       get() {
-        // console.log("from computed");
-        // console.log(this.getCurrentLocale());
-        // console.log("from computed");
-        return this.getCurrentLocale();
+        return this.getCurrentLocale;
       },
       set(value) {
         this.$i18n.locale = value.flag;
         this.setCurrentLocale(value);
       },
     },
+  },
+  methods: {
+    ...mapMutations({
+      setCurrentLocale: "locale/SET_CURRENT_LOCALE",
+    }),
   },
 };
 </script>

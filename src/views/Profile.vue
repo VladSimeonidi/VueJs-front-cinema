@@ -14,8 +14,12 @@
         min-width="300px"
         outlined
       >
-        <div class="myCircle myCircle_top"></div>
-        <div class="myCircle myCircle_bottom"></div>
+        <div
+          class="myCircle myCircle_top d-none d-md-block d-lg-block d-xl-block"
+        ></div>
+        <div
+          class="myCircle myCircle_bottom d-none d-md-block d-lg-block d-xl-block"
+        ></div>
         <v-card-title v-if="admin">
           <vue-typer
             text="Профиль пользователя (Администратор)"

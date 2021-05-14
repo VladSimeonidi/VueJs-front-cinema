@@ -2,10 +2,7 @@
   <div>
     <v-footer dark padless>
       <v-card class="flex" flat tile>
-        <v-card-title
-          class="light-blue darken-2
-"
-        >
+        <v-card-title class="blue darken-1">
           <strong class="subheading">{{ $t("films.footerText") }}</strong>
 
           <v-spacer></v-spacer>

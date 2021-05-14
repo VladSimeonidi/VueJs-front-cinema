@@ -3,7 +3,7 @@
     <v-container
       v-if="dataLoaded"
       fluid
-      class="d-flex justify-center align-center pa-10 filmWrapper"
+      class="d-flex justify-center align-center pa-10 Wrapper"
     >
       <v-card elevation="15" max-width="800px" width="100%" class="text-center">
         <v-card-title v-if="this.$route.params.id !== 'new'"
@@ -379,16 +379,9 @@ export default {
       }
     },
     onPosterFileChanged(e) {
-      // console.log(e.target.files[0]);
       this.setPosterFile(e.target.files[0]);
       this.setCurrentItemPoster(e.target.files[0].name);
     },
-    // check() {
-    //   console.log("currentItem");
-    // console.log("validation");
-    // console.log(this.$v);
-    // },
-
     save() {
       this.$v.$touch();
       if (this.$v.$invalid) {
@@ -526,7 +519,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.filmWrapper {
+.Wrapper {
   background-color: #ffaa00;
   background-image: url("../assets/images/editFilm/Liquid-Cheese.svg");
   background-attachment: fixed;
