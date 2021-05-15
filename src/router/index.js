@@ -11,7 +11,6 @@ import FilmDitails from "../views/FilmDetails.vue";
 import UserProfile from "../views/User";
 import About from "../views/About.vue";
 import Director from "../views/Director.vue";
-import Test from "../views/TEST.vue";
 
 import store from "../store";
 Vue.use(VueRouter);
@@ -31,14 +30,6 @@ const routes = [
     path: "/films",
     name: "films",
     component: Films,
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
-    path: "/test",
-    name: "test",
-    component: Test,
     meta: {
       requiresAuth: true,
     },
