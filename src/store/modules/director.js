@@ -20,13 +20,10 @@ export const mutations = {
     state.list = payload;
   },
   SET_CURRENT_ITEM(state, payload) {
-    console.log("state", state);
-    console.log(payload);
     state.currentItem.name = payload.name;
     state.currentItem.image = payload.image.file_name;
     state.DirectorPosterImage_Id = payload.image._id;
     state.currentItem_Id = payload._id;
-    console.log(state.DirectorPosterImage_Id);
   },
   ADD_NEW_DIRECTOR(state) {
     const newDirector = {
@@ -55,6 +52,9 @@ export const mutations = {
   },
   RESET_DIRECTOR_IMAGEDATA(state) {
     state.DirectorPosterImageFile = null;
+  },
+  SET_STATUS(state, payload) {
+    state.status = payload;
   },
 };
 export const actions = {
@@ -134,6 +134,20 @@ export const actions = {
         console.log(e);
       });
     return res;
+  },
+  async DELETE_ITEM({ commit }, ID) {
+    console.log("from store");
+    console.log(ID);
+    let response = await axios
+      .delete(config.API.BASE_URL + config.API.DIRECTOR.LIST + "/" + ID)
+      .then((res) => {
+        commit("SET_STATUS", "OK");
+        return { data: res.data, status: res.status };
+      })
+      .catch((error) => {
+        return { data: error.response.data, status: error.response.status };
+      });
+    return response;
   },
 };
 export const getters = {};

@@ -1,61 +1,66 @@
 <template>
   <div>
-    <v-main class="Wrapper" v-if="!Loading">
-      <v-card-text class="text-center pa-10 header-styling">{{
-        Film.name
-      }}</v-card-text>
-      <v-row class="pb-10" no-gutters>
-        <v-col cols="4">
-          <v-card-title class="text-h6" v-if="Film.director.length < 2">{{
-            $t("filmDetails.director")
-          }}</v-card-title>
-          <v-card-title class="text-h6" v-else>
-            {{ $t("filmDetails.directors") }}
-          </v-card-title>
+    <v-main v-if="!Loading">
+      <v-container class="Wrapper" fluid>
+        <v-card-text class="text-center pa-10 header-styling">{{
+          Film.name
+        }}</v-card-text>
+        <v-row class="pb-10" no-gutters>
+          <v-col cols="4">
+            <v-card-title class="text-h6" v-if="Film.director.length < 2">{{
+              $t("filmDetails.director")
+            }}</v-card-title>
+            <v-card-title class="text-h6" v-else>
+              {{ $t("filmDetails.directors") }}
+            </v-card-title>
 
-          <v-list-item v-for="(director, index) in Film.director" :key="index">
-            <v-list-item-avatar>
-              <v-img :alt="`avatar`" :src="director.image"></v-img>
-            </v-list-item-avatar>
+            <v-list-item
+              v-for="(director, index) in Film.director"
+              :key="index"
+            >
+              <v-list-item-avatar size="75">
+                <v-img :alt="`avatar`" :src="director.image"></v-img>
+              </v-list-item-avatar>
 
-            <v-list-item-content>
-              <v-list-item-title
-                class="font-weight-medium"
-                v-text="director.name"
-              ></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-col>
-        <v-col class="text-center" cols="4">
-          <v-card-text class="text-center text-h6">{{
-            $t("filmDetails.genre")
-          }}</v-card-text>
+              <v-list-item-content>
+                <v-list-item-title
+                  class="font-weight-medium"
+                  v-text="director.name"
+                ></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-col>
+          <v-col class="text-center" cols="4">
+            <v-card-text class="text-center text-h6">{{
+              $t("filmDetails.genre")
+            }}</v-card-text>
 
-          <v-list-item v-for="(genre, index) in Film.genre" :key="index">
-            <v-list-item-content>
-              <v-list-item-title
-                class="font-weight-medium"
-                v-text="genre.name"
-              ></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-col>
-        <v-col class="text-right" cols="4">
-          <v-card-text class="text-h6">{{
-            $t("filmDetails.year")
-          }}</v-card-text>
+            <v-list-item v-for="(genre, index) in Film.genre" :key="index">
+              <v-list-item-content>
+                <v-list-item-title
+                  class="font-weight-medium"
+                  v-text="genre.name"
+                ></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-col>
+          <v-col class="text-right" cols="4">
+            <v-card-text class="text-h6">{{
+              $t("filmDetails.year")
+            }}</v-card-text>
 
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title
-                class="font-weight-bold text-h5"
-                v-text="Film.year"
-              ></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-col>
-      </v-row>
-      <v-container fluid>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title
+                  class="font-weight-bold text-h5"
+                  v-text="Film.year"
+                ></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container class="mt-10" fluid>
         <v-card elevation="10" class="position-relative">
           <v-card-text class="custom-font-style">
             {{ Film.description }}
@@ -157,7 +162,7 @@ export default {
   background-image: url("../assets/images/filmDetails/add.svg");
   // background-attachment: fixed;
   background-size: cover;
-  min-height: calc(100vh - 106px);
+  min-height: 300px;
 }
 .desc-background {
   background-color: rgba(0, 0, 0, 0.6);

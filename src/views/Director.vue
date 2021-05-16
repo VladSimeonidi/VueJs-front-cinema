@@ -10,9 +10,9 @@
       >
         <v-card-title v-if="this.$route.params.id !== 'new'"
           >Страница режиссера<v-spacer></v-spacer>
-          <!-- <v-btn color="red" @click="deleteItem($route.params.id)">
+          <v-btn color="red" @click="deleteItem($route.params.id)">
             удалить
-          </v-btn> -->
+          </v-btn>
         </v-card-title>
         <v-card-title v-else class="justify-center"
           >Добавление режиссера
@@ -127,6 +127,7 @@ export default {
       editNewDirector: "director/EDIT_NEW_DIRECTOR",
       setDirectorImage: "director/SET_DIRECTOR_IMAGE",
       uploadOneDirector: "director/UPLOAD_CURRENT_ITEM",
+      deleteDirector: "director/DELETE_ITEM",
     }),
     ...mapMutations({
       addNewDirector: "director/ADD_NEW_DIRECTOR",
@@ -170,6 +171,7 @@ export default {
           .then((res) => {
             if (res.status === 200) {
               this.appAlert("Сохранение", "Сохранено успешно!", "success");
+              this.$router.push(res.data._id);
             } else {
               this.appAlert(
                 "Сохранение",
@@ -182,6 +184,39 @@ export default {
           .catch((e) => {
             console.log(e);
           });
+      }
+    },
+    async deleteItem(ID) {
+      const conf = await this.$confirm(
+        "Удалить режиссера? (Данные режиссера будут удалены безвозвратно, а картинка попадет в корзину)",
+        {
+          title: "Удалить",
+          color: "primary",
+          buttonTrueText: "Удалить",
+          buttonFalseText: "Нет",
+          icon: "mdi-delete",
+        }
+      );
+      if (conf) {
+        this.deleteDirector(ID)
+          .then((res) => {
+            if (res.status === 200) {
+              this.appAlert("Удаление", res.data, "success");
+              this.$router.push({ name: "films" });
+            } else {
+              this.appAlert(
+                "Удаление",
+                `Ошибка ${res.status} - ${res.data}`,
+                "error",
+                15000
+              );
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } else {
+        return;
       }
     },
   },
