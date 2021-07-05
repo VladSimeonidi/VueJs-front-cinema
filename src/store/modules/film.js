@@ -165,10 +165,11 @@ export const actions = {
       });
   },
   async SET_CURRENT_ITEM_AS_DETAILS({ commit }, ID) {
-    await axios
+    return await axios
       .get(config.API.BASE_URL + config.API.FILM.DETAILS + "/" + ID)
       .then((res) => {
         commit("SET_CURRENT_ITEM", res.data);
+        return res.data;
       })
       .catch((e) => {
         console.log(e);

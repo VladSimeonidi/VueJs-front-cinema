@@ -59,6 +59,8 @@ export const mutations = {
 };
 export const actions = {
   async SET_LIST({ commit }) {
+    console.log("!!!!");
+    console.log(config.API.BASE_URL + config.API.DIRECTOR.LIST);
     let res = await axios
       .get(config.API.BASE_URL + config.API.DIRECTOR.LIST)
       .then((res) => {

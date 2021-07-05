@@ -8,6 +8,7 @@ export const i18n = new VueI18n({
   fallbackLocale: "ru",
   messages: {
     ru: {
+      and: "и",
       films: {
         extendedSearch: "Расширенный поиск",
         search: "Поиск по названию",
@@ -44,12 +45,15 @@ export const i18n = new VueI18n({
         directors: "Режиссеры",
         year: "Год производства",
         trailer: "Трейлер",
+        description: "Описание",
+        noDescrition: "Описание отсутствует",
       },
       intro: {
         welcome: "Добро пожаловать!",
       },
     },
     ua: {
+      and: "та",
       films: {
         extendedSearch: "Розширений пошук",
         search: "Пошук за назвою",
@@ -86,12 +90,15 @@ export const i18n = new VueI18n({
         directors: "Режисери",
         year: "Рік виробництва",
         trailer: "Трейлер",
+        description: "Опис",
+        noDescrition: "Опис відсутній",
       },
       intro: {
         welcome: "Ласкаво просимо!",
       },
     },
     us: {
+      and: "and",
       films: {
         extendedSearch: "Extended search",
         search: "Search by name",
@@ -128,6 +135,8 @@ export const i18n = new VueI18n({
         directors: "Directors",
         year: "Year of release",
         trailer: "Trailer",
+        description: "Description",
+        noDescrition: "No description",
       },
       intro: {
         welcome: "Welcome",

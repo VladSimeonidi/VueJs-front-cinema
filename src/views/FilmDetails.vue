@@ -1,86 +1,111 @@
 <template>
   <div>
-    <v-main v-if="!Loading">
-      <v-container class="Wrapper" fluid>
-        <v-card-text class="text-center pa-10 header-styling">{{
-          Film.name
-        }}</v-card-text>
-        <v-row class="pb-10" no-gutters>
-          <v-col cols="4">
-            <v-card-title class="text-h6" v-if="Film.director.length < 2">{{
-              $t("filmDetails.director")
-            }}</v-card-title>
-            <v-card-title class="text-h6" v-else>
-              {{ $t("filmDetails.directors") }}
-            </v-card-title>
-
-            <v-list-item
-              v-for="(director, index) in Film.director"
-              :key="index"
+    <v-main v-if="!Loading" class="main-wrapper">
+      <v-container fluid class="pa-0">
+        <v-container fluid class="mb-10 pt-10 header-container text-center">
+          <div class="custom-shape-divider-bottom">
+            <svg
+              data-name="Layer 1"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 1200 120"
+              preserveAspectRatio="none"
             >
-              <v-list-item-avatar size="75">
-                <v-img :alt="`avatar`" :src="director.image"></v-img>
-              </v-list-item-avatar>
+              <path
+                d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                class="shape-fill"
+              ></path>
+            </svg>
+          </div>
+          <Media
+            :kind="'video'"
+            :controls="true"
+            :src="Film.link"
+            :style="{
+              outline: 'none',
+              boxShadow: '0 0 15px rgba(0,0,0,0.5)',
+              width: '55%',
+              borderRadius: '10px',
+            }"
+          >
+          </Media>
+        </v-container>
+        <v-container fluid class="mb-10">
+          <v-row no-gutters>
+            <v-col cols="12">
+              <div class="header-styling text-center">
+                <span class="nice-title">{{ Film.name }}</span>
+              </div>
+            </v-col>
+            <v-col cols="12" class="mt-10">
+              <v-tabs
+                v-model="tab"
+                background-color="transparent"
+                color="basil"
+                grow
+              >
+                <v-tab>
+                  {{ $t("filmDetails.description") }}
+                </v-tab>
+                <v-tab v-if="Film.director.length < 2">
+                  {{ $t("filmDetails.director") }} {{ $t("and") }}
+                  {{ $t("filmDetails.year") }}
+                </v-tab>
+                <v-tab v-else>
+                  {{ $t("filmDetails.directors") }} {{ $t("and") }}
+                  {{ $t("filmDetails.year") }}
+                </v-tab>
+              </v-tabs>
+              <v-tabs-items v-model="tab">
+                <v-tab-item>
+                  <div
+                    v-if="Film.description.length"
+                    class="text-description pa-5"
+                  >
+                    {{ Film.description }}
+                  </div>
+                  <div v-else class="text-description pa-5">
+                    {{ $t("filmDetails.noDescrition") }}
+                  </div>
+                </v-tab-item>
+                <v-tab-item>
+                  <v-card-text>
+                    <v-row no-gutters
+                      ><v-col cols="12" sm="6">
+                        <v-list>
+                          <v-list-item
+                            v-for="(director, index) in Film.director"
+                            :key="index"
+                          >
+                            <v-list-item-avatar size="75">
+                              <v-img
+                                :alt="`avatar`"
+                                :src="director.image"
+                              ></v-img>
+                            </v-list-item-avatar>
 
-              <v-list-item-content>
-                <v-list-item-title
-                  class="font-weight-medium"
-                  v-text="director.name"
-                ></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-col>
-          <v-col class="text-center" cols="4">
-            <v-card-text class="text-center text-h6">{{
-              $t("filmDetails.genre")
-            }}</v-card-text>
-
-            <v-list-item v-for="(genre, index) in Film.genre" :key="index">
-              <v-list-item-content>
-                <v-list-item-title
-                  class="font-weight-medium"
-                  v-text="genre.name"
-                ></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-col>
-          <v-col class="text-right" cols="4">
-            <v-card-text class="text-h6">{{
-              $t("filmDetails.year")
-            }}</v-card-text>
-
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title
-                  class="font-weight-bold text-h5"
-                  v-text="Film.year"
-                ></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-col>
-        </v-row>
+                            <v-list-item-content>
+                              <v-list-item-title
+                                class="font-weight-medium"
+                                v-text="director.name"
+                              ></v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item> </v-list
+                      ></v-col>
+                      <v-col
+                        cols="12"
+                        sm="6"
+                        class="d-flex justify-end align-center text-year"
+                      >
+                        {{ Film.year }}
+                      </v-col></v-row
+                    >
+                  </v-card-text>
+                </v-tab-item>
+              </v-tabs-items>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-container>
-      <v-container class="mt-10" fluid>
-        <v-card elevation="10" class="position-relative">
-          <v-card-text class="custom-font-style">
-            {{ Film.description }}
-          </v-card-text>
-        </v-card>
-      </v-container>
-      <v-container fluid class="text-center mb-10 mt-10">
-        <Media
-          :kind="'video'"
-          :controls="true"
-          :src="Film.link"
-          :style="{
-            outline: 'none',
-            boxShadow: '0 0 15px rgba(0,0,0,0.5)',
-            width: '55%',
-            borderRadius: '10px',
-          }"
-        >
-        </Media
-      ></v-container>
     </v-main>
     <v-main v-else>
       loading
@@ -100,6 +125,9 @@ export default {
   data() {
     return {
       Loading: true,
+      tab: null,
+      items: ["TEst", "Entrees", "Deserts", "Cocktails"],
+      tabs: [],
     };
   },
   components: {
@@ -116,7 +144,8 @@ export default {
   },
   mounted() {
     this.uploadCurrentItem(this.$route.params.id)
-      .then(() => {
+      .then((res) => {
+        console.log(res);
         this.Loading = false;
       })
       .catch((e) => {
@@ -127,26 +156,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url("../assets/css/marck_scriptregular.css");
-.custom-font-style {
-  font-family: "marck_scriptregular", cursive;
-  font-weight: 500;
-  font-size: 1.7rem;
-  letter-spacing: 3px;
-  line-height: 2rem;
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap");
+@mixin custom-font-style-oswald {
+  font-family: "Oswald", sans-serif;
 }
-.position-relative {
-  background-image: url("../assets/images/filmDetails/desc.svg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+.text-year {
+  @include custom-font-style-oswald;
+  font-size: 48px;
 }
-.text-purple-red {
-  color: #ff0038;
+.text-description {
+  @include custom-font-style-oswald;
+  font-size: 18px;
+  font-weight: 700;
 }
 .header-styling {
-  // color: #fff;
-  font-size: 3rem;
   transform: translateY(0);
   animation: text-down 1s ease-out;
 }
@@ -158,13 +181,55 @@ export default {
     transform: translateY(0);
   }
 }
-.Wrapper {
-  background-image: url("../assets/images/filmDetails/add.svg");
-  // background-attachment: fixed;
-  background-size: cover;
-  min-height: 300px;
+.main-wrapper {
+  background: #fbfafa;
 }
-.desc-background {
-  background-color: rgba(0, 0, 0, 0.6);
+.nice-title {
+  font: 48px "Oswald", sans-serif;
+  letter-spacing: 0;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  color: #fff;
+  background: url("../assets/images/animated-text-fill.png") repeat-y;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: aitf 80s linear infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+@keyframes aitf {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+.header-container {
+  position: relative;
+  padding-bottom: 126px;
+  background-color: #00b7ff;
+  background-image: url("../assets/images/filmDetails/Large-Triangles.svg");
+  background-attachment: fixed;
+  background-repeat: repeat;
+}
+.custom-shape-divider-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+}
+
+.custom-shape-divider-bottom svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 89px;
+}
+
+.custom-shape-divider-bottom .shape-fill {
+  fill: #fbfafa;
 }
 </style>
