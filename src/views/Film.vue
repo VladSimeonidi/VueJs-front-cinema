@@ -133,7 +133,6 @@
             readonly
             label="Загрузите постер"
             placeholder="Постер"
-            clearable
           >
             <template v-slot:append>
               <v-btn
@@ -154,6 +153,27 @@
                 @change="onPosterFileChanged"
               /> </template
           ></v-text-field>
+          <h3>Социальные сети</h3>
+          <v-row>
+            <v-col cols="12" sm="6"
+              ><v-text-field
+                v-model="Facebook"
+                prepend-icon="mdi-facebook"
+              ></v-text-field
+            ></v-col>
+            <v-col cols="12" sm="6"
+              ><v-text-field
+                v-model="Twitter"
+                prepend-icon="mdi-twitter"
+              ></v-text-field
+            ></v-col>
+            <v-col cols="12" sm="6"
+              ><v-text-field
+                v-model="Instagram"
+                prepend-icon="mdi-instagram"
+              ></v-text-field
+            ></v-col>
+          </v-row>
         </v-card-text>
         <v-card-actions>
           <v-btn @click="save" color="primary">
@@ -265,6 +285,30 @@ export default {
         this.setCurrentItemDescription(value);
       },
     },
+    Facebook: {
+      get() {
+        return this.$store.state.film.currentItem.social.facebook;
+      },
+      set(value) {
+        this.setCurrentItemFacebook(value);
+      },
+    },
+    Twitter: {
+      get() {
+        return this.$store.state.film.currentItem.social.twitter;
+      },
+      set(value) {
+        this.setCurrentItemTwitter(value);
+      },
+    },
+    Instagram: {
+      get() {
+        return this.$store.state.film.currentItem.social.instagram;
+      },
+      set(value) {
+        this.setCurrentItemInstagram(value);
+      },
+    },
     Link: {
       get() {
         return this.$store.state.film.currentItem.link;
@@ -359,6 +403,9 @@ export default {
       setCurrentItemDirector: "film/SET_CURRENT_DIRECTOR",
       setCurrentItemYear: "film/SET_CURRENT_YEAR",
       setCurrentItemDescription: "film/SET_CURRENT_DESCRIPTION",
+      setCurrentItemFacebook: "film/SET_CURRENT_SOCIAL_FACEBOOK",
+      setCurrentItemTwitter: "film/SET_CURRENT_SOCIAL_TWITTER",
+      setCurrentItemInstagram: "film/SET_CURRENT_SOCIAL_INSTAGRAM",
       setCurrentItemLink: "film/SET_CURRENT_LINK",
       setCurrentItemPoster: "film/SET_CURRENT_POSTER",
       setFilmFile: "film/SET_FILM_FILE",

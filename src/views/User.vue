@@ -34,7 +34,7 @@
             @blur="$v.Email.$touch()"
             label="Электронная почта"
           ></v-text-field>
-          <v-checkbox v-model="checkbox" label="Сделать администратором?" />
+          <!-- <v-checkbox v-model="checkbox" label="Сделать администратором?" /> -->
         </v-card-text>
         <v-card-actions>
           <v-btn @click="save">Сохранить</v-btn>

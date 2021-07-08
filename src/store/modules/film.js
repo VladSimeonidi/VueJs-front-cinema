@@ -56,6 +56,15 @@ export const mutations = {
   SET_CURRENT_DESCRIPTION(state, payload) {
     state.currentItem.description = payload;
   },
+  SET_CURRENT_SOCIAL_FACEBOOK(state, payload) {
+    state.currentItem.social.facebook = payload;
+  },
+  SET_CURRENT_SOCIAL_TWITTER(state, payload) {
+    state.currentItem.social.twitter = payload;
+  },
+  SET_CURRENT_SOCIAL_INSTAGRAM(state, payload) {
+    state.currentItem.social.instagram = payload;
+  },
   SET_CURRENT_LINK(state, payload) {
     state.currentItem.link = payload;
   },
@@ -85,6 +94,11 @@ export const mutations = {
         file_name: "",
       },
       director: [],
+      social: {
+        facebook: "",
+        twitter: "",
+        instagram: "",
+      },
     };
     state.currentItem = emptyForm;
   },

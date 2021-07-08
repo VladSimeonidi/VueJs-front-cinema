@@ -23,16 +23,7 @@
       <h2 class="text" ref="text">About Us</h2>
     </section>
     <p class="about-text">
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio ipsam
-      commodi doloribus minima nemo earum numquam, voluptas unde aliquid
-      exercitationem reiciendis! Consequuntur eius laboriosam accusamus officia
-      cum, neque quibusdam dicta enim, ipsa in possimus commodi inventore nemo
-      adipisci hic alias provident laudantium dignissimos beatae quod a ex
-      voluptas. Laborum corporis quisquam perferendis harum quaerat est qui, id
-      ratione recusandae blanditiis eius odio, reiciendis possimus eaque soluta
-      dolorem, sint doloribus minus aspernatur iste. Pariatur repellat modi
-      explicabo ducimus ratione, corporis at tempora sunt obcaecati accusantium
-      eveniet asperiores beatae illo eius.
+      Добрый день! Это Тестовое приложение "обозреватель фильмов"
     </p>
     <div class="back-arrow">
       <img

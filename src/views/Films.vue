@@ -36,7 +36,7 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-row no-gutters>
-              <v-col class="d-flex" sm="3" xs="12">
+              <v-col class="d-flex" cols="12" sm="12" xs="12" md="3">
                 <v-select
                   clearable
                   :items="AllGenres"
@@ -51,7 +51,7 @@
                   return-object
                 ></v-select>
               </v-col>
-              <v-col class="d-flex ml-2" sm="3" xs="12">
+              <v-col class="d-flex ml-md-2" cols="12" sm="12" md="3">
                 <v-select
                   clearable
                   prepend-icon="mdi-account"
@@ -66,7 +66,13 @@
                   return-object
                 ></v-select
               ></v-col>
-              <v-col class="d-flex ml-2 align-center" sm="5" xs="12">
+              <v-col
+                class="d-flex ml-md-2 mt-10 mt-md-0 align-center"
+                cols="12"
+                sm="12"
+                xs="12"
+                md="5"
+              >
                 <v-range-slider
                   hide-details
                   dense

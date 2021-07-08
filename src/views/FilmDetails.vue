@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-main v-if="!Loading" class="main-wrapper">
+    <v-main v-if="!Loading" class="main-wrapper main-min-height">
       <v-container fluid class="pa-0">
         <v-container fluid class="mb-10 pt-10 header-container text-center">
           <div class="custom-shape-divider-bottom">
@@ -24,6 +24,7 @@
               outline: 'none',
               boxShadow: '0 0 15px rgba(0,0,0,0.5)',
               width: '55%',
+              minWidth: '280px',
               borderRadius: '10px',
             }"
           >
@@ -41,7 +42,8 @@
                 v-model="tab"
                 background-color="transparent"
                 color="basil"
-                grow
+                show-arrows
+                center-active
               >
                 <v-tab>
                   {{ $t("filmDetails.description") }}
@@ -55,7 +57,7 @@
                   {{ $t("filmDetails.year") }}
                 </v-tab>
               </v-tabs>
-              <v-tabs-items v-model="tab">
+              <v-tabs-items class="mt-4" v-model="tab">
                 <v-tab-item>
                   <div
                     v-if="Film.description.length"
@@ -104,10 +106,23 @@
               </v-tabs-items>
             </v-col>
           </v-row>
+          <v-card-text v-if="socials.length > 0">
+            <v-btn
+              target="_blank"
+              v-for="(social, index) in socials"
+              :key="index"
+              class="mx-4"
+              color="blue"
+              :to="social.link"
+              icon
+            >
+              <v-icon size="28px">{{ social.icon }}</v-icon>
+            </v-btn>
+          </v-card-text>
         </v-container>
       </v-container>
     </v-main>
-    <v-main v-else>
+    <v-main class="main-min-height" v-else>
       loading
     </v-main>
     <Footer />
@@ -126,8 +141,8 @@ export default {
     return {
       Loading: true,
       tab: null,
-      items: ["TEst", "Entrees", "Deserts", "Cocktails"],
-      tabs: [],
+      buttons: [1, 2, 3],
+      socials: [],
     };
   },
   components: {
@@ -145,12 +160,37 @@ export default {
   mounted() {
     this.uploadCurrentItem(this.$route.params.id)
       .then((res) => {
-        console.log(res);
+        for (let prop in res.social) {
+          if (res.social[prop]) {
+            switch (prop) {
+              case "facebook":
+                this.socials.push({
+                  icon: "mdi-facebook",
+                  link: res.social[prop],
+                });
+                break;
+              case "twitter":
+                this.socials.push({
+                  icon: "mdi-twitter",
+                  link: res.social[prop],
+                });
+                break;
+              case "instagram":
+                this.socials.push({
+                  icon: "mdi-instagram",
+                  link: res.social[prop],
+                });
+                break;
+            }
+          }
+        }
         this.Loading = false;
       })
       .catch((e) => {
         alert(e);
       });
+    console.log("soc");
+    console.log(this.socials);
   },
 };
 </script>
@@ -231,5 +271,8 @@ export default {
 
 .custom-shape-divider-bottom .shape-fill {
   fill: #fbfafa;
+}
+.main-min-height {
+  min-height: calc(100vh - 106px);
 }
 </style>

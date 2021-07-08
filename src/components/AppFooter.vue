@@ -1,34 +1,30 @@
 <template>
-  <div>
-    <v-footer dark padless>
-      <v-card class="flex" flat tile>
-        <v-card-title class="blue darken-1">
-          <strong class="subheading">{{ $t("films.footerText") }}</strong>
+  <v-footer dark padless>
+    <v-card class="flex" flat tile>
+      <v-card-title class="blue darken-1">
+        <strong class="subheading">{{ $t("films.footerText") }}</strong>
 
-          <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
 
-          <v-btn
-            target="_blank"
-            v-for="(icon, indexFooterIcon) in icons"
-            :key="indexFooterIcon"
-            :href="icon.link"
-            class="mx-4"
-            dark
-            icon
-          >
-            <v-icon size="24px">
-              {{ icon.icon }}
-            </v-icon>
-          </v-btn>
-        </v-card-title>
+        <v-btn
+          target="_blank"
+          v-for="(icon, indexFooterIcon) in icons"
+          :key="indexFooterIcon"
+          :href="icon.link"
+          class="mx-4"
+          dark
+          icon
+        >
+          <v-icon size="24px"> {{ icon.icon }} </v-icon>
+        </v-btn>
+      </v-card-title>
 
-        <v-card-text class="py-2 white--text text-center">
-          {{ new Date().getFullYear() }} —
-          <strong>{{ $t("films.mySite") }}</strong>
-        </v-card-text>
-      </v-card>
-    </v-footer>
-  </div>
+      <v-card-text class="py-2 white--text text-center">
+        {{ new Date().getFullYear() }} —
+        <strong>{{ $t("films.mySite") }}</strong>
+      </v-card-text>
+    </v-card>
+  </v-footer>
 </template>
 
 <script>
