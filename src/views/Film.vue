@@ -157,18 +157,27 @@
           <v-row>
             <v-col cols="12" sm="6"
               ><v-text-field
+                :error-messages="FacebookErrors"
+                @input="$v.Facebook.$touch()"
+                @blur="$v.Facebook.$touch()"
                 v-model="Facebook"
                 prepend-icon="mdi-facebook"
               ></v-text-field
             ></v-col>
             <v-col cols="12" sm="6"
               ><v-text-field
+                :error-messages="TwitterErrors"
+                @input="$v.Twitter.$touch()"
+                @blur="$v.Twitter.$touch()"
                 v-model="Twitter"
                 prepend-icon="mdi-twitter"
               ></v-text-field
             ></v-col>
             <v-col cols="12" sm="6"
               ><v-text-field
+                :error-messages="InstagramErrors"
+                @input="$v.Instagram.$touch()"
+                @blur="$v.Instagram.$touch()"
                 v-model="Instagram"
                 prepend-icon="mdi-instagram"
               ></v-text-field
@@ -193,6 +202,7 @@
   </v-main>
 </template>
 <script>
+import cloneDeep from "lodash/cloneDeep";
 import addGenre from "@/components/AddGenre.vue";
 import addDirector from "@/components/AddDirector.vue";
 import { validationMixin } from "vuelidate";
@@ -201,6 +211,7 @@ import {
   numeric,
   maxLength,
   between,
+  url,
 } from "vuelidate/lib/validators";
 import { mapActions, mapMutations, mapState } from "vuex";
 import Loading from "vue-loading-overlay";
@@ -224,6 +235,9 @@ export default {
     Year: { required, numeric, between: between(1950, 2021) },
     Link: { required },
     Poster: { required },
+    Facebook: { url, maxLength: maxLength(100) },
+    Twitter: { url, maxLength: maxLength(100) },
+    Instagram: { url, maxLength: maxLength(100) },
   },
   components: {
     addGenre,
@@ -383,6 +397,24 @@ export default {
       !this.$v.Poster.required && errors.push("Постер необходим");
       return errors;
     },
+    FacebookErrors() {
+      const errors = [];
+      if (!this.$v.Facebook.$dirty) return errors;
+      !this.$v.Facebook.url && errors.push("Необходмио ввести URL");
+      return errors;
+    },
+    TwitterErrors() {
+      const errors = [];
+      if (!this.$v.Twitter.$dirty) return errors;
+      !this.$v.Twitter.url && errors.push("Необходмио ввести URL");
+      return errors;
+    },
+    InstagramErrors() {
+      const errors = [];
+      if (!this.$v.Instagram.$dirty) return errors;
+      !this.$v.Instagram.url && errors.push("Необходмио ввести URL");
+      return errors;
+    },
   },
   methods: {
     ...mapActions({
@@ -506,10 +538,13 @@ export default {
     },
     async goBack() {
       if (this.$route.params.id === "new") {
-        let currentFilm = Object.assign({}, this.CurrentFilm);
+        let currentFilm = cloneDeep(this.CurrentFilm);
         delete currentFilm.poster;
         delete currentFilm.link;
-
+        for (let prop in currentFilm.social) {
+          currentFilm[prop] = currentFilm.social[prop];
+        }
+        delete currentFilm.social;
         let valuesArr = Object.values(currentFilm);
         let result = valuesArr.some((value) => {
           return value.length != 0;

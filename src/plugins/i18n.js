@@ -8,6 +8,7 @@ export const i18n = new VueI18n({
   fallbackLocale: "ru",
   messages: {
     ru: {
+      welcome: "Добро пожаловать",
       and: "и",
       films: {
         extendedSearch: "Расширенный поиск",
@@ -53,6 +54,7 @@ export const i18n = new VueI18n({
       },
     },
     ua: {
+      welcome: "Ласкаво просимо",
       and: "та",
       films: {
         extendedSearch: "Розширений пошук",
@@ -98,6 +100,7 @@ export const i18n = new VueI18n({
       },
     },
     us: {
+      welcome: "Welcome",
       and: "and",
       films: {
         extendedSearch: "Extended search",

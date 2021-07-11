@@ -1,6 +1,14 @@
 <template>
   <div class="myContainer" @click="skipIntro">
-    <h1 class="introTitle">welcome</h1>
+    <h1
+      :class="{
+        introTitleUs: $i18n.locale === 'us',
+        introTitleRu: $i18n.locale === 'ru',
+        introTitleUa: $i18n.locale === 'ua',
+      }"
+    >
+      {{ $t("welcome") }}
+    </h1>
     <div ref="clip" class="clip"></div>
   </div>
 </template>
@@ -28,7 +36,7 @@ export default {
     },
   },
   mounted() {
-    const clipImage = require(`@/assets/images/intro/test.jpg`);
+    const clipImage = require(`@/assets/images/intro/1.svg`);
     const clip = this.$refs.clip;
     clip.addEventListener("animationend", () => {
       clip.style.backgroundImage = `url(${clipImage})`;
@@ -65,10 +73,10 @@ export default {
   width: 100%;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100%;
   animation: animate 3s ease-in-out 2s;
 }
-.introTitle {
+.introTitleUs {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -76,14 +84,30 @@ export default {
   color: #fff;
   text-transform: uppercase;
 }
+.introTitleRu {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  font-size: 5vw;
+  color: #fff;
+  text-transform: uppercase;
+}
+.introTitleUa {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  font-size: 5vw;
+  color: #fff;
+  text-transform: uppercase;
+}
 @keyframes animate {
   0% {
     clip-path: circle(0% at 0% 0%);
-    background-image: url("../assets/images/intro/test.jpg");
+    background-image: url("../assets/images/intro/1.svg");
   }
   100% {
     clip-path: circle(70.7% at 50% 50%);
-    background-image: url("../assets/images/intro/test.jpg");
+    background-image: url("../assets/images/intro/1.svg");
   }
 }
 </style>

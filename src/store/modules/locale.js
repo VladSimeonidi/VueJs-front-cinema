@@ -1,5 +1,6 @@
-// import { config } from "@/config/config";
-// import axios from "axios";
+const localStorageLocale = localStorage.getItem("locale");
+if (!localStorageLocale) localStorage.setItem("locale", "ru");
+
 export const namespaced = true;
 
 export const state = () => ({
@@ -17,22 +18,17 @@ export const state = () => ({
       flag: "us",
     },
   ],
-  currentLocale: localStorage.getItem("locale"),
 });
 export const mutations = {
   SET_CURRENT_LOCALE(state, payload) {
-    // console.log("MUTATION PAYLOAD AND CURRENTLOCALE");
-    // console.log(payload);
-    // console.log(state.currentLocale);
+    state;
     localStorage.setItem("locale", payload.flag);
-    state.currentLocale = payload.flag;
   },
 };
 export const getters = {
   GET_CURRENT_LOCALE(state) {
-    let locale = state.locales.find((el) => {
+    return state.locales.find((el) => {
       return el.flag == localStorage.getItem("locale");
     });
-    return locale;
   },
 };

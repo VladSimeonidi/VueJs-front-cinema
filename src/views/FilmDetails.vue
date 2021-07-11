@@ -113,7 +113,7 @@
               :key="index"
               class="mx-4"
               color="blue"
-              :to="social.link"
+              :href="social.link"
               icon
             >
               <v-icon size="28px">{{ social.icon }}</v-icon>

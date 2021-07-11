@@ -24,12 +24,9 @@ import VuetifyConfirm from "vuetify-confirm";
 axios.defaults.withCredentials = true;
 Vue.prototype.$http = axios;
 const token = localStorage.getItem("token");
-const localStorageLocale = localStorage.getItem("locale");
+
 if (token) {
   Vue.prototype.$http.defaults.headers.common["Authorization"] = token;
-}
-if (!localStorageLocale) {
-  localStorage.setItem("locale", "ru");
 }
 
 Vue.config.productionTip = false;

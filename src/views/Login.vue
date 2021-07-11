@@ -105,7 +105,6 @@ export default {
         password: this.password,
       };
       if (this.checkbox) {
-        console.log("LOGIN ADMIN");
         this.LOGIN_ADMIN(user)
           .then((res) => {
             if (res.data.success) {
@@ -116,7 +115,6 @@ export default {
             console.log(e);
           });
       } else {
-        console.log("LOGIN USER");
         this.LOGIN(user)
           .then((res) => {
             if (res) {
