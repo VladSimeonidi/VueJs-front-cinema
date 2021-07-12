@@ -108,7 +108,11 @@ export default {
         this.LOGIN_ADMIN(user)
           .then((res) => {
             if (res.data.success) {
-              this.$router.push("/");
+              if (window.innerWidth > 950) {
+                this.$router.push("/");
+              } else {
+                this.$router.push("/films");
+              }
             }
           })
           .catch((e) => {
@@ -119,7 +123,11 @@ export default {
           .then((res) => {
             if (res) {
               if (res.data.success) {
-                this.$router.push("/");
+                if (window.innerWidth > 950) {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push("/films");
+                }
               }
             }
           })

@@ -22,8 +22,10 @@
             :src="Film.link"
             :style="{
               outline: 'none',
+              boxSizing: 'border-box',
               boxShadow: '0 0 15px rgba(0,0,0,0.5)',
-              width: '55%',
+              maxWidth: '55%',
+              width: '100%',
               minWidth: '280px',
               borderRadius: '10px',
             }"
@@ -99,8 +101,8 @@
                         class="d-flex justify-end align-center text-year"
                       >
                         {{ Film.year }}
-                      </v-col></v-row
-                    >
+                      </v-col>
+                    </v-row>
                   </v-card-text>
                 </v-tab-item>
               </v-tabs-items>
