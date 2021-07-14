@@ -149,7 +149,7 @@
             class="d-flex justify-center align-center"
             width="100%"
             height="100%"
-            >Нет фильмов</v-card
+            >{{ $t("films.noFilms") }}</v-card
           ></v-flex
         >
       </v-layout>
@@ -183,8 +183,8 @@
 import Footer from "@/components/AppFooter.vue";
 import { mapActions, mapMutations, mapState, mapGetters } from "vuex";
 export default {
-  metaInfo: {
-    title: "Films",
+  metaInfo() {
+    return { title: this.$t("pagesTitles.Films") };
   },
   data() {
     return {

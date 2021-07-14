@@ -136,8 +136,8 @@ import { mapState, mapActions } from "vuex";
 import Footer from "@/components/AppFooter.vue";
 import Media from "@dongido/vue-viaudio";
 export default {
-  metaInfo: {
-    title: "Film Details",
+  metaInfo() {
+    return { title: this.$t("pagesTitles.FilmDetails") };
   },
   data() {
     return {

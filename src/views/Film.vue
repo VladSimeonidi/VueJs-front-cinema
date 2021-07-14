@@ -221,8 +221,8 @@ import { mapActions, mapMutations, mapState } from "vuex";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 export default {
-  metaInfo: {
-    title: "Edit / Save Film",
+  metaInfo() {
+    return { title: this.$t("pagesTitles.Film") };
   },
   data() {
     return {
@@ -509,7 +509,6 @@ export default {
     },
   },
   created() {
-    console.log("computedErrors", computedErrors);
     this.uploadGenresList();
     this.getProfile();
     if (this.$route.params.id !== "new") {

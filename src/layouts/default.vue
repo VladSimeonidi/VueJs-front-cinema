@@ -5,7 +5,7 @@
       <v-spacer></v-spacer>
       <v-btn
         @click="resetFilmStoreState"
-        title="Фильмы"
+        :title="$t('buttons.films')"
         :to="{ name: 'films' }"
         icon
       >
@@ -14,16 +14,16 @@
       <v-btn
         color="cyan lighten-2"
         v-if="admin && $route.name != 'editfilm'"
-        title="Добавить фильм"
+        :title="$t('buttons.addFilm')"
         :to="{ name: 'editfilm', params: { id: 'new' } }"
         icon
       >
         <v-icon>mdi-library-plus</v-icon>
       </v-btn>
-      <v-btn title="Профиль" :to="{ name: 'profile' }" icon>
+      <v-btn :title="$t('buttons.profile')" :to="{ name: 'profile' }" icon>
         <v-icon>mdi-face</v-icon>
       </v-btn>
-      <v-btn title="Logout" @click="logoutUser" icon>
+      <v-btn :title="$t('buttons.logout')" @click="logoutUser" icon>
         <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
@@ -63,16 +63,13 @@ export default {
       reserFilmState: "film/RESET_STATE",
     }),
     async logoutUser() {
-      const res = await this.$confirm(
-        "Выйти из учетной записи и перейти на страницу логина?",
-        {
-          title: "Выйти",
-          color: "primary",
-          buttonTrueText: "Покинуть",
-          buttonFalseText: "Нет",
-          icon: "mdi-logout",
-        }
-      );
+      const res = await this.$confirm(this.$t("confirms.message"), {
+        title: this.$t("confirms.logout"),
+        color: "primary",
+        buttonTrueText: this.$t("confirms.ok"),
+        buttonFalseText: this.$t("confirms.no"),
+        icon: "mdi-logout",
+      });
       if (res) {
         this.Logout();
       } else {
@@ -105,5 +102,29 @@ export default {
 }
 .langSelect {
   width: 135px;
+}
+[data-title]:hover:after {
+  opacity: 1;
+  transition: all 0.1s ease 0.5s;
+  visibility: visible;
+}
+[data-title]:after {
+  content: attr(data-title);
+  background-color: #43fcff;
+  color: #111;
+  font-size: 0.8rem;
+  position: absolute;
+  padding: 1px 5px 2px 5px;
+  bottom: -1.5em;
+  left: 0;
+  white-space: nowrap;
+  box-shadow: 1px 1px 3px #222222;
+  opacity: 0;
+  border: 1px solid #111111;
+  z-index: 99999;
+  visibility: hidden;
+}
+[data-title] {
+  position: relative;
 }
 </style>

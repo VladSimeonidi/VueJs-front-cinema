@@ -48,8 +48,8 @@ import { required, maxLength } from "vuelidate/lib/validators";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
-  metaInfo: {
-    title: "Login",
+  metaInfo() {
+    return { title: this.$t("pagesTitles.Login") };
   },
   data: () => ({
     username: "",
@@ -71,13 +71,15 @@ export default {
     nameErrors() {
       const errors = [];
       if (!this.$v.username.$dirty) return errors;
-      !this.$v.username.required && errors.push("Имя необходимо");
+      !this.$v.username.required &&
+        errors.push(this.$t("register.validators.login"));
       return errors;
     },
     passwordErrors() {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.required && errors.push("Пароль необходим");
+      !this.$v.password.required &&
+        errors.push(this.$t("register.validators.password"));
       return errors;
     },
   },

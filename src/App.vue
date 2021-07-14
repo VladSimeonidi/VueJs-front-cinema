@@ -7,6 +7,7 @@
 
 <script>
 import VueExtendLayouts from "vue-extend-layout";
+
 export default {
   components: { VueExtendLayouts },
 };

@@ -20,7 +20,7 @@
         ref="road"
         alt="road"
       />
-      <h2 class="text" ref="text">About Us</h2>
+      <h2 class="text" ref="text">{{ $t("pagesTitles.About") }}</h2>
     </section>
     <p class="about-text">
       Добрый день! Это Тестовое приложение "обозреватель фильмов"
@@ -37,6 +37,9 @@
 </template>
 <script>
 export default {
+  metaInfo() {
+    return { title: this.$t("pagesTitles.About") };
+  },
   methods: {
     goBack() {
       this.$router.go(-1);

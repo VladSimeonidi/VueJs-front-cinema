@@ -57,22 +57,22 @@ export const mutations = {
 export const actions = {
   async LOGIN({ commit }, user) {
     commit("AUTH_REQUEST");
-    try {
-      let res = await axios.post(
-        config.API.BASE_URL + config.API.USER.LOGIN,
-        user
-      );
-      if (res.data.success) {
-        const token = res.data.token;
-        const user = res.data.user;
-        localStorage.setItem("token", token);
-        axios.defaults.headers.common["Authorization"] = token;
-        commit("AUTH_SUCCESS", token, user);
-      }
-      return res;
-    } catch (error) {
-      commit("AUTH_ERROR", error);
-    }
+
+    return await axios
+      .post(config.API.BASE_URL + config.API.USER.LOGIN, user)
+      .then((res) => {
+        if (res.data.success) {
+          const token = res.data.token;
+          const user = res.data.user;
+          localStorage.setItem("token", token);
+          axios.defaults.headers.common["Authorization"] = token;
+          commit("AUTH_SUCCESS", token, user);
+          return res;
+        }
+      })
+      .catch((error) => {
+        commit("AUTH_ERROR", error);
+      });
   },
   async LOGIN_ADMIN({ commit }, user) {
     commit("AUTH_REQUEST");
@@ -110,23 +110,24 @@ export const actions = {
     }
   },
   async GET_PROFILE({ commit }) {
-    try {
-      commit("PROFILE_REQUEST");
-      let res = await axios.get(config.API.BASE_URL + config.API.USER.PROFILE);
-      commit("USER_PROFILE", res.data.user);
-
-      return res.data.user;
-    } catch (error) {
-      if (
-        error.response.data === "Unauthorized" &&
-        error.response.status === 401
-      ) {
-        console.log("Удалить токен");
-        localStorage.removeItem("token");
-        this.reset();
-        router.push("/login");
-      }
-    }
+    commit("PROFILE_REQUEST");
+    return await axios
+      .get(config.API.BASE_URL + config.API.USER.PROFILE)
+      .then((res) => {
+        commit("USER_PROFILE", res.data.user);
+        return res.data.user;
+      })
+      .catch((error) => {
+        if (
+          error.response.data === "Unauthorized" &&
+          error.response.status === 401
+        ) {
+          console.log("Удалить токен");
+          localStorage.removeItem("token");
+          this.reset();
+          router.push("/login");
+        }
+      });
   },
   async LOGOUT({ commit }) {
     await localStorage.removeItem("token");

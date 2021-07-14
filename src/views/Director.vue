@@ -76,8 +76,8 @@ import { mapActions, mapMutations } from "vuex";
 import { validationMixin } from "vuelidate";
 import { required, maxLength } from "vuelidate/lib/validators";
 export default {
-  metaInfo: {
-    title: "Edit / Save Director",
+  metaInfo() {
+    return { title: this.$t("pagesTitles.Director") };
   },
   data() {
     return {
