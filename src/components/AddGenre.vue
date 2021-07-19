@@ -52,7 +52,6 @@ export default {
     ...mapActions({
       SaveGenre: "genre/SAVE_NEW_ITEM",
       uploadGenresList: "genre/SET_LIST",
-      getProfile: "auth/GET_PROFILE",
     }),
     async save() {
       const genreData = {
@@ -76,9 +75,7 @@ export default {
     },
   },
   created() {
-    this.getProfile().then((res) => {
-      this.admin = res.admin;
-    });
+    this.admin = this.$store.state.auth.admin;
   },
 };
 </script>

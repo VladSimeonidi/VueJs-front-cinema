@@ -139,7 +139,7 @@ export default {
           }`
         );
       !this.$v.username.englishValidation &&
-        errors.push("Только английские буквы");
+        errors.push(this.$t("register.validators.onlyEngilsh"));
 
       return errors;
     },

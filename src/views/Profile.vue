@@ -63,10 +63,9 @@
 
 <script>
 import AppProfileBar from "@/components/AppProfileBar.vue";
-import { mapActions } from "vuex";
 export default {
-  metaInfo: {
-    title: "Profile",
+  metaInfo() {
+    return { title: this.$t("pagesTitles.Profile") };
   },
   data() {
     return {
@@ -77,14 +76,10 @@ export default {
   components: {
     AppProfileBar,
   },
-  methods: {
-    ...mapActions("auth", ["GET_PROFILE"]),
-  },
+
   created() {
-    this.GET_PROFILE().then((res) => {
-      this.user = res.user;
-      this.admin = res.admin;
-    });
+    this.user = this.$store.state.auth.user;
+    this.admin = this.$store.state.auth.admin;
   },
 };
 </script>

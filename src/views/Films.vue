@@ -191,7 +191,7 @@ export default {
       panel: null,
       setRange: null,
       searchText: "",
-      admin: null,
+      admin: false,
       unwatch: null,
     };
   },
@@ -256,7 +256,6 @@ export default {
       uploadGenresList: "genre/SET_LIST",
       loadFilmsList: "film/SET_LIST",
       setListOfDirectors: "director/SET_LIST",
-      getProfile: "auth/GET_PROFILE",
     }),
     ...mapMutations({
       setPageSetPageNumber: "film/SET_PAGESET_PAGE_NUMBER",
@@ -294,15 +293,13 @@ export default {
       }
     )),
       Promise.all([
-        this.getProfile(),
         this.loadFilmsList(),
         this.uploadGenresList(),
         this.setListOfDirectors(),
       ])
-        .then((response) => {
-          const [profile] = response;
-          this.user = profile.user;
-          this.admin = profile.admin;
+        .then(() => {
+          this.user = this.$store.state.auth.user;
+          this.admin = this.$store.state.auth.admin;
           this.Loading = false;
         })
         .catch((error) => {

@@ -45,6 +45,9 @@ export default {
       }, 2000);
     });
   },
+  beforeDestroy() {
+    clearTimeout(this.timer);
+  },
 };
 </script>
 

@@ -351,7 +351,6 @@ export default {
       saveFilm: "film/SAVE_CURRENT_ITEM",
       editFilm: "film/EDIT_CURRENT_ITEM",
       deleteFilm: "film/DELETE_CURRENT_ITEM",
-      getProfile: "auth/GET_PROFILE",
     }),
     ...mapMutations({
       setCurrentItemName: "film/SET_CURRENT_NAME",
@@ -510,7 +509,6 @@ export default {
   },
   created() {
     this.uploadGenresList();
-    this.getProfile();
     if (this.$route.params.id !== "new") {
       this.setCurrentFilm(this.$route.params.id)
         .then(() => {

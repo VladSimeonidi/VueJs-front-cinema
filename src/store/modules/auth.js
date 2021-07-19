@@ -9,6 +9,7 @@ export const state = () => ({
   user: {},
   status: "",
   error: null,
+  admin: false,
 });
 export const mutations = {
   CLEAR_ERROR(state) {
@@ -18,10 +19,11 @@ export const mutations = {
     state.error = null;
     state.status = "loading";
   },
-  AUTH_SUCCESS(state, token, user) {
+  AUTH_SUCCESS(state, payload) {
     state.error = null;
-    state.token = token;
-    state.user = user;
+    state.token = payload.token;
+    state.user = payload.user;
+    state.admin = payload.admin;
   },
   REGISTER_REQUEST(state) {
     state.error = null;
@@ -35,9 +37,9 @@ export const mutations = {
     state.error = null;
     state.status = "loading";
   },
-  USER_PROFILE(state, user) {
-    state.user = user;
-  },
+  // USER_PROFILE(state, user) {
+  //   state.user = user;
+  // },
   LOGOUT(state) {
     state.error = null;
     state.status = "";
@@ -64,9 +66,10 @@ export const actions = {
         if (res.data.success) {
           const token = res.data.token;
           const user = res.data.user;
+          const admin = res.data.admin;
           localStorage.setItem("token", token);
           axios.defaults.headers.common["Authorization"] = token;
-          commit("AUTH_SUCCESS", token, user);
+          commit("AUTH_SUCCESS", { token, user, admin });
           return res;
         }
       })
@@ -84,10 +87,10 @@ export const actions = {
       if (res.data.success) {
         const token = res.data.token;
         const user = res.data.user;
+        const admin = res.data.admin;
         localStorage.setItem("token", token);
-        // Set the axios defaults
         axios.defaults.headers.common["Authorization"] = token;
-        commit("AUTH_SUCCESS", token, user);
+        commit("AUTH_SUCCESS", { token, user, admin });
       }
       return res;
     } catch (error) {
@@ -114,7 +117,7 @@ export const actions = {
     return await axios
       .get(config.API.BASE_URL + config.API.USER.PROFILE)
       .then((res) => {
-        commit("USER_PROFILE", res.data.user);
+        // commit("USER_PROFILE", res.data.user);
         return res.data.user;
       })
       .catch((error) => {
@@ -122,7 +125,6 @@ export const actions = {
           error.response.data === "Unauthorized" &&
           error.response.status === 401
         ) {
-          console.log("Удалить токен");
           localStorage.removeItem("token");
           this.reset();
           router.push("/login");

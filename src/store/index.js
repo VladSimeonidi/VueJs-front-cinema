@@ -7,5 +7,5 @@ Vue.use(Vuex);
 export default createStore(Vuex.Store, {
   strict: true,
   modules,
-  plugins: [createPersistedState({ paths: ["auth.user"] })],
+  plugins: [createPersistedState({ paths: ["auth.user", "auth.admin"] })],
 });

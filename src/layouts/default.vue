@@ -51,15 +51,14 @@ export default {
   data() {
     return {
       alert: false,
-      user: null,
-      admin: null,
+      user: {},
+      admin: false,
     };
   },
   components: { myLocale },
   methods: {
     ...mapActions({
       Logout: "auth/LOGOUT",
-      GetProfile: "auth/GET_PROFILE",
       reserFilmState: "film/RESET_STATE",
     }),
     async logoutUser() {
@@ -81,11 +80,10 @@ export default {
     },
   },
   created() {
-    this.GetProfile().then((res) => {
-      this.user = res.user;
-      this.admin = res.admin;
-      if (!this.admin && this.user.isAdmin) this.alert = true;
-    });
+    this.user = this.$store.state.auth.user;
+    this.admin = this.$store.state.auth.admin;
+    console.log(this.$store.state.auth.admin);
+    if (!this.admin && this.user.isAdmin) this.alert = true;
   },
 };
 </script>
