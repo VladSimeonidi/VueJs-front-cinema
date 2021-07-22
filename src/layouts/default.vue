@@ -64,7 +64,7 @@ export default {
     async logoutUser() {
       const res = await this.$confirm(this.$t("confirms.message"), {
         title: this.$t("confirms.logout"),
-        color: "primary",
+        color: "#272727",
         buttonTrueText: this.$t("confirms.ok"),
         buttonFalseText: this.$t("confirms.no"),
         icon: "mdi-logout",
