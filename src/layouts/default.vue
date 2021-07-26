@@ -82,7 +82,6 @@ export default {
   created() {
     this.user = this.$store.state.auth.user;
     this.admin = this.$store.state.auth.admin;
-    console.log(this.$store.state.auth.admin);
     if (!this.admin && this.user.isAdmin) this.alert = true;
   },
 };

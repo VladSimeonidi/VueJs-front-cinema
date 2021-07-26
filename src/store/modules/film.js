@@ -7,7 +7,7 @@ export const namespaced = true;
 
 const getDefaultState = () => {
   return {
-    currentItem: {},
+    currentItem: null,
     list: null,
     listTotal: null,
     OneFilmFile: null,
@@ -89,6 +89,7 @@ export const mutations = {
       link: "",
       name: "",
       teaser: "",
+      rateUsers: [],
       year: "",
       poster: {
         file_name: "",
@@ -124,6 +125,7 @@ export const mutations = {
 };
 export const actions = {
   async SET_LIST({ state, commit }) {
+    commit("SET_LOADING", true);
     const query = Object.assign({}, state.pageSet);
     if (query.director.length > 0) {
       query.director = query.director.map((el) => {
@@ -141,10 +143,12 @@ export const actions = {
       .then((res) => {
         commit("SET_LIST", res.data.filmList);
         commit("SET_LIST_TOTAL", res.data.filmListCount);
+        commit("SET_LOADING", false);
         return res.data.filmList;
       })
       .catch((e) => {
         console.log(e);
+        commit("SET_LOADING", false);
       });
 
     return res;
@@ -179,14 +183,17 @@ export const actions = {
       });
   },
   async SET_CURRENT_ITEM_AS_DETAILS({ commit }, ID) {
+    commit("SET_LOADING", true);
     return await axios
       .get(config.API.BASE_URL + config.API.FILM.DETAILS + "/" + ID)
       .then((res) => {
         commit("SET_CURRENT_ITEM", res.data);
+        commit("SET_LOADING", false);
         return res.data;
       })
       .catch((e) => {
         console.log(e);
+        commit("SET_LOADING", false);
       });
   },
   async ADD_NEW_ITEM({ commit }) {
@@ -260,6 +267,20 @@ export const actions = {
       });
     return response;
   },
+  async RATE_FILM({ commit, dispatch }, payload) {
+    commit;
+    const ID = payload.filmId;
+    delete payload.filmId;
+    return await axios
+      .put(config.API.BASE_URL + config.API.FILM.RATE + "/" + ID, payload)
+      .then((res) => {
+        dispatch("SET_CURRENT_ITEM_AS_DETAILS", ID);
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   async DELETE_CURRENT_ITEM({ commit }, ID) {
     let response = null;
     await axios
@@ -283,5 +304,14 @@ export const getters = {
     let total = state.listTotal;
     let pageSize = state.pageSet.pageSize;
     return Math.ceil(total / pageSize);
+  },
+  countRating(state) {
+    const ratingValues = state.currentItem.rateUsers.map((e) => e.rate);
+    let sum = ratingValues.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+    let average = sum / ratingValues.length;
+    return Math.round(average);
   },
 };

@@ -208,7 +208,7 @@
 import cloneDeep from "lodash/cloneDeep";
 import addGenre from "@/components/AddGenre.vue";
 import addDirector from "@/components/AddDirector.vue";
-import computedErrors from "@/modules/filmComputed/computed.js";
+import computedErrors from "@/validators/film.js";
 import { validationMixin } from "vuelidate";
 import {
   required,

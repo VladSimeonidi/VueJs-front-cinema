@@ -177,11 +177,13 @@
     </v-container>
 
     <Footer />
+    <loading :active.sync="this.Loading" color="blue" is-full-page></loading>
   </v-main>
 </template>
 <script>
 import Footer from "@/components/AppFooter.vue";
 import { mapActions, mapMutations, mapState, mapGetters } from "vuex";
+import Loading from "vue-loading-overlay";
 export default {
   metaInfo() {
     return { title: this.$t("pagesTitles.Films") };
@@ -195,7 +197,7 @@ export default {
       unwatch: null,
     };
   },
-  components: { Footer },
+  components: { Footer, Loading },
   computed: {
     ...mapGetters({
       PaginatonCounter: "film/paginatonsCounter",
@@ -205,6 +207,7 @@ export default {
       FilmLsit: (state) => state.film.list,
       AllGenres: (state) => state.genre.list,
       AllDirectors: (state) => state.director.list,
+      Loading: (state) => state.film.Loading,
     }),
     currentSelectedPage: {
       get() {
@@ -300,7 +303,6 @@ export default {
         .then(() => {
           this.user = this.$store.state.auth.user;
           this.admin = this.$store.state.auth.admin;
-          this.Loading = false;
         })
         .catch((error) => {
           console.log(error);

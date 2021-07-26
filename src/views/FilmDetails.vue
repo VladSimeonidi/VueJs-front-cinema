@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-main v-if="!Loading" class="main-wrapper main-min-height">
+    <v-main v-if="Film" class="main-wrapper main-min-height">
       <v-container fluid class="pa-0">
         <v-container fluid class="mb-10 pt-10 header-container text-center">
           <div class="custom-shape-divider-bottom">
@@ -32,7 +32,7 @@
           >
           </Media>
         </v-container>
-        <v-container fluid class="mb-10">
+        <v-container fluid class="mb-5">
           <v-row no-gutters>
             <v-col cols="12">
               <div class="header-styling text-center">
@@ -122,18 +122,83 @@
             </v-btn>
           </v-card-text>
         </v-container>
+        <v-container fluid class="mb-10 text-center">
+          <v-dialog
+            transition="dialog-bottom-transition"
+            :width="$vuetify.breakpoint.xs ? 270 : 600"
+            v-model="dialog"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-hover v-slot="{ hover }">
+                <div v-bind="attrs" v-on="on" class="max-width-300">
+                  <v-badge
+                    :value="hover"
+                    color="deep-purple accent-4"
+                    :content="
+                      Film.rateUsers.length == 2 || Film.rateUsers.length == 3
+                        ? `Проголосовали
+                    ${Film.rateUsers.length}
+                    человека`
+                        : `Проголосовали
+                    ${Film.rateUsers.length}
+                    человек`
+                    "
+                    left
+                    transition="slide-x-transition"
+                  >
+                  </v-badge>
+                  <v-rating
+                    :class="{ 'on-hover': hover }"
+                    empty-icon="mdi-star-outline"
+                    full-icon="mdi-star"
+                    half-icon="mdi-star-half"
+                    :color="getRating < 3 ? 'red' : 'primary'"
+                    readonly
+                    length="5"
+                    :size="$vuetify.breakpoint.xs ? 28 : '50'"
+                    v-model="getRating"
+                  ></v-rating>
+                </div>
+              </v-hover>
+            </template>
+            <template>
+              <v-card>
+                <v-toolbar color="primary" dark>Поставить рейтинг</v-toolbar>
+                <v-card-text class="text-center">
+                  <v-rating
+                    class="mt-6 mb-6"
+                    empty-icon="mdi-star-outline"
+                    full-icon="mdi-star"
+                    half-icon="mdi-star-half"
+                    hover
+                    v-model="rateOnPage"
+                    length="5"
+                    :size="$vuetify.breakpoint.xs ? 24 : 50"
+                  ></v-rating>
+                </v-card-text>
+                <v-card-actions class="justify-end">
+                  <v-btn text @click="putRate">Оценить</v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn text @click="closeRateDialog">Закрыть</v-btn>
+                </v-card-actions>
+              </v-card>
+            </template>
+          </v-dialog>
+        </v-container>
       </v-container>
     </v-main>
     <v-main class="main-min-height" v-else>
       loading
     </v-main>
     <Footer />
+    <loading :active.sync="this.Loading" color="blue" is-full-page></loading>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import Footer from "@/components/AppFooter.vue";
+import Loading from "vue-loading-overlay";
 import Media from "@dongido/vue-viaudio";
 export default {
   metaInfo() {
@@ -141,23 +206,64 @@ export default {
   },
   data() {
     return {
-      Loading: true,
       tab: null,
       buttons: [1, 2, 3],
       socials: [],
+      dialog: false,
+      rateOnPage: 0,
     };
   },
   components: {
     Media,
     Footer,
+    Loading,
   },
   computed: {
+    ...mapGetters({
+      getRating: "film/countRating",
+    }),
     ...mapState({
       Film: (state) => state.film.currentItem,
+      Loading: (state) => state.film.Loading,
     }),
   },
   methods: {
-    ...mapActions({ uploadCurrentItem: "film/SET_CURRENT_ITEM_AS_DETAILS" }),
+    ...mapActions({
+      uploadCurrentItem: "film/SET_CURRENT_ITEM_AS_DETAILS",
+      rateFilm: "film/RATE_FILM",
+    }),
+    putRate() {
+      const saveData = {
+        filmId: this.$route.params.id,
+        userId: this.$store.state.auth.user._id,
+        rate: this.rateOnPage,
+      };
+      this.rateFilm(saveData)
+        .then((res) => {
+          if (res.status === 200) {
+            this.appAlert(
+              "Рейтинг",
+              `Вы поставили оценку ${saveData.rate}`,
+              "success"
+            );
+          } else {
+            this.appAlert(
+              "Рейтинг",
+              `Ошибка рейтинга ${res.status} - ${res.data}`,
+              "error"
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      this.rateOnPage = 0;
+      this.dialog = false;
+    },
+    closeRateDialog() {
+      this.rateOnPage = 0;
+      this.dialog = false;
+    },
   },
   mounted() {
     this.uploadCurrentItem(this.$route.params.id)
@@ -186,13 +292,10 @@ export default {
             }
           }
         }
-        this.Loading = false;
       })
       .catch((e) => {
         alert(e);
       });
-    console.log("soc");
-    console.log(this.socials);
   },
 };
 </script>
@@ -201,6 +304,10 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap");
 @mixin custom-font-style-oswald {
   font-family: "Oswald", sans-serif;
+}
+.on-hover {
+  opacity: 0.6;
+  cursor: pointer;
 }
 .text-year {
   @include custom-font-style-oswald;

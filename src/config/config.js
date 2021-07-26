@@ -7,6 +7,7 @@ export const config = {
       PAGINATION: "/films/page",
       DETAILS: "/films/details",
       AUTOCOMPLETE: "/films/filmsautocomplete",
+      RATE: "/films/ratefilm",
     },
     USER: {
       LOGIN: "/user/login",
