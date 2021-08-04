@@ -136,12 +136,12 @@
                     color="deep-purple accent-4"
                     :content="
                       Film.rateUsers.length == 2 || Film.rateUsers.length == 3
-                        ? `Проголосовали
+                        ? `${$t('filmDetails.rate.voted')}
                     ${Film.rateUsers.length}
-                    человека`
-                        : `Проголосовали
+                    ${$t('filmDetails.rate.men')}`
+                        : `${$t('filmDetails.rate.voted')}
                     ${Film.rateUsers.length}
-                    человек`
+                    ${$t('filmDetails.rate.man')}`
                     "
                     left
                     transition="slide-x-transition"
@@ -163,7 +163,9 @@
             </template>
             <template>
               <v-card>
-                <v-toolbar color="primary" dark>Поставить рейтинг</v-toolbar>
+                <v-toolbar color="primary" dark>{{
+                  $t("filmDetails.rate.vote")
+                }}</v-toolbar>
                 <v-card-text class="text-center">
                   <v-rating
                     class="mt-6 mb-6"
@@ -177,9 +179,13 @@
                   ></v-rating>
                 </v-card-text>
                 <v-card-actions class="justify-end">
-                  <v-btn text @click="putRate">Оценить</v-btn>
+                  <v-btn text @click="putRate">{{
+                    $t("filmDetails.rate.confirm")
+                  }}</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn text @click="closeRateDialog">Закрыть</v-btn>
+                  <v-btn text @click="closeRateDialog">{{
+                    $t("buttons.close")
+                  }}</v-btn>
                 </v-card-actions>
               </v-card>
             </template>

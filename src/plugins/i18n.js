@@ -15,6 +15,7 @@ export const i18n = new VueI18n({
         addFilm: "Добавть фильм",
         profile: "Мой профиль",
         logout: "Выйти из учетной записи",
+        close: "Закрыть",
       },
       pagesTitles: {
         About: "О нас",
@@ -81,6 +82,13 @@ export const i18n = new VueI18n({
         trailer: "Трейлер",
         description: "Описание",
         noDescrition: "Описание отсутствует",
+        rate: {
+          voted: "Проголосовали",
+          vote: "Поставить рейтинг",
+          man: "человек",
+          men: "человека",
+          confirm: "Оценить",
+        },
       },
       intro: {
         welcome: "Добро пожаловать!",
@@ -100,6 +108,7 @@ export const i18n = new VueI18n({
         addFilm: "Додати фільм",
         profile: "Мій профіль",
         logout: "Вийти з облікового запису",
+        close: "Закрити",
       },
       pagesTitles: {
         About: "Про нас",
@@ -166,6 +175,13 @@ export const i18n = new VueI18n({
         trailer: "Трейлер",
         description: "Опис",
         noDescrition: "Опис відсутній",
+        rate: {
+          voted: "Проголосували",
+          vote: "Поставити рейтинг",
+          man: "користувачів",
+          men: "користувача",
+          confirm: "Оцінити",
+        },
       },
       intro: {
         welcome: "Ласкаво просимо!",
@@ -185,6 +201,7 @@ export const i18n = new VueI18n({
         addFilm: "Add film",
         profile: "My profile",
         logout: "Logout",
+        close: "Close",
       },
       pagesTitles: {
         About: "About us",
@@ -251,6 +268,13 @@ export const i18n = new VueI18n({
         trailer: "Trailer",
         description: "Description",
         noDescrition: "No description",
+        rate: {
+          voted: "Voted",
+          vote: "Put rating",
+          man: "people",
+          men: "people",
+          confirm: "Rate",
+        },
       },
       intro: {
         welcome: "Welcome",

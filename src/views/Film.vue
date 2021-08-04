@@ -25,7 +25,6 @@
             placeholder="Введите название"
             required
           ></v-text-field>
-
           <v-text-field
             maxLength="140"
             v-model="Teaser"
@@ -73,14 +72,36 @@
               <addDirector />
             </v-col>
           </v-row>
-          <v-text-field
+          <v-select
+            label="Год производства"
+            v-model="Year"
+            :error-messages="yearErrors"
+            @input="$v.Year.$touch()"
+            @blur="$v.Year.$touch()"
+            :items="years"
+            item-text="year"
+            prepend-icon="mdi-calendar"
+            return-object
+          ></v-select>
+          <!-- <v-text-field
             v-model="Year"
             :error-messages="yearErrors"
             @input="$v.Year.$touch()"
             @blur="$v.Year.$touch()"
             label="Год производства"
             placeholder="Год производства"
-          ></v-text-field>
+          >
+            <template v-slot:append>
+              <v-select
+                v-model="Director"
+                items="[1,2,3]"
+                item-text="name"
+                dense
+                label="Выберите режиссера"
+                return-object
+              ></v-select>
+            </template>
+          </v-text-field> -->
           <h3>Описание</h3>
           <v-textarea
             v-model="Description"
@@ -228,6 +249,7 @@ export default {
     return {
       dataLoaded: false,
       showImg: false,
+      years: [],
     };
   },
   mixins: [validationMixin],
@@ -508,6 +530,11 @@ export default {
     },
   },
   created() {
+    let today = new Date();
+    let year = today.getFullYear();
+    for (year; year >= 1950; year--) {
+      this.years.push(JSON.stringify(year));
+    }
     this.uploadGenresList();
     if (this.$route.params.id !== "new") {
       this.setCurrentFilm(this.$route.params.id)

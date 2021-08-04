@@ -17,6 +17,9 @@
         v-model="password"
         :error-messages="passwordErrors"
         :label="$t('login.password')"
+        :type="showPassword ? 'text' : 'password'"
+        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+        @click:append="showPassword = !showPassword"
         required
         @input="$v.password.$touch()"
         @blur="$v.password.$touch()"
@@ -56,9 +59,9 @@ export default {
     password: "",
     checkbox: false,
     error: null,
+    showPassword: false,
   }),
   mixins: [validationMixin],
-
   validations: {
     username: { required, maxLength: maxLength(10) },
     password: { required },
@@ -85,6 +88,12 @@ export default {
   },
 
   methods: {
+    onSuccess(googleUser) {
+      console.log(googleUser);
+
+      // This only gets the user information: id, name, imageUrl and email
+      console.log(googleUser.getBasicProfile());
+    },
     ...mapMutations({ mut_CLEAR_ERROR: "auth/CLEAR_ERROR" }),
     ...mapActions({ LOGIN: "auth/LOGIN", LOGIN_ADMIN: "auth/LOGIN_ADMIN" }),
     ...mapGetters({ getError: "auth/ERROR" }),

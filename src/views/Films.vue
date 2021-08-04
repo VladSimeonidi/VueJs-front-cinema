@@ -288,7 +288,6 @@ export default {
     (this.unwatch = this.$store.watch(
       (state) => state.film.pageSet,
       () => {
-        console.log("changed");
         this.loadFilmsList();
       },
       {
