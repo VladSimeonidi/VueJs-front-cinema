@@ -58,6 +58,9 @@
                   {{ $t("filmDetails.directors") }} {{ $t("and") }}
                   {{ $t("filmDetails.year") }}
                 </v-tab>
+                <v-tab>
+                  {{ $t("filmDetails.genre") }}
+                </v-tab>
               </v-tabs>
               <v-tabs-items class="mt-4" v-model="tab">
                 <v-tab-item>
@@ -104,6 +107,21 @@
                       </v-col>
                     </v-row>
                   </v-card-text>
+                </v-tab-item>
+                <v-tab-item>
+                  <v-list>
+                    <v-list-item
+                      v-for="(currentGenre, index) in Film.genre"
+                      :key="index"
+                    >
+                      <v-list-item-content>
+                        <v-list-item-title
+                          class="font-weight-medium"
+                          v-text="currentGenre.name"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
                 </v-tab-item>
               </v-tabs-items>
             </v-col>
@@ -255,7 +273,7 @@ export default {
           } else {
             this.appAlert(
               "Рейтинг",
-              `Ошибка рейтинга ${res.status} - ${res.data}`,
+              `Ошибка рейтинга ${res.response.status} - ${res.response.data}`,
               "error"
             );
           }

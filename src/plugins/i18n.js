@@ -16,6 +16,8 @@ export const i18n = new VueI18n({
         profile: "Мой профиль",
         logout: "Выйти из учетной записи",
         close: "Закрыть",
+        back: "Назад",
+        changePassword: "Изменить пароль",
       },
       pagesTitles: {
         About: "О нас",
@@ -47,6 +49,7 @@ export const i18n = new VueI18n({
         asAdmin: "Войти как администратор?",
         enter: "Войти",
         getAccount: "Получить аккаунт?",
+        forgotPassword: "Забыли пароль?",
       },
       register: {
         login: "Логин",
@@ -99,6 +102,15 @@ export const i18n = new VueI18n({
         no: "Нет",
         logout: "Выйти",
       },
+      forgotPassword: {
+        title: "Запрос на сброс пароля",
+        subtitle: "Введите почту",
+        btnSendLetter: "Отправить почту",
+        emailTextField: "Почта",
+      },
+      resetPassword: {
+        title: "Введите новый пароль",
+      },
     },
     ua: {
       welcome: "Ласкаво просимо",
@@ -109,6 +121,8 @@ export const i18n = new VueI18n({
         profile: "Мій профіль",
         logout: "Вийти з облікового запису",
         close: "Закрити",
+        back: "Назад",
+        changePassword: "Змінити пароль",
       },
       pagesTitles: {
         About: "Про нас",
@@ -140,6 +154,7 @@ export const i18n = new VueI18n({
         asAdmin: "Ввійти як адміністратор?",
         enter: "Увійти",
         getAccount: "Отримати аккаунт?",
+        forgotPassword: "Забули пароль?",
       },
       register: {
         login: "Логін",
@@ -192,6 +207,15 @@ export const i18n = new VueI18n({
         no: "Ні",
         logout: "Вийти",
       },
+      forgotPassword: {
+        title: "Запит на зміну пароля",
+        subtitle: "Введіть пошту",
+        btnSendLetter: "Відправити пошту",
+        emailTextField: "Пошта",
+      },
+      resetPassword: {
+        title: "Введіть новий пароль",
+      },
     },
     us: {
       welcome: "Welcome",
@@ -202,6 +226,8 @@ export const i18n = new VueI18n({
         profile: "My profile",
         logout: "Logout",
         close: "Close",
+        back: "Back",
+        changePassword: "Change password",
       },
       pagesTitles: {
         About: "About us",
@@ -233,6 +259,7 @@ export const i18n = new VueI18n({
         asAdmin: "Login as an administrator?",
         enter: "Enter",
         getAccount: "Get an account?",
+        forgotPassword: "Forgot your password?",
       },
       register: {
         login: "Login",
@@ -284,6 +311,15 @@ export const i18n = new VueI18n({
         ok: "Yes",
         no: "No",
         logout: "Logout",
+      },
+      forgotPassword: {
+        title: "Password change request",
+        subtitle: "Enter your e-mail",
+        btnSendLetter: "Send e-mail",
+        emailTextField: "Email",
+      },
+      resetPassword: {
+        title: "Enter a new password",
       },
     },
   },

@@ -43,6 +43,11 @@
         $t("login.getAccount")
       }}</router-link>
     </v-card-actions>
+    <v-card-actions>
+      <router-link :to="{ name: 'forgotpassword' }"
+        >{{ $t("login.forgotPassword") }}
+      </router-link></v-card-actions
+    >
   </div>
 </template>
 <script>

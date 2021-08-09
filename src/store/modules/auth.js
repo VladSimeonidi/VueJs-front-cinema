@@ -140,6 +140,29 @@ export const actions = {
     router.push("/login");
     return;
   },
+  async FORGOT_PASSWORD({ commit }, email) {
+    commit; // чтоб не ругался eslint
+    return axios
+      .post(config.API.BASE_URL + config.API.USER.FORGOT_PASSWORD, email)
+      .then((res) => {
+        console.log("res form horgot store");
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
+  async RESET_PASSWORD({ commit }, payload) {
+    commit; // чтоб не ругался eslint
+    return await axios
+      .post(config.API.BASE_URL + config.API.USER.RESET_PASSWORD, payload)
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
 };
 export const getters = {
   LOGGED(state) {

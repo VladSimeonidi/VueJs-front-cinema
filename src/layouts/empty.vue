@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <vue-page-transition name="fade">
-      <router-view />
-    </vue-page-transition>
-  </div>
+  <vue-page-transition name="fade">
+    <router-view />
+  </vue-page-transition>
 </template>
 
 <script>

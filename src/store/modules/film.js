@@ -279,6 +279,7 @@ export const actions = {
       })
       .catch((err) => {
         console.log(err);
+        return err;
       });
   },
   async DELETE_CURRENT_ITEM({ commit }, ID) {

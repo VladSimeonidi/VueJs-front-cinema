@@ -19,6 +19,8 @@ export const config = {
       USERPROFILE: "/user/userprofile",
       EDITPROFILE: "/user/editprofile",
       LOGOUT: "/user/logout",
+      FORGOT_PASSWORD: "/user/forgotpassword",
+      RESET_PASSWORD: "/user/resetpassword",
     },
     DIRECTOR: {
       LIST: "/director",

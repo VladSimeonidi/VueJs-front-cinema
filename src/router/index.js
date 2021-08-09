@@ -11,6 +11,8 @@ import FilmDitails from "../views/FilmDetails.vue";
 import UserProfile from "../views/User";
 import About from "../views/About.vue";
 import Director from "../views/Director.vue";
+import forgotPassword from "../views/ForgotPassword.vue";
+import resetPassword from "../views/ResetPassword.vue";
 
 import store from "../store";
 Vue.use(VueRouter);
@@ -104,6 +106,24 @@ const routes = [
     path: "/about",
     name: "about",
     component: About,
+    meta: {
+      layout: "empty",
+      requiresAuth: false,
+    },
+  },
+  {
+    path: "/forgotpassword",
+    name: "forgotpassword",
+    component: forgotPassword,
+    meta: {
+      layout: "empty",
+      requiresAuth: false,
+    },
+  },
+  {
+    path: "/resetpassword/:token",
+    name: "resetpassword",
+    component: resetPassword,
     meta: {
       layout: "empty",
       requiresAuth: false,
