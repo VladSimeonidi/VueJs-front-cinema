@@ -121,7 +121,7 @@ const routes = [
     },
   },
   {
-    path: "/resetpassword/:token",
+    path: "/resetpassword",
     name: "resetpassword",
     component: resetPassword,
     meta: {

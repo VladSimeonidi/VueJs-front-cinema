@@ -27,14 +27,14 @@ export const actions = {
     return res;
   },
   async SAVE_NEW_ITEM({ commit }, payload) {
-    await axios
+    return axios
       .post(config.API.BASE_URL + config.API.GENRE.LIST, payload)
       .then((res) => {
         commit("SAVE_NEW_ITEM", payload);
         return res;
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        return { data: error.response.data, status: error.response.status };
       });
   },
 };

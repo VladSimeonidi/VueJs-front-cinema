@@ -40,7 +40,6 @@ export default {
   data() {
     return {
       admin: null,
-      alert: false,
       dialog: false,
       textfieldGenre: null,
     };
@@ -58,15 +57,25 @@ export default {
         name: this.textfieldGenre,
       };
       await this.SaveGenre(genreData)
-        .then(() => {
+        .then((res) => {
+          console.log("res", res);
+          if (res.status === 200) {
+            this.appAlert("Добваить жанр", "Добавлено успешно!", "success");
+          } else {
+            this.appAlert(
+              "Добваить жанр",
+              `Ошибка ${res.status}: ${res.data}`,
+              "error"
+            );
+          }
           this.uploadGenresList().then(() => {
             this.$emit("getGenres", this.GenresList);
           });
           this.textfieldGenre = null;
           this.dialog = false;
         })
-        .catch(() => {
-          this.alert = true;
+        .catch((e) => {
+          console.log(e);
         });
     },
     close() {

@@ -128,10 +128,11 @@ export default {
         return;
       }
       const payload = {
-        token: this.$route.params.token,
+        token: this.$route.query.token,
         password: this.Password,
         confirm_password: this.confirmPassword,
       };
+      console.log("this.$route", this.$route);
       this.RESET_PASSWORD(payload).then((res) => {
         if (res.status === 200) {
           this.appAlert("Восстановление пароля", `${res.data.msg}`, "success");
