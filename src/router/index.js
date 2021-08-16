@@ -13,6 +13,7 @@ import About from "../views/About.vue";
 import Director from "../views/Director.vue";
 import forgotPassword from "../views/ForgotPassword.vue";
 import resetPassword from "../views/ResetPassword.vue";
+import genres from "../views/Genres.vue";
 
 import store from "../store";
 Vue.use(VueRouter);
@@ -127,6 +128,14 @@ const routes = [
     meta: {
       layout: "empty",
       requiresAuth: false,
+    },
+  },
+  {
+    path: "/genres",
+    name: "genres",
+    component: genres,
+    meta: {
+      requiresAuth: true,
     },
   },
 ];

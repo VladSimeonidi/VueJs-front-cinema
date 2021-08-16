@@ -27,6 +27,7 @@ export const config = {
     },
     GENRE: {
       LIST: "/genre",
+      MULTIPLE: "/genre/multiple",
     },
   },
 };

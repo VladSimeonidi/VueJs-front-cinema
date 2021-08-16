@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card-text>
+    <v-card-text @keydown.enter="registerUser">
       <v-text-field
         id="username"
         name="username"

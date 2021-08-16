@@ -1,94 +1,96 @@
 <template>
   <v-main id="films" v-cloak>
     <v-container grid-list-lg class="container-min-height">
-      <v-toolbar
-        rounded="lg"
-        class="mt-2 mb-3 pr-2"
-        height="100%"
-        max-height="80px"
-        width="100%"
-        ><v-text-field
-          @keydown.enter="searchByName"
-          :label="$t('films.search')"
-          v-model="Search"
-          clearable
-        ></v-text-field
-        ><v-btn large class="mb-5" @click="searchByName" icon
-          ><v-icon>mdi-magnify</v-icon></v-btn
-        ></v-toolbar
-      >
-      <v-expansion-panels
-        focusable
-        @change="resetSearchValues"
-        class="mb-7"
-        v-model="panel"
-        dark
-      >
-        <v-expansion-panel>
-          <v-expansion-panel-header>
-            <template>
+      <div>
+        <v-toolbar
+          rounded="lg"
+          class="mt-2 mb-3 pr-2"
+          height="100%"
+          max-height="80px"
+          width="100%"
+          ><v-text-field
+            @keydown.enter="searchByName"
+            :label="$t('films.search')"
+            v-model="Search"
+            clearable
+          ></v-text-field
+          ><v-btn large class="mb-5" @click="searchByName" icon
+            ><v-icon>mdi-magnify</v-icon></v-btn
+          ></v-toolbar
+        >
+        <v-expansion-panels
+          focusable
+          @change="resetSearchValues"
+          class="mb-7"
+          v-model="panel"
+          dark
+        >
+          <v-expansion-panel>
+            <v-expansion-panel-header>
+              <template>
+                <v-row no-gutters>
+                  <v-col cols="12">
+                    {{ $t("films.extendedSearch") }}
+                  </v-col>
+                </v-row>
+              </template>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
               <v-row no-gutters>
-                <v-col cols="12">
-                  {{ $t("films.extendedSearch") }}
+                <v-col class="d-flex" cols="12" sm="12" xs="12" md="3">
+                  <v-select
+                    clearable
+                    :items="AllGenres"
+                    item-text="name"
+                    chips
+                    small-chips
+                    v-model="Genres"
+                    multiple
+                    :label="$t('films.chooseGenre')"
+                    color="black"
+                    prepend-icon="mdi-filmstrip"
+                    return-object
+                  ></v-select>
+                </v-col>
+                <v-col class="d-flex ml-md-2" cols="12" sm="12" md="3">
+                  <v-select
+                    clearable
+                    prepend-icon="mdi-account"
+                    v-model="CompDirectors"
+                    color="black"
+                    :items="AllDirectors"
+                    small-chips
+                    item-text="name"
+                    chips
+                    multiple
+                    :label="$t('films.chooseDirector')"
+                    return-object
+                  ></v-select
+                ></v-col>
+                <v-col
+                  class="d-flex ml-md-2 mt-10 mt-md-0 align-center"
+                  cols="12"
+                  sm="12"
+                  xs="12"
+                  md="5"
+                >
+                  <v-range-slider
+                    hide-details
+                    dense
+                    :label="$t('films.chooseYear')"
+                    v-model="rangeYear"
+                    max="2021"
+                    min="1950"
+                    thumb-label="always"
+                    thumb-color="grey"
+                    @mouseup="rangeValue"
+                  ></v-range-slider>
                 </v-col>
               </v-row>
-            </template>
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-row no-gutters>
-              <v-col class="d-flex" cols="12" sm="12" xs="12" md="3">
-                <v-select
-                  clearable
-                  :items="AllGenres"
-                  item-text="name"
-                  chips
-                  small-chips
-                  v-model="Genres"
-                  multiple
-                  :label="$t('films.chooseGenre')"
-                  color="black"
-                  prepend-icon="mdi-filmstrip"
-                  return-object
-                ></v-select>
-              </v-col>
-              <v-col class="d-flex ml-md-2" cols="12" sm="12" md="3">
-                <v-select
-                  clearable
-                  prepend-icon="mdi-account"
-                  v-model="CompDirectors"
-                  color="black"
-                  :items="AllDirectors"
-                  small-chips
-                  item-text="name"
-                  chips
-                  multiple
-                  :label="$t('films.chooseDirector')"
-                  return-object
-                ></v-select
-              ></v-col>
-              <v-col
-                class="d-flex ml-md-2 mt-10 mt-md-0 align-center"
-                cols="12"
-                sm="12"
-                xs="12"
-                md="5"
-              >
-                <v-range-slider
-                  hide-details
-                  dense
-                  :label="$t('films.chooseYear')"
-                  v-model="rangeYear"
-                  max="2021"
-                  min="1950"
-                  thumb-label="always"
-                  thumb-color="grey"
-                  @mouseup="rangeValue"
-                ></v-range-slider>
-              </v-col>
-            </v-row>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </div>
       <v-layout row wrap v-if="FilmLsit && FilmLsitTotal" v-cloak>
         <v-flex
           v-for="(film, index) in FilmLsit"

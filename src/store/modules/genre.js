@@ -15,22 +15,33 @@ export const mutations = {
 };
 export const actions = {
   async SET_LIST({ commit }) {
-    const res = await axios
+    return axios
       .get(config.API.BASE_URL + config.API.GENRE.LIST)
       .then((res) => {
         commit("SET_LIST", res.data);
         return res.data;
       })
       .catch((e) => {
-        console.log(e);
+        return e;
       });
-    return res;
   },
   async SAVE_NEW_ITEM({ commit }, payload) {
     return axios
       .post(config.API.BASE_URL + config.API.GENRE.LIST, payload)
       .then((res) => {
         commit("SAVE_NEW_ITEM", payload);
+        return res;
+      })
+      .catch((error) => {
+        return { data: error.response.data, status: error.response.status };
+      });
+  },
+  async SAVE_MULTIPLE({ commit }, payload) {
+    return axios
+      .post(config.API.BASE_URL + config.API.GENRE.MULTIPLE, payload)
+      .then((res) => {
+        commit("SET_LIST", res.data);
+        console.log("res", res);
         return res;
       })
       .catch((error) => {

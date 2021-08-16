@@ -84,6 +84,13 @@
             ></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>
+              <v-btn block tile :to="{ name: 'genres' }">Жанры</v-btn>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
       <v-divider></v-divider>
       <v-list-item>

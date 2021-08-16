@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card-text>
+    <v-card-text @keydown.enter="loginUser">
       <v-text-field
         id="username"
         name="username"
@@ -52,7 +52,7 @@
 </template>
 <script>
 import { validationMixin } from "vuelidate";
-import { required, maxLength } from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
@@ -68,7 +68,7 @@ export default {
   }),
   mixins: [validationMixin],
   validations: {
-    username: { required, maxLength: maxLength(10) },
+    username: { required },
     password: { required },
   },
 
